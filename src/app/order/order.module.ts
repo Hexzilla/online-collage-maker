@@ -6,7 +6,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 import { AngularFireStorageModule } from '@angular/fire/storage';
-import { ImageSelectorComponent } from '../image-selector/image-selector.component';
 import { OrderSelectorComponent } from './order-selector/order-selector.component';
 import { CanvasComponent } from './canvas/canvas.component';
 
@@ -41,6 +40,6 @@ const routes: Routes = [
   entryComponents: [
     ImageEditorDialog, ColorPickerComponent
   ],
-  declarations: [OrderComponent, ImageSelectorComponent, OrderSelectorComponent, CanvasComponent, TestComponent, PreviewSelectorComponent, PaymentComponent, ImageEditorDialog, PreviewComponent, ColorPickerComponent]
+  declarations: [OrderComponent, OrderSelectorComponent, CanvasComponent, TestComponent, PreviewSelectorComponent, PaymentComponent, ImageEditorDialog, PreviewComponent, ColorPickerComponent]
 })
 export class OrderModule { }
