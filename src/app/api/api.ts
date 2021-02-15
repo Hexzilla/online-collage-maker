@@ -25,9 +25,8 @@ export class ApiService {
     async getImages() {
         let images = [];
         try {
-            const url = environment.apiUrl + "/collage/images";
-            const options = { headers: { user_id: this.getUserId() } };
-            const items = await this.http.get(url, options).toPromise();
+            const url = environment.apiUrl + "/collage/images/list/" + this.getUserId();
+            const items = await this.http.get(url).toPromise();
             for (let key in items) {
                 const src = environment.apiUrl + items[key];
                 console.log("getImage", src);
@@ -54,9 +53,8 @@ export class ApiService {
 
     async deleteImage(image) {
         try {
-            const url = environment.apiUrl + "/collage/images/" + image;
-            const options = { headers: { user_id: this.getUserId() } };
-            const result = await this.http.delete(url, options).toPromise();
+            const url = environment.apiUrl + "/collage/images/" + this.getUserId() + "/" + image;
+            const result = await this.http.delete(url).toPromise();
             if (result == 1) {
                 return true;
             }
