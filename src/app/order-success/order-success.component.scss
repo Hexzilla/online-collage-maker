@@ -1,0 +1,21 @@
+.container {
+  height: 100%;
+  width: 100%;
+}
+
+.image {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  text-align: center;
+}
+.custom-select {
+  height: 150px;
+}
+mat-expansion-panel-header {
+  padding-left: 0px;
+}

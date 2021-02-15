@@ -1,0 +1,55 @@
+<div class="container">
+    <div>
+      <h2>Create Your Account</h2>
+    </div>
+    <form [formGroup]="regForm" class="reg-form" (ngSubmit)="register()">
+
+      <mat-form-field class="reg-full-width">
+        <input matInput placeholder="Enter Email" [formControl]="regForm.get('email')" formControlName="email">
+        <mat-error *ngIf="regForm.get('email').hasError('email') && !regForm.get('email').hasError('required')">
+          Please enter a valid email address
+        </mat-error>
+        <mat-error *ngIf="regForm.get('email').hasError('required')">
+          Email is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="reg-full-width">
+        <input matInput type="password" placeholder="Enter Password" [formControl]="regForm.get('password')" formControlName="password">
+        <mat-error *ngIf="regForm.get('password').hasError('email') && !regForm.get('password').hasError('required')">
+          Password must be 5 character long
+        </mat-error>
+        <mat-error *ngIf="regForm.get('password').hasError('required')">
+          Password is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="reg-full-width">
+        <input matInput type="password" placeholder="Confirm Password" [formControl]="regForm.get('cpassword')" formControlName="cpassword">
+      </mat-form-field>
+      <mat-form-field class="reg-full-width">
+          <input matInput placeholder="First Name" [formControl]="regForm.get('firstname')" formControlName="firstname">
+          <mat-error *ngIf="regForm.get('firstname').hasError('firstname') && !regForm.get('firstname').hasError('required')">
+            Please enter a valid firstname
+          </mat-error>
+          <mat-error *ngIf="regForm.get('firstname').hasError('required')">
+            firstname is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="reg-full-width">
+            <input matInput placeholder="Enter lastname" [formControl]="regForm.get('lastname')" formControlName="lastname">
+            <mat-error *ngIf="regForm.get('lastname').hasError('lastname') && !regForm.get('lastname').hasError('required')">
+              Please enter a valid lastname
+            </mat-error>
+            <mat-error *ngIf="regForm.get('lastname').hasError('required')">
+              lastname is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="reg-full-width">
+              <input matInput placeholder="Enter Mobile" [formControl]="regForm.get('mobile')" formControlName="mobile">
+            </mat-form-field>
+
+      <div fxLayout="row" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center">
+        <button class="reg-form" style="margin-bottom:10px" mat-raised-button color="accent" type="submit">Create Account</button>
+        <button class="reg-form" mat-raised-button color="primary" [routerLink]="['/login']">Existing Customer? Login</button>
+      </div>
+    </form>
+  </div>

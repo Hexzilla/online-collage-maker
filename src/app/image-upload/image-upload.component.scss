@@ -1,0 +1,22 @@
+.image-upload {
+  margin-top: 30px;
+}
+
+.img-thumbnail{
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+ngx-dropzone-image-preview {
+  padding-right: 5px!important;
+  padding-bottom: 5px!important;
+  height: 30px!important;
+  min-height: 30px!important;
+  margin: 0!important;
+}
+
+.upload-button {
+  width: 100px;
+  padding: 6px 8px;
+  margin-bottom: 12px;
+}

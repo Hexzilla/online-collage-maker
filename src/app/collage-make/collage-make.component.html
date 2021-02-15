@@ -1,0 +1,42 @@
+<div id="dpi" style="height: 1in; width: 1in; left: 100%; position: fixed; top: 100%;"></div>
+<div class="collage-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="menu">
+        <ul class="menu-options">
+          <li id="edit" class="menu-option">Edit Image</li>
+          <li id="restore" class="menu-option">Restore</li>                  
+        </ul>
+      </div>
+      <image-editor
+        [imageUrl]="selectedImageUrl"
+      ></image-editor>
+    </div>
+      <div class="row">
+        <div class="col-md-2">
+          <control-panel></control-panel>
+          <hr class="mt-2 mb-2">
+          <image-upload></image-upload>
+        </div>
+        <div class="col-md-10">
+            <div class="grey-box">
+              <div>
+                <p class="text-center head-custom bg-primary">Online Collage Maker</p>
+                <div class="card-body">
+                  <div id="canvas-container">
+                    <!-- <canvas id="main-canvas" style="width:36in; height: 36in;"></canvas> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 spinner-container">
+          <mat-spinner class="vertical-center" *ngIf="loading" [diameter]="40"></mat-spinner>
+        </div>
+      </div>
+  </div>
+</div>
+
+

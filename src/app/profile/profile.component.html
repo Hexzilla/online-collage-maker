@@ -1,0 +1,137 @@
+<div class="container m-auto">
+  <div class="profile" *ngIf="user">
+    <h3>{{user.name}}</h3>
+    <p>{{user.email}}</p>
+    <p>{{user.mobile}}</p>
+  </div>
+  <div>
+    <button mat-raised-button (click)="logout()">logout</button>
+  </div>
+  <hr>
+  <h3 matSubheader>Your Orders</h3>
+  <div *ngIf="orders">
+    <div *ngFor="let sorder of orders">
+      <div class="card">
+        <p class="head-custom mt-0">
+          Order ID: {{sorder.orderId}}
+        </p>
+        <div class="pt-2" *ngIf="sorder.products.length">
+          <mat-divider></mat-divider>
+          <mat-expansion-panel *ngFor="let item of sorder.products; let i = index">
+            <mat-expansion-panel-header>
+              <mat-list>
+                <mat-list-item>
+                  <img matListAvatar src="{{environment.url + '/file/download/' + item.originalurl}}"
+                    alt="order image{{i}}">
+                  <h3 matLine> <b>Product ID: {{item.orderId}}</b> </h3>
+                </mat-list-item>
+              </mat-list>
+            </mat-expansion-panel-header>
+
+            <ul class="list-group">
+              <li class="list-group-item bg-warning">Shipping Details</li>
+              <li class="list-group-item">Status: {{ item.orderStatus }}</li>
+              <li class="list-group-item">Tracking ID: {{ sorder.shipment_id }}</li>
+              <li class="list-group-item">Courier Service: {{ sorder.courier_service }}</li>
+              <li class="list-group-item">Shipping Date: {{ sorder.shipping_date }}</li>
+              <li class="list-group-item">Delivery Date: {{ sorder.delivery_date ? sorder.delivery_date : 'NA' }}</li>
+              <li class="list-group-item">Message: {{ sorder.message }}</li>
+            </ul>
+            <ul class="list-group">
+              <li class="list-group-item bg-warning">Details</li>
+              <li class="list-group-item">Amount: Rs. {{ item.amount }}</li>
+              <li class="list-group-item">Selected Size: {{ item.products.size.fixedSize }} X
+                {{ item.products.size.recommendedSize }} (in inches)</li>
+              <li class="list-group-item">Selected Type: {{ item.products.type }}</li>
+              <li class="list-group-item">Selected Wrap: {{ item.products.wrapType }}</li>
+              <li class="list-group-item" *ngIf="item.products.color">Selected Color: <button
+                  [style.background]="item.products.color['background-color']" [style.height]="20 + 'px'"
+                  [style.width]="40 + 'px'"></button>
+              </li>
+            </ul>
+            <br>
+            <ul class="list-group">
+              <li class="list-group-item bg-warning">Images Uploaded</li>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col mr-2" *ngIf="item.originalurl">
+                    <h5>Original</h5>
+                    <img src="{{environment.url + '/file/download/' + item.originalurl}}" alt="original image"
+                      height="70px">
+                  </div>
+                  <div class="col mr-2" *ngIf="item.url">
+                    <h5>Cropped</h5>
+                    <div class="placeholder">
+                      <img src="{{environment.url + '/file/download/' + item.url}}" alt="not cropped" height="70px">
+                    </div>
+                    <span class="badge badge-pill badge-info">(*if custom)</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <ng-template matExpansionPanelContent>
+
+            </ng-template>
+          </mat-expansion-panel>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <!-- <h3 matSubheader>All Orders</h3>
+    <div *ngIf="allorders">
+      <div *ngFor="let sorder of allorders">
+        <div *ngIf="sorder.products.length">
+          <mat-divider></mat-divider>
+          <mat-expansion-panel *ngFor="let item of sorder.products; let i = index">
+            <mat-expansion-panel-header>
+              <mat-list>
+                <mat-list-item>
+                  <img matListAvatar src="{{environment.url + '/file/download/' + item.originalurl}}"
+                    alt="order image{{i}}">
+                  <h3 matLine> <b>ID: {{item.orderId}}</b> </h3>
+                </mat-list-item>
+              </mat-list>
+            </mat-expansion-panel-header>
+
+            <ul class="list-group">
+              <li class="list-group-item bg-warning">Details</li>
+              <li class="list-group-item">Amount: Rs. {{ item.amount }}</li>
+              <li class="list-group-item">Selected Size: {{ item.products.size.fixedSize }} X
+                {{ item.products.size.recommendedSize }} (in inches)</li>
+              <li class="list-group-item">Selected Type: {{ item.products.type }}</li>
+              <li class="list-group-item">Selected Wrap: {{ item.products.wrapType }}</li>
+              <li class="list-group-item" *ngIf="item.products.color">Selected Color: <button
+                  [style.background]="item.products.color['background-color']" [style.height]="20 + 'px'"
+                  [style.width]="40 + 'px'"></button>
+              </li>
+            </ul>
+            <br>
+            <ul class="list-group">
+              <li class="list-group-item bg-warning">Images Uploaded</li>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col mr-2" *ngIf="item.originalurl">
+                    <h5>Original</h5>
+                    <img src="{{environment.url + '/file/download/' + item.originalurl}}" alt="original image"
+                      height="70px">
+                  </div>
+                  <div class="col mr-2" *ngIf="item.url">
+                    <h5>Cropped</h5>
+                    <div class="placeholder">
+                      <img src="{{environment.url + '/file/download/' + item.url}}" alt="not cropped" height="70px">
+                    </div>
+                    <span class="badge badge-pill badge-info">(*if custom)</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <ng-template matExpansionPanelContent>
+
+            </ng-template>
+          </mat-expansion-panel>
+        </div>
+      </div>
+      <hr>
+    </div> -->
+
+  </div>

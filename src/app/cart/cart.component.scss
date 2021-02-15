@@ -1,0 +1,32 @@
+.container {
+  height: 100%;
+  width: 100%;
+}
+
+.image {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  text-align: center;
+}
+.custom-select {
+  height: 150px;
+}
+mat-expansion-panel-header {
+  padding-left: 0px;
+}
+.d-flex {
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 30px;
+}
+.card {
+  border-radius: 10px;
+  border: 0;
+  box-shadow: 5px 5px 15px #3333;
+  margin: 10px auto;
+}

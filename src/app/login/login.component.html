@@ -1,0 +1,112 @@
+<div class="container">
+  <div>
+    <h2>Login to your Account</h2>
+  </div>
+  <form [formGroup]="loginForm" class="login-form" (ngSubmit)="login()">
+    <mat-form-field class="login-full-width">
+      <input matInput placeholder="Enter Email" [formControl]="loginForm.get('email')" formControlName="email">
+      <mat-error *ngIf="loginForm.get('email').hasError('email') && !loginForm.get('email').hasError('required')">
+        Please enter a valid email address
+      </mat-error>
+      <mat-error *ngIf="loginForm.get('email').hasError('required')">
+        Email is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="login-full-width">
+      <input matInput type="password" placeholder="Enter Password" [formControl]="loginForm.get('password')"
+        formControlName="password">
+      <mat-error *ngIf="loginForm.get('password').hasError('email') && !loginForm.get('password').hasError('required')">
+        Password must be 5 character long
+      </mat-error>
+      <mat-error *ngIf="loginForm.get('password').hasError('required')">
+        Password is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <div fxLayout="row" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center">
+      <a (click)="askForEmail()" class="text-primary">forgot password</a>
+      <button class="login-form" style="margin-bottom:10px" mat-raised-button color="accent" type="submit"
+        (disabled)="!loginForm.valid">Login</button>
+      <button class="login-form" mat-raised-button color="primary" [routerLink]="['/register']">Create Account</button>
+    </div>
+  </form>
+
+  <div class="divider">
+    <!-- <span class="or">
+      Or
+    </span>
+  </div>
+  <div class="social-container">
+      <button class="fb" mat-flat-button>
+          <mat-icon svgIcon="fblogo"></mat-icon>
+          Facebook</button>
+      <button class="google" mat-flat-button> <mat-icon svgIcon="google"></mat-icon>
+        Google</button>
+      <button class="twitter" mat-flat-button>
+          <mat-icon svgIcon="twitter"></mat-icon>
+          Twitter</button> -->
+  </div>
+  
+</div>
+
+<!-- Modal -->
+<div class="modal fade" [ngClass]="{'show': Popup != 'none'}" [style.display]="Popup != 'none' ? 'block' : 'none'" [style.backgroundColor]="'#3333'" id="modelId" tabindex="-1" role="dialog"
+  aria-labelledby="modelTitleId" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Forgot Password</h5>
+        <button (click)="closePopup()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div *ngIf="Popup == 'mailPopup'" class="modal-body">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="email">email</label>
+              <input id="fgtpassemail" name="fgtpassemail" type="email" class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="Popup == 'mailPopup'" class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closePopup()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="askForOTP()" >Get OTP</button>
+      </div>
+      <div *ngIf="Popup == 'otpPopup'" class="modal-body">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="notes">OTP</label>
+              <input id="fgtotp" name="fgtotp" type="number" class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="Popup == 'otpPopup'" class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closePopup()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="askForNewPassword()">Verify</button>
+      </div>
+      <div *ngIf="Popup == 'passPopup'" class="modal-body">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="newPassword">New Password</label>
+              <input type="password" name="newPassword" id="newPassword" class="form-control">
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="cnfnewPassword">Confirm New Password</label>
+              <input type="password" name="cnfnewPassword" id="cnfnewPassword" class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="Popup == 'passPopup'" class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closePopup()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="updatePassword()">Update Password</button>
+      </div>
+    </div>
+  </div>
+</div>

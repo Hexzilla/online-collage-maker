@@ -1,0 +1,339 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import url("https://fonts.googleapis.com/css?family=Nunito");
+@import "../node_modules/@angular/material/theming";
+
+$custom-typography: mat-typography-config(
+  $font-family: "Nunito ,sans-serif",
+  $headline: mat-typography-level(32px, 48px, 700),
+  $body-1: mat-typography-level(16px, 24px, 500),
+);
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  font-family: "Nunito", sans-serif;
+}
+main {
+  min-height: 60vh;
+}
+@include angular-material-typography($custom-typography);
+@include mat-core($custom-typography);
+
+.bg-light {
+  background-color: #fff !important;
+}
+.bg-dark {
+  background-color: #333 !important;
+}
+#cubeContainer {
+  padding: 1em;
+  width: 90%;
+  margin: 50px auto;
+}
+
+.mat-horizontal-content-container {
+  padding: 0 !important;
+  padding-right: 5px !important;
+}
+
+.mat-step-header .mat-step-label {
+  font-size: 12px !important;
+}
+
+figure {
+  margin: 0;
+}
+
+#cubeBox {
+  margin: 3em auto;
+}
+
+.l-header {
+  font-size: 0.80625rem;
+  position: relative;
+  z-index: 100;
+  background: #faf6f3;
+  font-weight: 800;
+}
+
+.container {
+  padding: 10px;
+}
+
+.l-container {
+  max-width: 1800px;
+  // padding: 0 1em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.l-header__top {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 50px;
+  border-bottom: 1px solid #526d78;
+  font-size: 18px;
+  justify-content: space-between;
+  display: flex;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.cart-icon a {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.cart-icon svg {
+  fill: #e9775c;
+  width: 30px;
+  margin-right: 10px;
+}
+
+.l-header__main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: center;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px 0;
+  font-size: 16px;
+}
+
+.logo {
+  font-size: 1.05rem;
+}
+
+.logo svg {
+  fill: #92c7bb;
+  margin-right: 10px;
+  height: 24px;
+  width: 30px;
+}
+.l-header__main--links {
+  margin-left: auto;
+}
+
+.l-header__main--links a {
+  margin-left: 1rem;
+  display: inline-block;
+}
+
+.l-header__promo {
+  background: #e9775c;
+  padding: 4px 0;
+  cursor: pointer;
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.80625rem;
+}
+
+.l-banner {
+  background-image: url(assets/imgs/background.jpg);
+  background-position: center center;
+  padding: 2rem 2rem 2rem 40%;
+  height: 500px;
+  margin-bottom: 0;
+  position: relative;
+  text-align: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.banner-callout {
+  background: #92c7bb;
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  position: absolute;
+  border: 1px solid #fff;
+  -webkit-box-shadow: 0px 0px 0px 4px #92c7bb;
+  box-shadow: 0px 0px 0px 4px #92c7bb;
+  top: 5%;
+  right: 5%;
+  left: 15%;
+}
+
+.banner-content-box {
+  margin: 0 10px;
+  padding: 1px 10px 10px 10px;
+  position: relative;
+  color: white;
+  text-shadow: 0 0 22px #526d78;
+  top: 45%;
+
+  background-color: transparent;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  margin: 0;
+}
+
+.l-pricing-grid {
+  margin-top: 0;
+  display: grid;
+  display: -ms-grid;
+  grid:
+    "title title"
+    "image table"
+    "image footer";
+  grid-column-gap: 40px;
+  -ms-grid-columns: 20fr 1fr 20fr;
+  grid-template-columns: 1fr 1fr;
+}
+
+.l-pricing-grid .pg-table {
+  -ms-grid-row: 3;
+  grid-area: table;
+  margin: 0 auto;
+  max-width: 360px;
+}
+
+.l-pricing-grid .pg-title {
+  -ms-grid-row: 2;
+  grid-area: title;
+}
+
+.ta-center {
+  text-align: center !important;
+}
+
+.l-pricing-grid .pg-image {
+  -ms-grid-row: 1;
+  grid-area: image;
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.carousel-indicators {
+  -webkit-transform: translateX(-100%) !important;
+  transform: translateX(-100%) !important;
+}
+
+.mat-mini-fab {
+  border-radius: 5px !important;
+  width: 15px !important;
+  height: 5px !important;
+}
+#order-container {
+  width: 100%;
+  position: fixed;
+  overflow: scroll;
+  bottom: 44px;
+  z-index: 999;
+}
+.mat-chip-list-wrapper {
+  // display: block;
+  overflow: scroll;
+  // width: max-content;
+  // margin: 4px;
+  margin: -4px;
+}
+.head-custom {
+  padding: 10px !important;
+  font-weight: 900;
+  margin-top: 8px;
+  color: white;
+  background: #673ab6;
+  border-radius: 5px;
+  box-shadow: 0px 2px 5px #6739b677;
+}
+.p-0 {
+  padding: 0px !important;
+}
+.px-0 {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+.py-0 {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+.bg-primary,
+.btn-primary {
+  background-color: #1b7cbe !important;
+  box-shadow: 2px 2px 10px #3338 !important;
+}
+.c-90 {
+  width: 95%;
+  margin: auto;
+}
+.c-85 {
+  width: 85%;
+  margin: auto;
+}
+.c-90-a {
+  width: 90%;
+  margin: auto;
+}
+.grey-box {
+  background-color: rgba(225, 221, 221, 0.589);
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+  box-shadow: 0px 0px 15px #3335;
+}
+.shadow {
+  box-shadow: 2px 2px 10px #3335 !important;
+}
+
+// Border Hover
+.draw {
+  transition: color 0.25s;
+}
+.draw::before, .draw::after {
+  content: '';
+  border: 2px solid transparent;
+  width: 0;
+  height: 0;
+}
+.draw::before {
+  top: 0;
+  left: 0;
+}
+.draw::after {
+  bottom: 0;
+  right: 0;
+}
+.draw:hover {
+  color: #D9743E;
+}
+.draw:hover::before, .draw:hover::after {
+  width: 100%;
+  height: 100%;
+}
+.draw:hover::before {
+  border-top-color: #D9743E;
+  border-right-color: #D9743E;
+  transition: width 0.25s ease-out, height 0.25s ease-out 0.25s;
+}
+.draw:hover::after {
+  border-bottom-color: #D9743E;
+  border-left-color: #D9743E;
+  transition: border-color 0s ease-out 0.5s, width 0.25s ease-out 0.5s, height 0.25s ease-out 0.75s;
+}

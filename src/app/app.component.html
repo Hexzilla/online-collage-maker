@@ -1,0 +1,10 @@
+<app-main-nav>
+  <app-sidenav></app-sidenav>
+  <div *ngIf="getOrder()" id="order-container">
+    <!-- <mat-chip-list aria-label="order-selection">
+      <mat-chip *ngIf="getOrder()">{{getOrder() | json}}</mat-chip>
+      <mat-chip color="primary" selected>Primary fish</mat-chip>
+      <mat-chip color="accent" selected>Accent fish</mat-chip>
+    </mat-chip-list> -->
+  </div>
+</app-main-nav>

@@ -1,0 +1,89 @@
+.spacr {
+  flex: 1 1 auto;
+}
+.f-header {
+  font-size: 15px;
+  line-height: 40px;
+}
+.f-header mat-icon {
+  font-size: 15px !important;
+}
+mat-toolbar mat-icon {
+  font-size: 20px;
+}
+.v-align-center {
+  justify-content: center;
+  align-items: center;
+}
+footer {
+  overflow: hidden;
+}
+footer ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin-left: 0;
+  text-decoration: underline;
+}
+.j-text {
+  text-align: justify;
+}
+.justify-content-space-between {
+  justify-content: space-between;
+}
+
+@media screen and (min-width: 992px) {
+.menu-mobile-btn{
+  display: none;
+}
+}
+.menu-mobile-btn{
+  margin-right: 30px;
+}
+.sub-cat{
+  margin-left: 10%;
+}
+
+.border-bottom{
+  border-top: 1px solid white;
+  padding: 5px;
+}
+
+      
+.parent-div{
+  border-top: 1px solid white;
+  padding: 0px 20px;
+  vertical-align: middle;
+}
+
+.text-muted-footer {
+  color: white !important;
+  line-height: 20px;
+  margin-top: 10px;
+}
+.nav-wrap{
+  width: 100%;
+ // margin: 10px 0;
+  .btn{
+    font-size: 16px;
+  }
+}
+.max-width-100{
+  max-width: 100% !important;
+}
+
+.j-text {
+  margin-top: 33px;
+}
+
+.active-test{
+  background: #1b7cbe !important;
+  color: #ffffff!important;
+}
+
+.mat-drawer{
+  min-width: 237px;
+}
+
+.mat-list-base .mat-list-item.mat-list-item-with-avatar {
+  height: 40px;
+}

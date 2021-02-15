@@ -1,0 +1,96 @@
+.container {
+    background-color: white;
+    padding: 5px;
+    text-align: center;
+}
+
+.flex-container {
+    display: flex;
+    width: 100vw;
+    flex: 0 1 auto;
+    justify-content: center space-evenly;
+}
+
+.child {
+    padding: 5px;
+}
+
+.rate {
+    text-align: start;
+}
+.ratedisplay {
+    font-size: large;
+    color: red;
+}
+@media only screen and (min-width: 600px) {
+    .innerImage {
+        position: absolute;
+        width: 100px;
+        min-height: 141px;
+        left: 50%;
+        transform: translateX(-50%) translateY(50%);
+    }
+    .innerImage img {
+        box-shadow: -2px 2px 5px darkslategrey;
+    }
+    .top-30 {
+        transform: translateX(-50%) translateY(30%) !important;
+    }
+    .top-20 {
+        transform: translateX(-50%) translateY(20%) !important;
+    }
+    .top-20-left-85-small {
+        transform: translateX(85%) translateY(20%) scale(0.8) !important;
+    }
+    .scale-2 {
+        transform: translateX(-50%) translateY(70%) scale(2) !important;
+    }
+    .top-115-left250 {
+        transform: translateX(-250%) translateY(115%) !important;
+    }
+    .top-20-left115 {
+        transform: translateX(-115%) translateY(20%) !important;
+    }
+    .top-180-left100-large {
+        transform: translateX(-100%) translateY(180%) scale(1.5) !important;
+    }
+    .top-100-left50-scale-2 {
+        transform: translateX(-50%) translateY(100%) scale(2) !important;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .innerImage {
+        position: absolute;
+        width: 65px;
+        min-height: 141px;
+        left: 50%;
+        transform: translateX(-50%) translateY(50%);
+    }
+    .innerImage img {
+        box-shadow: -2px 2px 5px darkslategrey;
+    }
+    .top-30 {
+        transform: translateX(-50%) translateY(30%) !important;
+    }
+    .top-20 {
+        transform: translateX(-50%) translateY(20%) !important;
+    }
+    .top-20-left-85-small {
+        transform: translateX(60%) translateY(5%) scale(0.8) !important;
+    }
+    .scale-2 {
+        transform: translateX(-50%) translateY(70%) scale(2) !important;
+    }
+    .top-115-left250 {
+        transform: translateX(-210%) translateY(65%) !important;
+    }
+    .top-20-left115 {
+        transform: translateX(-100%) translateY(20%) !important;
+    }
+    .top-180-left100-large {
+        transform: translateX(-100%) translateY(100%) scale(1.5) !important;
+    }
+    .top-100-left50-scale-2 {
+        transform: translateX(-50%) translateY(100%) scale(2) !important;
+    }
+}

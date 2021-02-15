@@ -1,0 +1,50 @@
+.menu {
+    z-index: 1;
+    box-shadow: 0 4px 5px 3px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    display: none;
+    background-color: rgb(55, 55, 55);
+    transition: 0.2s display ease-in;
+
+    .menu-options {
+        list-style: none;
+        padding: 5px 0;
+        margin-bottom: 0.2rem;
+        z-index: 1;
+
+        .menu-option {
+            font-weight: 500;
+            z-index: 1;
+            font-size: 14px;
+            padding: 10px 10px 5px 10px;
+            cursor: pointer;
+            color: white;
+
+            &:hover {
+                background: rgba(0, 0, 0, 0.2);
+            }
+        }
+    }
+}
+
+.spinner-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+    width: 100px;
+    height: 100px;
+}
+
+.vertical-center {
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+mat-checkbox {
+    color: white;
+}

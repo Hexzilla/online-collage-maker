@@ -1,0 +1,19 @@
+.title {
+    text-align: center;
+  }
+  .demo-section {
+    padding: 2rem;
+    border-bottom: 2px solid red;
+  }
+  .section-title {
+    
+  }
+  .section-content {
+    display: flex;
+  }
+  .picker-wrapper {
+    flex: 0 0 250px;
+  }
+  .detail-wrapper {
+    flex: auto;
+  }

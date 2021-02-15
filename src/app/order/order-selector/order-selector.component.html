@@ -1,0 +1,24 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{title}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="content">
+                <table>
+                        <tr class="header">
+                            <th>Size</th>
+                            <th>Rolled Rates</th>
+                            <th>Wrapped Rates</th>
+                            
+                        </tr>
+                        <tr *ngFor="let i of priceList;let isOdd=odd;let isEven=even" style="text-align:center" [class.odd]="isOdd" [class.even]="isEven">
+                            <td>{{i.width}}" &#10033; {{i.height}}"</td>
+                            <td matRipple (click)="onSelected(i,'rolledRate')">{{i.rolledRate}}</td>
+                            <td matRipple (click)="onSelected(i,'wrappedRate')">{{i.wrappedRate}}</td>
+                        </tr>
+                    </table>
+        </div>
+    
+    </mat-card-content>
+    
+</mat-card>

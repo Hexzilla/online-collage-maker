@@ -1,0 +1,107 @@
+<main class="l-header" manual-ng-app="headerApp">
+    <div class="l-container">
+      <router-outlet></router-outlet>
+    </div>
+</main>
+<!-- <main class="l-header" manual-ng-app="headerApp">
+    <div class="l-container">
+
+        <div class="l-header__top">
+            <div><a class="js-fc-btn" href="#"><img src="//static.easycanvasprints.com/cmsimages/cotc_chat_icon.svg" style="position: relative; height: 15px; top: 3px"><span> CHAT NOW</span></a><a></a><span> | </span>
+                <a href="" modal-show="help-modal">CONTACT US: </a>
+                <a href="tel:1-844-288-2355"> 91-0000-00000</a>
+            </div>
+
+            <mat-menu #authMenu="matMenu">
+              <button *ngIf="loggedIn()" mat-menu-item (click)="navigate('/profile')"><mat-icon>person_pin</mat-icon> Profile</button>
+              <button *ngIf="loggedIn()" mat-menu-item (click)="logout()"><mat-icon>vpn_key</mat-icon> Log Out</button>
+              <button *ngIf="!loggedIn()" mat-menu-item (click)="navigate('/login')"><mat-icon>vpn_key</mat-icon> Login</button>
+              <button *ngIf="!loggedIn()" mat-menu-item (click)="navigate('/register')"><mat-icon>person_add</mat-icon> Register</button>
+            </mat-menu>
+
+            <button mat-icon-button [matMenuTriggerFor]="authMenu">
+              <mat-icon>person_pin</mat-icon>
+            </button>
+
+            <div class="cart-icon">
+                <a href="" header-cart="">
+                    <svg x="0px" y="0px" viewBox="0 0 119 117">
+                        <g>
+                            <path d="M89.7,89.5c-5.3,0-9.7,4.4-9.7,9.8c0,5.4,4.3,9.8,9.7,9.8c5.3,0,9.7-4.4,9.7-9.8C99.4,93.8,95,89.5,89.7,89.5"></path>
+                            <path d="M46,89.5c-5.3,0-9.7,4.4-9.7,9.8c0,5.4,4.3,9.8,9.7,9.8c5.3,0,9.7-4.4,9.7-9.8C55.6,93.8,51.3,89.5,46,89.5"></path>
+                            <path d="M117.3,23.3c-0.9-1.3-2.4-2-4-2H30.6l-1.6-7c-0.5-2.2-2.5-3.8-4.8-3.8H5.6c-2.7,0-4.9,2.2-4.9,4.9
+              c0,2.7,2.2,4.9,4.9,4.9h14.7l13.8,59.8c0.5,2.2,2.5,3.8,4.8,3.8h59.4c2.7,0,4.9-2.2,4.9-4.9c0-2.7-2.2-4.9-4.9-4.9H42.8l-1.8-7.6
+              h61.2c2.1,0,4-1.4,4.7-3.4L118,27.7C118.5,26.2,118.2,24.6,117.3,23.3"></path>
+                        </g>
+                        <text id="cartCount" fill="#ffffff" transform="matrix(1 0 0 1 55 57)" font-family="Arial" font-size="40" font-weight="700">0</text>
+                    </svg>
+                    MY CART
+                </a>
+            </div>
+        </div>
+
+        <div class="l-header__main">
+            <div class="l-header__main--menu flex">
+                <div class="menu-toggle hidden-lg" id="hamburger-menu">
+                    <div class="menu-toggle__bar"></div>
+                    <div class="menu-toggle__bar"></div>
+                    <div class="menu-toggle__bar"></div>
+                </div>
+            </div>
+            <div>
+                <a class="logo" href="/">
+                    <svg viewBox="0 0 106 86">
+                        <path fill="#92C7BB" d="M92,3H22V23H2V83H102V3Zm0,70H12V33H22V63H82V23H32V13H92ZM32,33H72V53H32Z"></path>
+                    </svg>
+                    Print Posters
+                </a>
+            </div>
+
+            <div class="l-header__main--icons">
+                <a href="/questions">
+                    <svg x="0px" y="0px" viewBox="0 0 119 117">
+                        <g>
+                            <path d="M60,10c-26.7,0-48.4,22.4-48.4,50c0,27.6,21.7,50,48.4,50c26.7,0,48.4-22.4,48.4-50C108.4,32.4,86.7,10,60,10
+                M60,100.2c-21.5,0-39-18.1-39-40.2s17.5-40.2,39-40.2c21.5,0,39,18.1,39,40.2S81.5,100.2,60,100.2"></path>
+                            <path d="M59.1,31.9c-6.4,0-12.3,3.4-15.5,8.9c-0.7,1.2-0.9,2.5-0.6,3.8c0.3,1.3,1.2,2.5,2.4,3.2
+                c0.8,0.5,1.7,0.7,2.6,0.7c1.8,0,3.5-1,4.5-2.6c1.4-2.3,3.9-3.8,6.7-3.8c4.5,0,8,3.4,8,7.7c0,4.3-3.6,7.7-8,7.7
+                c-2.7,0-5,2.3-5.1,4.9l0,6.4c0,2.8,2.3,5.1,5.1,5.1c2.9,0,5.1-2.2,5.1-5.1v-1.8c7.7-2.2,13-9.2,13-17.2
+                C77.2,40,69.1,31.9,59.1,31.9"></path>
+                            <path d="M58.9,77.9c-3.1,0-5.6,2.6-5.6,5.8c0,3.2,2.5,5.8,5.6,5.8c3.1,0,5.6-2.6,5.6-5.8C64.5,80.5,62,77.9,58.9,77.9"></path>
+                        </g>
+                    </svg>
+                </a>
+                <a href="" header-cart="">
+                    <svg x="0px" y="0px" viewBox="0 0 119 117">
+                        <g>
+                            <path d="M89.7,89.5c-5.3,0-9.7,4.4-9.7,9.8c0,5.4,4.3,9.8,9.7,9.8c5.3,0,9.7-4.4,9.7-9.8C99.4,93.8,95,89.5,89.7,89.5"></path>
+                            <path d="M46,89.5c-5.3,0-9.7,4.4-9.7,9.8c0,5.4,4.3,9.8,9.7,9.8c5.3,0,9.7-4.4,9.7-9.8C55.6,93.8,51.3,89.5,46,89.5"></path>
+                            <path d="M117.3,23.3c-0.9-1.3-2.4-2-4-2H30.6l-1.6-7c-0.5-2.2-2.5-3.8-4.8-3.8H5.6c-2.7,0-4.9,2.2-4.9,4.9
+              c0,2.7,2.2,4.9,4.9,4.9h14.7l13.8,59.8c0.5,2.2,2.5,3.8,4.8,3.8h59.4c2.7,0,4.9-2.2,4.9-4.9c0-2.7-2.2-4.9-4.9-4.9H42.8l-1.8-7.6
+              h61.2c2.1,0,4-1.4,4.7-3.4L118,27.7C118.5,26.2,118.2,24.6,117.3,23.3"></path>
+                        </g>
+                        <text id="cartCount" fill="#ffffff" transform="matrix(1 0 0 1 55 60)" font-family="Arial" font-size="40" font-weight="700">0</text>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="l-header__main--links">
+                <a href="/#pricing-grid">PRICING</a>
+                <a href="" modal-show="check-order-status">ORDER STATUS</a>
+                <a href="/#faq-container">FAQ</a>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+    <div class="l-header__promo" modal-show="promo-details-modal">
+        <div class="ta-center" promo-popup="" first-load="false">
+            <p>86% Off Canvas Prints! Click For Details</p>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+  </main> -->

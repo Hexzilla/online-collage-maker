@@ -1,0 +1,189 @@
+<div class="row">
+  <div class="d-none d-md-block col-12 col-md-6">
+    <!-- <div class="text-center pt-2">
+      <img *ngIf="imgsrc" [src]="imgsrc.src"
+        class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}"
+        alt="preview image">
+    </div> -->
+
+    <div class="row">
+      <div
+        style="max-height: 415px; overflow-y: scroll"
+        class="col-2 d-none d-md-block"
+      >
+        <div
+          *ngFor="let bg of bgimgs"
+          class="card border-1 mb-3 shadow"
+          (click)="mainImage = bg"
+        >
+          <img
+            style="height: auto !important"
+            [src]="bg"
+            alt="Canvas Prints"
+            width="100%"
+          />
+        </div>
+      </div>
+      <div class="col">
+        <div *ngIf="mainImage" class="card position-relative">
+          <img
+            [src]="mainImage"
+            alt="Canvas Prints"
+            width="100%"
+            style="height: auto"
+          />
+          <div
+            class="innerImage"
+            [ngClass]="{
+              'top-30': isImage(mainImage, '6.webp'),
+              'top-20-left-85-small': isImage(mainImage, '7.webp'),
+              'top-20': isImage(mainImage, '8.webp'),
+              'scale-2': isImage(mainImage, '9.webp'),
+              'top-115-left250': isImage(mainImage, '10.webp'),
+              'top-20-left115': isImage(mainImage, '15.webp'),
+              'top-180-left100-large': isImage(mainImage, '13.webp'),
+              'top-100-left50-scale-2': isImage(mainImage, '12.webp')
+            }"
+          >
+            <img
+              *ngIf="imgsrc"
+              [src]="imgsrc?.src"
+              alt="CANVAS PRINTS"
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+        <!-- <img src="{{env.url}}/file/downloadGallary/{{product.image}}" alt="{{product.title}}" width="100%" /> -->
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-6">
+    <div class="container">
+      <h5 style="text-align: center" class="head-custom bg-primary">
+        Recommended Size
+      </h5>
+      <table class="table text-center" #table>
+        <tr>
+          <th>Size</th>
+          <th>Rolled<br />Canvas</th>
+          <th>Gallary<br />Wrap</th>
+        </tr>
+
+        <tr *ngFor="let i of res" style="margin: 2px; padding: 10px">
+          <td>
+            <span>Inch : {{ i.fixedSize }}" X {{ i.recommendedSize }}"</span>
+            <br />
+            <span
+              >cm : {{ roundOf(i.fixedSize * 2.54) }}" X
+              {{ roundOf(i.recommendedSize * 2.54) }}"</span
+            >
+          </td>
+          <td
+            matRipple
+            style="padding: 10px"
+            (click)="onSizeSelected($event, i, 'rolledCanvas')"
+          >
+            <button
+              mat-raised-button
+              color="primary"
+              [matTooltip]="getDiscount(i.rolledCanvas)"
+              [matTooltipPosition]="'above'"
+            >
+              &#8377; {{ i.rolledCanvas }}
+            </button>
+          </td>
+          <td
+            matRipple
+            style="padding: 10px"
+            (click)="onSizeSelected($event, i, 'gallaryWrap')"
+          >
+            <button
+              mat-raised-button
+              color="primary"
+              [matTooltip]="getDiscount(i.gallaryWrap)"
+              [matTooltipPosition]="'above'"
+            >
+              &#8377; {{ i.gallaryWrap }}
+            </button>
+          </td>
+        </tr>
+      </table>
+      <hr />
+      <h5 style="text-align: center" class="head-custom bg-primary">
+        Custom Size <span class="text-info">*</span>
+      </h5>
+      <div class="container row">
+        <div class="col-12 col-md-6">
+          <mat-form-field>
+            <mat-select
+              placeholder="Height (in Inch)"
+              [(value)]="selectedCustomHeight"
+              (selectionChange)="showCustomPrice()"
+            >
+              <mat-option *ngFor="let height of customHeight" [value]="height">
+                {{ height }}"
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <mat-form-field>
+            <mat-select
+              placeholder="Width (in Inch)"
+              [(value)]="selectedCustomWidth"
+              (selectionChange)="showCustomPrice()"
+            >
+              <mat-option *ngFor="let width of customHeight" [value]="width">
+                {{ width }}"
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <button
+            [disabled]="!selectedCustomHeight && !selectedCustomWidth"
+            class="bg-danger text-white px-5 mt-2"
+            mat-raised-button
+            color="red"
+            (click)="openDialog()"
+          >
+            Crop
+          </button>
+        </div>
+      </div>
+
+      <hr />
+      <div class="row m-3 mb-0 text-center">
+        <div class="col rate text-center">
+          Rolled Canvas <br />
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="setCustomSize('rolledCanvas')"
+          >
+            <span *ngIf="ccustomRate > 0">&#8377; {{ ccustomRate }}</span>
+          </button>
+        </div>
+
+        <div class="col rate text-center">
+          Gallary Wrap <br />
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="setCustomSize('gallaryWrap')"
+          >
+            <span *ngIf="gcustomRate > 0">&#8377; {{ gcustomRate }}</span>
+          </button>
+        </div>
+      </div>
+      <div class="alert alert-info">* for custom size price can be higher.</div>
+
+      <!-- <div class="container">
+        <button [disabled]="!selectedCustomHeight && !selectedCustomWidth" class="mt-2" mat-raised-button color="primary"
+          (click)="openDialog()">Crop</button>
+      </div> -->
+    </div>
+  </div>
+</div>

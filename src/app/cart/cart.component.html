@@ -1,0 +1,666 @@
+<div class="container">
+  <div *ngIf="!newOrders.length" class="image">
+    <img src="assets/imgs/emptycart.svg" height="200px" width="200px" />
+    <hr style="width: 250px" />
+    <br />
+    <p>Oops...Your Shopping Cart is empty</p>
+
+    <button mat-raised-button color="accent" (click)="goToOrder('cp')">
+      START SHOPPING
+    </button>
+  </div>
+
+  <div *ngIf="newOrders.length">
+    <div class="row">
+      <div class="col-md-7">
+        <div *ngFor="let oc of orderCategories">
+          <div class="card" *ngIf="oc.orders.length">
+            <div class="card-body">
+              <p class="head-custom" style="text-align: center">
+                {{ oc.name }}
+              </p>
+              <div *ngFor="let item of oc.orders; let i = index">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <!-- <div class="col mr-2" *ngIf="item.originalurl"> -->
+                      <div
+                        class="col-12 col-md-auto mr-2 text-center"
+                        *ngIf="!isString(item.url)"
+                      >
+                        <img
+                          src="{{
+                            environment.url +
+                              '/file/download/' +
+                              item.originalurl
+                          }}"
+                          alt="original image"
+                          height="270px"
+                          width="170px"
+                          style="object-fit: contain"
+                        />
+                      </div>
+                      <div
+                        class="col-12 col-md-auto mr-2 text-center"
+                        *ngIf="isString(item.url)"
+                      >
+                        <div class="placeholder">
+                          <img
+                            src="{{
+                              environment.url + '/file/download/' + item.url
+                            }}"
+                            alt="not cropped"
+                            height="270px"
+                            width="170px"
+                            style="object-fit: contain"
+                          />
+                        </div>
+                      </div>
+                      <div class="col">
+                        <table class="w-100">
+                          <tr>
+                            <th>Selected Type :</th>
+                            <td>
+                              {{ item.products.type }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Selected Size :</th>
+                            <td>
+                              {{ item.products.size.fixedSize }} X
+                              {{ item.products.size.recommendedSize }} (in
+                              inches)
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Amount: (in Rs.) :</th>
+                            <td>₹ {{ item.amount }}</td>
+                          </tr>
+                          <tr *ngIf="item.products.wrapType">
+                            <th>Selected Wrap :</th>
+                            <td>
+                              {{ item.products.wrapType }}
+                            </td>
+                          </tr>
+                          <tr *ngIf="item.products.wrapType == 'gallaryWrap'">
+                            <th>Hooks For Hanging</th>
+                            <td>
+                              <span class="text-success">Free</span>
+                            </td>
+                          </tr>
+                        </table>
+                        <span
+                          class="badge badge-pill badge-secondary p-2 m-1"
+                          *ngIf="item.products.color"
+                          >Selected Color:
+                          <button
+                            [style.background]="
+                              item.products.color['background-color']
+                            "
+                            [style.height]="20 + 'px'"
+                            [style.width]="40 + 'px'"
+                          ></button>
+                        </span>
+                        <hr />
+                        <ul class="list-group">
+                          <li class="p-1 list-group-item bg-primary text-light">
+                            Choose Extra Changes
+                          </li>
+                          <li
+                            class="p-1 px-3 list-group-item"
+                            *ngFor="let ec of extraChangesValues"
+                            (click)="selectEc(ec, item)"
+                            [ngClass]="{
+                              active: isSelected(ec, item.products.corrections)
+                            }"
+                          >
+                            <i
+                              class="material-icons float-left pr-2"
+                              style="font-size: 18px"
+                              >check_circle_outline</i
+                            >
+                            {{ ec.name }}
+                            <span class="float-right">
+                              &#8377; {{ ec.price }}
+                            </span>
+                          </li>
+                        </ul>
+                        <button
+                          type="button"
+                          class="badge badge-pill badge-danger float-right p-2 m-2"
+                          (click)="removeOrder(item.orderId)"
+                        >
+                          <i
+                            class="material-icons float-left pr-1"
+                            style="font-size: 10px"
+                            >delete</i
+                          >
+                          Delete Order
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <ul class="list-group pt-2">
+                <li class="list-group-item active bg-primary text-center">
+                  {{ oc.name }} Payment
+                </li>
+                <li *ngIf="oc.discountApplied" class="list-group-item">
+                  <div class="d-flex">
+                    <div>Order Amount:</div>
+                    <div>&#8377; {{ oc.original_amount | number: ".2" }}</div>
+                  </div>
+                </li>
+                <li *ngIf="oc.discountApplied" class="list-group-item">
+                  <div class="d-flex">
+                    <div>Discount:</div>
+                    <div>&#8377; {{ oc.discount_amount | number: ".2" }}</div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="d-flex">
+                    <div>Total Amount:</div>
+                    <div>&#8377; {{ oc.amount | number: ".2" }}</div>
+                  </div>
+                </li>
+                <li
+                  *ngIf="oc.discountApplied"
+                  class="list-group-item text-success"
+                >
+                  <div class="d-flex">
+                    {{ oc.coupenDiscount }}% Discount Applied Successfully
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="d-flex">
+                    <div>GST Tax:</div>
+                    <div>&#8377; {{ oc.amount * 0.12 | number: ".2" }}</div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="d-flex">
+                    <div>Amount To Be Paid:</div>
+                    <div>&#8377; {{ oc.totalAmount | number: ".2" }}</div>
+                  </div>
+                </li>
+                <li *ngIf="!oc.discountApplied && !buy1get1discountApplied" class="list-group-item">
+                  <div class="form-group">
+                    <label for="coupen">Enter Coupon Code</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="coupon"
+                      name="coupen"
+                      id="coupen"
+                      aria-describedby="helpId"
+                      placeholder="Coupon Code"
+                    />
+                    <small id="helpId" class="form-text text-muted"
+                      >Enter Coupon Code Here</small
+                    >
+                  </div>
+                  <div>
+                    <button
+                      type="button"
+                      class="btn btn-warning mb-2"
+                      (click)="applyPromo(oc.name)"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                  <div class="alert alert-info">
+                    Get {{ oc.coupenDiscount }}% discount by applying coupon
+                    "LOVE".
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <br />
+        <p>
+          <button
+            style="width: 100%; background: yellow"
+            mat-raised-button
+            (click)="goToOrder('cp')"
+          >
+            Add Another Image
+          </button>
+        </p>
+
+        <ul class="list-group">
+          <li class="list-group-item active bg-primary text-center">
+            <!-- <button mat-flat-button color="primary" class="bg-primary text-white"> -->
+            <mat-icon>local_shipping</mat-icon> Select Billing Address
+            <!-- </button> -->
+          </li>
+          <li class="list-group-item">
+            <form>
+              <div class="row">
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="dname">Name</label>
+                    <input
+                      type="text"
+                      [(ngModel)]="billingaddr.name"
+                      class="form-control"
+                      name="name"
+                      id="dname"
+                      aria-describedby="helpId"
+                      placeholder="Full Name"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="dmobile">Contact Number</label>
+                    <input
+                      type="number"
+                      [(ngModel)]="billingaddr.mobile"
+                      class="form-control"
+                      name="mobile"
+                      id="dmobile"
+                      aria-describedby="helpId"
+                      placeholder="+91"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="demail">Email</label>
+                    <input
+                      type="email"
+                      [(ngModel)]="billingaddr.email"
+                      class="form-control"
+                      name="email"
+                      id="demail"
+                      aria-describedby="helpId"
+                      placeholder="email"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="dstreet">Street Address</label>
+                    <input
+                      type="text"
+                      [(ngModel)]="billingaddr.street"
+                      class="form-control"
+                      name="street"
+                      id="dstreet"
+                      aria-describedby="helpId"
+                      placeholder="street"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="dcity">City</label>
+                    <input
+                      type="text"
+                      [(ngModel)]="billingaddr.city"
+                      class="form-control"
+                      name="city"
+                      id="dcity"
+                      aria-describedby="helpId"
+                      placeholder="city"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="dstate">State</label>
+                    <input
+                      type="text"
+                      [(ngModel)]="billingaddr.state"
+                      class="form-control"
+                      name="state"
+                      id="dstate"
+                      aria-describedby="helpId"
+                      placeholder="state"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="dpincode">Pincode</label>
+                    <input
+                      type="number"
+                      [(ngModel)]="billingaddr.pincode"
+                      class="form-control"
+                      name="pincode"
+                      id="dpincode"
+                      aria-describedby="helpId"
+                      placeholder="pincode"
+                    />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </li>
+        </ul>
+        <ul class="list-group">
+          <li class="list-group-item active bg-primary text-center">
+            <!-- <button mat-flat-button color="primary" class="bg-primary text-white"> -->
+            <mat-icon>local_shipping</mat-icon> Select Delivery Address
+            <!-- </button> -->
+            <br />
+            <label
+              class="w-100 text-center"
+              for="sameaddress"
+              style="font-size: 18px"
+            >
+              <input
+                type="checkbox"
+                id="sameaddress"
+                (click)="copyToBillingAddress()"
+              />
+              <b class="text-warning">(Same as Billing Address)</b>
+            </label>
+          </li>
+          <li class="list-group-item">
+            <form>
+              <div class="row">
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="dname">Name</label>
+                    <input
+                      type="text"
+                      [(ngModel)]="addr.name"
+                      class="form-control"
+                      name="name"
+                      id="dname"
+                      aria-describedby="helpId"
+                      placeholder="Full Name"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="dmobile">Contact Number</label>
+                    <input
+                      type="number"
+                      [(ngModel)]="addr.mobile"
+                      class="form-control"
+                      name="mobile"
+                      id="dmobile"
+                      aria-describedby="helpId"
+                      placeholder="+91"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="demail">Email</label>
+                    <input
+                      type="email"
+                      [(ngModel)]="addr.email"
+                      class="form-control"
+                      name="email"
+                      id="demail"
+                      aria-describedby="helpId"
+                      placeholder="email"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="dstreet">Street Address</label>
+                    <input
+                      type="text"
+                      [(ngModel)]="addr.street"
+                      class="form-control"
+                      name="street"
+                      id="dstreet"
+                      aria-describedby="helpId"
+                      placeholder="street"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="dcity">City</label>
+                    <input
+                      type="text"
+                      [(ngModel)]="addr.city"
+                      class="form-control"
+                      name="city"
+                      id="dcity"
+                      aria-describedby="helpId"
+                      placeholder="city"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="dstate">State</label>
+                    <input
+                      type="text"
+                      [(ngModel)]="addr.state"
+                      class="form-control"
+                      name="state"
+                      id="dstate"
+                      aria-describedby="helpId"
+                      placeholder="state"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="dpincode">Pincode</label>
+                    <input
+                      type="number"
+                      [(ngModel)]="addr.pincode"
+                      class="form-control"
+                      name="pincode"
+                      id="dpincode"
+                      aria-describedby="helpId"
+                      placeholder="pincode"
+                    />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-5">
+        <ul class="list-group">
+          <li class="list-group-item active bg-primary text-center">
+            <!-- <button mat-flat-button color="primary" class="bg-primary text-white"> -->
+            Review Payment
+            <!-- </button> -->
+          </li>
+          <li *ngIf="discountApplied" class="list-group-item">
+            <div class="d-flex">
+              <div>Order Amount:</div>
+              <div>&#8377; {{ original_amount | number: ".2" }}</div>
+            </div>
+          </li>
+          <li *ngIf="discountApplied" class="list-group-item">
+            <div class="d-flex">
+              <div>Discount:</div>
+              <div>&#8377; {{ discount_amount | number: ".2" }}</div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex">
+              <div>Total Amount:</div>
+              <div>&#8377; {{ amount | number: ".2" }}</div>
+            </div>
+          </li>
+          <li *ngIf="discountApplied" class="list-group-item text-success">
+            <div class="d-flex">Discount Applied Successfully</div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex">
+              <div>GST Tax:</div>
+              <div>&#8377; {{ amount * 0.12 | number: ".2" }}</div>
+            </div>
+          </li>
+          <li *ngIf="shippingApplied" class="list-group-item">
+            <div class="d-flex">
+              <div>Shipping Cost:</div>
+              <div *ngIf="shippingType == 'Free'">
+                + &#8377; {{ shippingAmount | number: ".2" }}
+              </div>
+              <div *ngIf="shippingType == 'Paid'">
+                + &#8377; {{ getPaidShippingAmount() | number: ".2" }}
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex">
+              <div>Amount To Be Paid:</div>
+              <div>&#8377; {{ totalAmount | number: ".2" }}</div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex">
+              <label for="shippingType">Shipping Type</label>
+              <div class="form-group m-0 p-0">
+                <select
+                  (change)="getTotalAmount()"
+                  class="form-control"
+                  [(ngModel)]="shippingType"
+                  name="shippingType"
+                  id="shippingType"
+                >
+                  <option [ngValue]="'Free'">Free</option>
+                  <option [ngValue]="'Paid'">Paid</option>
+                </select>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item px-0">
+            <div class="d-flex">
+              <span class="text-success w-100">
+                **Free Shipping
+                <b class="text-danger"> 5-7 Working Days, </b>
+                <span class="float-right">amount: 0/-</span>
+              </span>
+            </div>
+          </li>
+          <li class="list-group-item px-0">
+            <div class="d-flex">
+              <span
+                *ngIf="(totalAmount * 20) / 100 < 100"
+                class="text-success w-100"
+              >
+                **Paid Shipping
+                <b class="text-danger">( 3-5 Working days )</b>
+                <span class="float-right">Amount: 100/-</span>
+              </span>
+              <span
+                *ngIf="(totalAmount * 20) / 100 >= 100"
+                class="text-success w-100"
+              >
+                **Paid Shipping
+                <b class="text-danger">( 3-5 Working days )</b>
+                <span class="float-right"
+                  >Amount:
+                  {{ ((witoutShippingAmount * 20) / 100).toFixed(0) }}/-</span
+                >
+              </span>
+            </div>
+          </li>
+          <li
+            *ngIf="
+              orderCategories[0].name == 'Canvas Prints' &&
+              orderCategories[0].orders.length
+            "
+            class="list-group-item px-0"
+          >
+            <div class="d-flex">
+              <span class="text-success">
+                **Free hooks for hanging for your canvas print order.
+              </span>
+            </div>
+          </li>
+        </ul>
+        <ul class="list-group">
+          <li class="list-group-item active bg-primary text-center">
+            <!-- <button mat-flat-button color="primary" class="bg-primary text-white"> -->
+            Preview Order
+            <!-- </button> -->
+          </li>
+          <li class="list-group-item">
+            <div class="body">
+              <table class="table">
+                <tr>
+                  <td>Name</td>
+                  <td>{{ billingaddr.name }}</td>
+                </tr>
+                <tr>
+                  <td>Email</td>
+                  <td>{{ billingaddr.email }}</td>
+                </tr>
+                <tr>
+                  <td>Contact</td>
+                  <td>{{ billingaddr.mobile }}</td>
+                </tr>
+                <tr>
+                  <td>Billing Address</td>
+                  <td>
+                    <p>
+                      {{ billingaddr.name }},<br />
+                      {{ billingaddr.mobile }},<br />
+                      {{ billingaddr.street }}, {{ billingaddr.city }},<br />
+                      {{ billingaddr.state }}, {{ billingaddr.pincode }}
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Shipping Address</td>
+                  <td>
+                    <p>
+                      {{ addr.name }},<br />
+                      {{ addr.mobile }},<br />
+                      {{ addr.street }}, {{ addr.city }},<br />
+                      {{ addr.state }}, {{ addr.pincode }}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </li>
+        </ul>
+
+        <ul class="list-group">
+          <li class="list-group-item active bg-primary text-center">
+            <!-- <button mat-flat-button color="primary" class="bg-primary text-white"> -->
+            Add A Note:
+            <!-- </button> -->
+          </li>
+          <li class="list-group-item">
+            <div class="body">
+              <div class="form-group">
+                <textarea
+                  class="form-control"
+                  name="note"
+                  id="note"
+                  [(ngModel)]="note"
+                  rows="3"
+                ></textarea>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <br />
+        <br />
+        <p>
+          <button
+            style="width: 100%"
+            mat-raised-button
+            color="primary"
+            (click)="makePayment()"
+          >
+            Confirm Purchase
+          </button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

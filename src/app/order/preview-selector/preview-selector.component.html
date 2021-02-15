@@ -1,0 +1,32 @@
+<div class="container">
+  <p>Selected size {{ size.fixedSize }} X {{ size.recommendedSize }}</p>
+  <!-- <div>
+    <div 
+      [ngStyle]="{ height: height, width: width}"
+      style="box-shadow: 0 0 11px 0px black; display: flex;justify-content: space-around">
+      <img [src]="imgsrc.src" [style.height]="height" [style.width]="width" />
+    </div>
+  </div> -->
+  <br>
+  <button mat-raised-button color="accent" (click)="showEdit()">Edit</button>
+</div>
+<div class="footer">
+  <button style="display:block;width: 100%" mat-raised-button color="primary" (click)="makePayment()">PAY  &#8377; {{amount}}</button>
+</div>
+
+
+<div>
+  <div class="top-row">
+    <div class="top part shadow"></div>
+  </div>
+  <div class="middle-row">
+    <div class="left part shadow"></div>
+    <div class="center part">
+      <!-- <img [src]="_img.src" height="200px" width="200px" /> -->
+    </div>
+    <div class="right part shadow"></div>
+  </div>
+  <div class="bottom-row">
+    <div class="bottom part shadow"></div>
+  </div>
+</div> 

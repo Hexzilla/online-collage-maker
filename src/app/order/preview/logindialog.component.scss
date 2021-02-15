@@ -1,0 +1,53 @@
+.login-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.login-full-width {
+  width: 100%;
+}
+
+.container {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.social-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  padding-top: 30px;
+}
+
+.divider {
+  width: 100%;
+  padding-top: 10px;
+  height: 20px;
+  border-bottom: 1px solid black;
+  text-align: center;
+}
+
+.or {
+  font-size: 20px;
+  background-color: #fafafa;
+  padding: 0 10px;
+}
+
+.fb {
+  margin-bottom: 10px;
+  color: white;
+  background-color: #3c5a99;
+}
+
+.google {
+  margin-bottom: 10px;
+  color: white;
+  background-color: #db4437;
+}
+
+.twitter {
+  margin-bottom: 10px;
+  color: white;
+  background-color: #1da1f2;
+}

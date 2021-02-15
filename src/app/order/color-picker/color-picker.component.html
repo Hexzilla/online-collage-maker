@@ -1,0 +1,19 @@
+
+<div class="section-content">
+  <div class="picker-wrapper">
+    <lib-ngx-ttitan-color-picker 
+      [options]="{
+        pickerShow: true,
+        outFormat: 'hex8',
+        inputFormat:' hex8'
+      }"
+      [(color)]="color" (colorChange)="colorChange($event)"
+    ></lib-ngx-ttitan-color-picker>
+  </div>
+  <div class="detail-wrapper">
+    
+  </div>
+</div>
+<div>
+    <button mat-raised-button style="width:100%" color="accent" (click)="close()">Ok</button>
+</div>

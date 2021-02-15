@@ -1,0 +1,1263 @@
+<div>
+  <div class="row c-90">
+    <div class="col-md-8 center-align">
+      <div>
+        <div class="banner">
+          <!-- <img src="assets/11.webp" alt="webp image"> -->
+
+          <mat-carousel
+            timings="250ms ease-in"
+            [autoplay]="true"
+            interval="5000"
+            color="primary"
+            maxWidth="950px"
+            slides="7"
+            proportion="70"
+            [loop]="true"
+            [hideArrows]="false"
+            [hideIndicators]="false"
+            [useKeyboard]="true"
+            [useMouseWheel]="false"
+            orientation="ltr"
+          >
+            <mat-carousel-slide
+              #matCarouselSlide
+              *ngFor="let slide of slides; let i = index"
+              [image]="slide.image"
+              [hideOverlay]="false"
+            ></mat-carousel-slide>
+          </mat-carousel>
+          <div class="overlay">
+            <div class="banner-callout">
+              <span
+                ><strong class="eta">
+                  <h1
+                    style="
+                      font-size: 18px;
+                      font-weight: bolder;
+                      display: inline;
+                      margin: 0;
+                      padding: 0;
+                    "
+                  >
+                    Canvas Prints
+                  </h1>
+                  Start
+                </strong></span
+              >
+              <span class="banner-callout__starting theta">@ Rs 178,</span>
+              <strong><span class="zeta">Printed on</span></strong>
+              <strong><span class="zeta">10 colours machine</span></strong>
+              <a routerLink="/order">
+                <button
+                  style="box-shadow: 0px 0px 15px black; z-index: 99999"
+                  mat-raised-button
+                  class="bg-primary"
+                >
+                  Get Started
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="grey-box">
+        <div>
+          <p class="text-center head-custom bg-primary">Popular Sizes</p>
+          <table class="mid-padding table">
+            <tbody>
+              <tr>
+                <th class="text-orange"></th>
+                <th class="text-orange">
+                  <b class="text-orange">Size</b>
+                </th>
+                <th class="text-orange">
+                  <b class="text-orange">Value</b>
+                </th>
+                <th class="text-orange">
+                  <b class="text-orange">Discont Price</b>
+                </th>
+                <th class="text-orange"></th>
+              </tr>
+              <tr *ngFor="let price of prices">
+                <td>
+                  <p class="ribbon">
+                    <span class="text"
+                      ><strong class="bold">55 %</strong> off</span
+                    >
+                  </p>
+                </td>
+                <td>
+                  {{ price.size }}
+                </td>
+                <td>
+                  <span class="linethrough text-muted"
+                    >&#8377; {{ price.value }}</span
+                  >
+                </td>
+                <td
+                  class="info-table__callout info-table__price text-center"
+                  itemprop="price"
+                >
+                  &#8377; {{ price.yourPrice }}
+                </td>
+                <td>
+                  <a class="info-table__cta" routerLink="/order">
+                    <img
+                      src="assets/icons/cotc-pricingtable-arrow.svg"
+                      alt="arrow to order page"
+                    />
+                  </a>
+                </td>
+              </tr>
+              <!-- <tr>
+                  <td>
+                    60" x 100"
+                  </td>
+                  <td>
+                    <span class="linethrough ">&#8377; 11900</span>
+                  </td>
+                  <td class="info-table__callout info-table__price">
+                    &#8377; 8500
+                  </td>
+                  <td>
+                    <a class="info-table__cta" routerLink="/order">
+                      <img src="assets/icons/cotc-pricingtable-arrow.svg" alt="arrow to order page">
+                    </a>
+                  </td>
+                </tr> -->
+            </tbody>
+          </table>
+          <span class="text-muted"
+            >Custom sizes are available, Discount prices are shown.</span
+          >
+        </div>
+        <div>
+          <p class="head-custom bg-primary" style="text-align: center">
+            Calculate Canvas Print Prices <span class="text-info">*</span>
+          </p>
+          <div class="row text-center">
+            <div class="col-6">
+              <mat-form-field style="width: 145px">
+                <mat-select
+                  placeholder="Height (in Inch)"
+                  [(value)]="selectedCustomHeight"
+                  (selectionChange)="showCustomPrice()"
+                >
+                  <mat-option
+                    *ngFor="let height of customHeight"
+                    [value]="height"
+                  >
+                    {{ height }}"
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field style="width: 145px">
+                <mat-select
+                  placeholder="Width (in Inch)"
+                  [(value)]="selectedCustomWidth"
+                  (selectionChange)="showCustomPrice()"
+                >
+                  <mat-option
+                    *ngFor="let width of customWidth"
+                    [value]="width"
+                  >
+                    {{ width }}"
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row text-center">
+            <div class="col rate">
+              <img
+                src="assets/imgs/rolledcanvas.webp"
+                alt="Rolled Canvas"
+                height="30px"
+              />
+            </div>
+
+            <div class="col rate text-center">
+              <img
+                src="assets/imgs/images.webp"
+                alt="Gallery Wrap"
+                height="30px"
+              />
+            </div>
+          </div>
+          <div class="row m-3 mb-0 text-center">
+            <div class="col rate">
+              Rolled Canvas <br />
+              <button
+                mat-raised-button
+                color="primary"
+                [routerLink]="['/order']"
+              >
+                <span *ngIf="ccustomRate > 0">&#8377; {{ ccustomRate }}</span>
+              </button>
+            </div>
+
+            <div class="col rate">
+              Gallary Wrap <br />
+              <button
+                mat-raised-button
+                color="primary"
+                [routerLink]="['/order']"
+              >
+                <span *ngIf="gcustomRate > 0">&#8377; {{ gcustomRate }}</span>
+              </button>
+            </div>
+          </div>
+          <div class="text-center">
+            <a routerLink="/order"
+              ><button
+                class="btn btn-primary btn-sm shadow mt-0 mb-2"
+                style="background-color: #d9743e !important"
+              >
+                Order Now
+              </button></a
+            >
+          </div>
+          <div style="padding: 0px" class="alert alert-info text-center mb-2">
+            * Shown prices are after discount.
+          </div>
+          <div style="padding: 0px" class="alert alert-info text-center mb-0">
+            Get 40% discount by applying coupon "LOVE".
+          </div>
+          <div class="text-center">
+            <a routerLink="/samples"
+              ><button class="btn btn-primary btn-sm shadow m-2 mt-0">
+                Canvas Prints Samples
+              </button></a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="l-banner">
+        <div class="banner-callout">
+            <span><strong class="eta">CANVAS</strong></span>
+            <span class="banner-callout__starting theta">STARTING AT</span>
+            <strong><span class="zeta">$8.47</span></strong>
+        </div>
+        <div class="banner-content-box">
+            <h2 class="l-banner__title">QUALITY CANVAS</h2>
+            <h6 class="l-banner__subtitle">AT A <strong>GREAT PRICE</strong></h6>
+            <a routerLink="/order">
+                <button mat-raised-button color="primary">
+                    Get Started
+                </button>
+            </a>
+
+        </div>
+    </div> -->
+  <div class="l-container homepage-section" id="pricing-grid">
+    <div class="bg-success text-light text-center p-2 m-0">
+      *Shipping is FREE accross India for limited period
+    </div>
+
+    <mat-tab-group mat-align-tabs="center">
+      <mat-tab label="Canvas Photo Printing">
+        <!-- Content From Main Site -->
+        <div style="width: 90%; margin: auto">
+          <style>
+            <!--
+            .blink {
+              color: #F00;
+              -webkit-animation-name: blinker;
+              -webkit-animation-duration: 1s;
+              -webkit-animation-timing-function: linear;
+              -webkit-animation-iteration-count: infinite;
+              -moz-animation-name: blinker;
+              -moz-animation-duration: 1s;
+              -moz-animation-timing-function: linear;
+              -moz-animation-iteration-count: infinite;
+              animation-name: blinker;
+              animation-duration: 1s;
+              animation-timing-function: linear;
+              animation-iteration-count: infinite;
+            }
+
+            .cat-product-name {
+              color: #25bce9;
+              font-size: 25px;
+              font-weight: 700;
+            }
+
+            .start-order {
+              border: 1px solid #25bce9;
+              border-radius: 6px;
+              padding: 10px;
+            }
+
+            .start-order .form-horizontal .form-group {
+              margin-top: 15px;
+            }
+
+            .start-order select {
+              cursor: pointer;
+            }
+
+            .start-order .form-check label {
+              cursor: pointer;
+              color: #666;
+              margin-bottom: 0px;
+            }
+
+            .start-order .form-check {
+              padding: 8px 10px;
+              border-bottom: 1px solid #e3e3e3;
+              background: #f9f9f9;
+              cursor: pointer;
+              border-radius: 6px;
+            }
+
+            .form-check_custom-size {
+              background-color: transparent !important;
+              border-bottom: none !important;
+              padding-bottom: 0px !important;
+            }
+
+            .form-check_custom-size .no-padding {
+              padding: 0px !important;
+            }
+
+            .form-check_custom-size .no-padding-right {
+              padding: 0px 8px !important;
+            }
+
+            .form-check_custom-size .no-padding-left {
+              padding: 0px 8px !important;
+            }
+
+            .start-order .form-check:last-child {
+              border-bottom: none;
+            }
+
+            .form-check_custom-size .form-control {
+              padding: 6px 0px !important;
+            }
+
+            .form-check_custom-size .new-price {
+              font-size: 20px !important;
+              font-weight: bold;
+              padding-top: 5px;
+            }
+
+            .start-order .form-check input[type="radio"] {
+              position: absolute;
+              right: 9000px;
+            }
+
+            .btn-canvas {
+              margin: 0px auto;
+              background-color: #25bce9;
+              border: 1px solid #357ebd;
+              padding: 16px 18px;
+              text-align: center;
+              box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .75);
+              color: #FFF;
+              border-radius: 4px;
+              font-size: 18px;
+              text-transform: uppercase;
+              display: inline-block;
+            }
+
+            .btn-canvas:hover {
+              color: #357ebd;
+            }
+
+            .canvas-type {
+              font-weight: bold;
+              color: #25bce9;
+              text-decoration: underline;
+              padding-bottom: 10px;
+            }
+
+            .start-order .size {
+              width: 100px;
+              display: inline-block;
+            }
+
+            .start-order .old-price {
+              margin-left: 10px;
+              display: inline-block;
+              text-decoration: line-through;
+              color: #888888;
+              width: 50px;
+            }
+
+            .start-order .new-price {
+              color: #25bce9;
+              font-size: 18px;
+              margin-left: 5px;
+              display: inline-block
+            }
+
+            .start-order .new-price_roled {
+              width: 100px;
+            }
+
+            .blink {
+              color: #F00;
+              -webkit-animation-name: blinker;
+              -webkit-animation-duration: 1s;
+              -webkit-animation-timing-function: linear;
+              -webkit-animation-iteration-count: infinite;
+              -moz-animation-name: blinker;
+              -moz-animation-duration: 1s;
+              -moz-animation-timing-function: linear;
+              -moz-animation-iteration-count: infinite;
+              animation-name: blinker;
+              animation-duration: 1s;
+              animation-timing-function: linear;
+              animation-iteration-count: infinite;
+            }
+
+            .special-text {
+              color: #25bce9;
+              font-weight: bold;
+              text-align: justify;
+              line-height: 30px;
+            }
+
+            .special-text .fa {
+              color: #F00;
+              margin-right: 10px;
+              font-size: 24px;
+            }
+
+            .list-style {
+              list-style-type: disc;
+              font-size: 16px;
+              font-weight: bold;
+            }
+
+            .padding-right-none {
+              padding-right: 0px !important;
+            }
+
+            .padding-left-none {
+              padding-left: 0px !important;
+            }
+
+            .form-horizontal .control-padding {
+              padding-left: 25px !important;
+              padding-right: 0px !important;
+              text-align: left !important;
+            }
+
+            .form-check_custom-size .custom-padding {
+              padding: 6px !important;
+            }
+
+            .display-price {
+              border: none !important;
+              background-color: #FFF;
+              width: 80px;
+            }
+
+            .padding-top-none {
+              padding-top: 0px !important;
+            }
+
+            .padding-top-x {
+              padding-top: 25px;
+              display: inline-block;
+              float: left;
+              padding-left: 6px;
+              padding-right: 6px;
+            }
+
+            .form-check_custom-size .pad-left-input {
+              padding-left: 18px !important;
+            }
+
+            .form-check_custom-size .pad-left-input_2nd {
+              padding-left: 10px !important;
+            }
+
+            .padding-top-input {
+              padding-top: 20px !important;
+            }
+            -->
+          </style>
+          <div
+            style="padding-left: 0px; padding-right: 0px; text-align: justify"
+          >
+            <div class="row clearfix">
+              <div class="col-lg-6 col-xs-12 text-center">
+                <div class="cat-product-name">Canvas Prints</div>
+                <br />
+                <br />
+                <div class="row clearfix center-mobile">
+                  <div class="col-lg-1">
+                    <img
+                      class="img-responsive img-center"
+                      title="CANVAS PRINTED WITH 10 COLOURS"
+                      alt="CANVAS PRINTED WITH 10 COLOURS"
+                      src="https://printposters.in/skin/frontend/printshop/default/images/canvas-prints/cpimg1.png"
+                    />
+                  </div>
+                  <div class="col-lg-5">
+                    <h6>CANVAS PRINTED WITH 10 COLOURS</h6>
+                    <p>By buying directly from Printposters</p>
+                  </div>
+                  <div class="col-lg-1">
+                    <img
+                      class="img-responsive img-center"
+                      title="HIGH QUALITY MATERIALS"
+                      alt="HIGH QUALITY MATERIALS"
+                      src="https://printposters.in/skin/frontend/printshop/default/images/canvas-prints/cpimg2.png"
+                    />
+                  </div>
+                  <div class="col-lg-5">
+                    <h6>HIGH-QUALITY MATERIALS</h6>
+                    <p>Backed by a 100% satisfaction guarantee.</p>
+                  </div>
+                </div>
+                <br />
+                <div class="row clearfix center-mobile">
+                  <div class="col-lg-1">
+                    <img
+                      class="img-responsive img-center"
+                      title="FAST SERVICE"
+                      alt="FAST SERVICE"
+                      src="https://printposters.in/skin/frontend/printshop/default/images/canvas-prints/cpimg3.png"
+                    />
+                  </div>
+                  <div class="col-lg-5">
+                    <h6>FAST SERVICE</h6>
+                    <p>Delivery in as little as 3 - 7 business days.</p>
+                  </div>
+                  <div class="col-lg-1">
+                    <img
+                      class="img-responsive img-center"
+                      title="Free SHIPPING"
+                      alt="Free SHIPPING"
+                      src="https://printposters.in/skin/frontend/printshop/default/images/canvas-prints/cpimg4.png"
+                    />
+                  </div>
+                  <div class="col-lg-5">
+                    <h6>Free SHIPPING</h6>
+                    <p>Free shipping across India with FEDEX</p>
+                  </div>
+                </div>
+                <br />
+                <div>
+                  <picture>
+                    <source srcset="assets/banners/buy1get1.webp" type="image/webp">
+                    <source srcset="assets/banners/buy1get1.jpg" type="image/jpeg"> 
+                    <img class="w-100" alt="Discount Coupon" src="assets/banners/buy1get1.jpg">
+                  </picture>
+                  <!-- <img
+                    src="assets/banners/buy1get1.jpg"
+                    class="w-100"
+                    alt="Discount Coupon"
+                  /> -->
+                </div>
+                <!--
+                <h6 class="special-text"><span class="blink">FLAT 40% OFF</span> for Limited period on all Canvas Prints
+                  Use
+                  coupon <span class="blink">"LOVE"</span> at checkout</h6>
+                <h6 class="special-text">Canvas Prints has a <span class="blink">life of 100 years</span> (No other
+                  sellers
+                  has
+                  this life for Canvas)</h6>
+                <h6 class="special-text">Its <span class="blink">water resistance</span> without any coating as we use
+                  original
+                  inks (Those who don't use they required coating on Canvas)</h6>
+                <h6 class="special-text">Canvas will give depth to the photo so it will <span class="blink">look like a
+                    3D</span></h6> -->
+              </div>
+              <div class="col-12 col-sm-12 col-md-6">
+                <h5 class="text-center">Original Printed Canvas Sample</h5>
+                <img
+                  src="assets/samples/canvas-sample-6.jpeg"
+                  alt="Canvas sample Image"
+                  width="100%"
+                  class="my-2"
+                />
+              </div>
+            </div>
+            <hr />
+
+            <div id="canvas-categories">
+              <!-- <h2 class="text-center text-orange-c mt-4"> -->
+              <p
+                class="head-custom bg-primary text-center"
+                style="line-height: initial; font-size: 20px"
+              >
+                Convert Your Memory On Canvas
+              </p>
+              <div class="row mt-2">
+                <div class="col-12 col-md-4">
+                  <div class="card shadow">
+                    <img
+                      class="img-responsive center-block p-2 w-100"
+                      title="Canvas Prints"
+                      alt="Canvas Prints"
+                      src="assets/images/Canvas8.webp"
+                    />
+                    <div class="card-body text-center">
+                      <a
+                        routerLink="/order"
+                        class="btn btn-primary"
+                        style="box-shadow: 2px 2px 10px #3338"
+                      >
+                        Canvas Prints
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <div class="card shadow">
+                    <img
+                      class="img-responsive center-block p-2 w-100"
+                      title="Canvas Prints"
+                      alt="Canvas Prints"
+                      src="assets/images/Canvas8.webp"
+                    />
+                    <div class="card-body text-center">
+                      <a
+                        routerLink="/order"
+                        class="btn btn-primary"
+                        style="box-shadow: 2px 2px 10px #3338"
+                      >
+                        Order Canvas Art Prints
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <div class="card shadow">
+                    <img
+                      class="img-responsive center-block p-2 w-100"
+                      title="Canvas Prints"
+                      alt="Canvas Prints"
+                      src="assets/images/GWC-4.webp"
+                    />
+                    <div class="card-body text-center">
+                      <a
+                        routerLink="/order"
+                        class="btn btn-primary"
+                        style="box-shadow: 2px 2px 10px #3338"
+                      >
+                        Landscape Canvas Prints
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-12 col-md-4">
+                  <div class="card shadow">
+                    <img
+                      class="img-responsive center-block p-2 w-100"
+                      title="Canvas Prints"
+                      alt="Canvas Prints"
+                      src="assets/images/Canvas13.webp"
+                    />
+                    <div class="card-body text-center">
+                      <a
+                        routerLink="/order"
+                        class="btn btn-primary"
+                        style="box-shadow: 2px 2px 10px #3338"
+                      >
+                        Portrait Canvas Prints
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <div class="card shadow">
+                    <img
+                      class="img-responsive center-block p-2 w-100"
+                      title="Canvas Prints"
+                      alt="Canvas Prints"
+                      src="assets/images/canvas101.jpeg"
+                    />
+                    <div class="card-body text-center">
+                      <a
+                        routerLink="/order"
+                        class="btn btn-primary"
+                        style="box-shadow: 2px 2px 10px #3338"
+                      >
+                        Panoramic Canvas Prints
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <div class="card shadow">
+                    <img
+                      class="img-responsive center-block p-2 w-100"
+                      title="Canvas Prints"
+                      alt="Canvas Prints"
+                      src="assets/images/Collage5.webp"
+                    />
+                    <div class="card-body text-center">
+                      <a
+                        routerLink="/order"
+                        class="btn btn-primary"
+                        style="box-shadow: 2px 2px 10px #3338"
+                      >
+                        Collage Canvas Prints
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr />
+            <div class="row hidden-xs hidden-sm">
+              <div class="col-12 col-sm-6 col-md-3">
+                <div class="card hoverable-card mb-2">
+                  <a href="https://m.printposters.in/canvas-prints">
+                    <img
+                      class="img-responsive center-block p-2 w-100"
+                      title="Canvas Prints"
+                      alt="Canvas Prints"
+                      src="assets/images/Canvas8.webp"
+                  /></a>
+
+                  <div class="card-body">
+                    <h5 class="text-center">Canvas Photo Prints</h5>
+                    <p>
+                      Printed Gallery Wrapped Canvas is similar to stretched,
+                      only difference is the sides or wrapped edges of canvas
+                      are printed either with the part of image (either mirrored
+                      or extended image) or with dominant colour from image. A
+                      Printed Cotton Canvas is hand stretched over a “pine wood
+                      stretcher bar” - a thick, light weight pine wooden frame,
+                      to which the printed canvas is stapled to. Printed photo
+                      or painting is correctly sized & positioned over pine wood
+                      stretcher bar frame. Hooks are attached at the backside of
+                      Stretched Canvas for hanging this borderless frame on the
+                      wall. Pine wood stretcher bars are usually 1 inch thick &
+                      1.5 to 2 inch in width depending on ordered size. Masking
+                      tape is used to hide stapled pins which are used to secure
+                      or hold the canvas on the stretcher frame.
+                    </p>
+                    <div class="text-center hidden-btn">
+                      <a
+                        href="https://m.printposters.in/canvas-prints"
+                        class="btn btn-primary head-custom animated fadeInUp"
+                      >
+                        Start Your Canvas Prints
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6 col-md-3">
+                <div class="card hoverable-card mb-2">
+                  <a
+                    href="https://printposters.in/canvas-printing/canvas-split-frames"
+                  >
+                    <img
+                      class="img-responsive center-block p-2 w-100"
+                      title="Split Canvas"
+                      alt="Split Canvas"
+                      src="assets/images/Canvas-Split-3.webp"
+                    />
+                  </a>
+                  <div class="card-body">
+                    <h5 class="text-center">Split Canvas Frames</h5>
+                    <p>
+                      A Printed Cotton Canvas is hand stretched over a “pine
+                      wood stretcher bar” - a thick, light weight pine wooden
+                      frame, to which the printed canvas is stapled to. Printed
+                      photo or painting is correctly sized & positioned over
+                      pine wood stretcher bar frame. Canvas split frames is made
+                      up of different sizes of the frames using Gallery wrap
+                      canvas frames. Canvas Split frames are mounted on a Pine
+                      Wood frame to create different shapes on the wall. This
+                      comes with a full package where Customer must directly
+                      mount the frame on the Wall. Hooks are attached at the
+                      backside of Stretched Canvas for hanging this borderless
+                      frame on the wall. Pine wood stretcher bars are usually 1
+                      inch thick & 1.5 to 2 inch in width depending on ordered
+                      size. Masking tape is used to hide stapled pins which are
+                      used to secure or hold the canvas on the stretcher frame.
+                    </p>
+                    <div class="text-center hidden-btn">
+                      <a
+                        href="https://printposters.in/canvas-printing/canvas-split-frames"
+                        class="btn btn-primary head-custom animated fadeInUp"
+                      >
+                        Create Your Split Canvas Frames
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6 col-md-3">
+                <div class="card hoverable-card mb-2">
+                  <a href="https://printposters.in/natures-wallpapers">
+                    <img
+                      class="img-responsive center-block p-2 w-100"
+                      title="Wall Display"
+                      alt="Wall Display"
+                      src="https://printposters.in/skin/frontend/printshop/default/images/canvas-prints/wall-display.jpg"
+                    />
+                  </a>
+                  <div class="card-body">
+                    <h5 class="text-center">Wall Display</h5>
+                    <p>
+                      With a canvas wall display, you can tug at the
+                      heartstrings, share boundless happiness or convey a sense
+                      of serenity. It’s time to tell your story. If you have a
+                      special milestone to honor, a momentous event to
+                      celebrate, or a fine-looking family to display, why stop
+                      at just one canvas print? A wall display package allows
+                      you to combine elements to create your very own photo
+                      documentary. Open the walls to your world. Become a
+                      storyteller today. Canvas wall Display is made up of
+                      different sizes of the frames using Gallery wrap canvas
+                      frames. Hooks are attached at the backside of Stretched
+                      Canvas for hanging this borderless frame on the wall. Pine
+                      wood stretcher bars are usually 1 inch thick & 1.5 to 2
+                      inch in width depending on ordered size. Masking tape is
+                      used to hide stapled pins which are used to secure or hold
+                      the canvas on the stretcher frame.
+                    </p>
+                    <div class="text-center hidden-btn">
+                      <a
+                        href="https://printposters.in/natures-wallpapers"
+                        class="btn btn-primary head-custom animated fadeInUp"
+                      >
+                        Explore Wall Display Gallery
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6 col-md-3">
+                <div class="card hoverable-card mb-2">
+                  <a href="https://printposters.in/photo-collage-making">
+                    <img
+                      class="img-responsive center-block p-2 w-100"
+                      title="Collages"
+                      alt="Collages"
+                      src="assets/images/Collage5.webp"
+                    />
+                  </a>
+                  <div class="card-body">
+                    <h5 class="text-center">Collages</h5>
+                    <p>
+                      Selected photo images (4 to 24 or more depending upon
+                      ordered frame size) are arranged in a layout to make a
+                      single picture. This picture is then further gets printed
+                      on Premium Canvas or Photo media. Then canvas can be
+                      mounted on Pine wood stretcher or photo can be border
+                      framed. On this printposters.in website, you can upload
+                      multiple photo of your choice to make photo collage from
+                      Pre-loaded collage templates at no extra cost. Next as per
+                      your choice you can either place order for Canvas or
+                      Photo. If requested, we offer customized collage design
+                      making at nominal cost. You can either call us to get
+                      support in this regard on +91 9405 88 5903 and then email
+                      your photo images to aditya@printposters.in.
+                    </p>
+                    <div class="text-center hidden-btn">
+                      <a
+                        href="https://printposters.in/photo-collage-making"
+                        class="btn btn-primary head-custom animated fadeInUp"
+                      >
+                        Create Collage Online
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p></p>
+          <p></p>
+          <p></p>
+        </div>
+        <!-- Content From Main Site End -->
+      </mat-tab>
+      <mat-tab label="How To Place Order On PrintPosters">
+        <div class="container">
+          <h5>How to place order on printposters.in</h5>
+
+          <h6>
+            Visit
+            <a href="https://m.printposters.in">https://m.printposters.in</a>
+            website
+          </h6>
+          <a routerLink="/samples" class="text-muted">Samples</a>
+          <ol>
+            <li>"Upload Photo" button on the Canvas Prints</li>
+            <li>Select the photograph by choosing “upload photo” button</li>
+            <li>
+              After uploading is finished, choose “select size and next” button
+              for choosing the size and frame option on the right side
+            </li>
+            <li>
+              Please choose the image size, which is highlighted on our website
+              according to the aspect ratio of image and image quality. The
+              image is adjusted according to aspect ratio hence customer may see
+              some border outside the image area. In the final output, the
+              customer will not see any border outside image. Border outside the
+              image is just for indication.
+            </li>
+            <li>
+              In above image viewer, we tried to show how your Canvas print
+              image will look after printing (Indication purpose). The height
+              and width of the image is adjusted by considering 7 feet sofa
+            </li>
+            <li>
+              The cost of the Canvas Printing varies according to the size of
+              the canvas and type of frame options. Types of Canvas print
+            </li>
+          </ol>
+
+          <div class="row">
+            <div class="type-head col-xs-12">
+              <h5>Types Of Canvas Prints:</h5>
+              <p>
+                For Canvas printing that perfectly fit your walls, you can
+                choose from multiple sizes, different shapes - like square,
+                rectangular or panoramic. You can even customize the depth as
+                well as the thickness of the Canvas Prints.
+              </p>
+            </div>
+            <div class="type-body row">
+              <div class="type-sameclass col-md-6">
+                <div class="type-content">
+                  <img
+                    src="https://printposters.in/skin/frontend/printshop/default/images/canvaspage/type-canvas-img1.png"
+                    alt="Rolled Canvas Print"
+                  />
+                  <div class="type-para">
+                    <h5>Rolled Canvas Print</h5>
+                    <p>
+                      It comes in Roll form where customer can manufacture frame
+                      at there end. Roll Canvas comes in Exact sizeselected by
+                      customer. It is packed in Hard core paper tube with 2
+                      layers of Bubble wrap on it.
+                    </p>
+                  </div>
+                </div>
+                <div class="type-content border">
+                  <img
+                    src="https://printposters.in/skin/frontend/printshop/default/images/canvaspage/type-canvas-img3.png"
+                    alt="Gallery Wrap Canvas Print"
+                  />
+                  <div class="type-para">
+                    <h5>Gallery Wrap Canvas Print</h5>
+                    <p>
+                      In this type your Full picture is Wrapped around the pine
+                      wood frame. This type of frame is packed in Box or 2
+                      Layers of Carton with 2 Layers of Bubble wrap sheet on it.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="type-sameclass col-md-6">
+                <div class="type-content">
+                  <img
+                    src="https://printposters.in/skin/frontend/printshop/default/images/canvaspage/type-canvas-img2.png"
+                    alt="Stretched Canvas Print"
+                  />
+                  <div class="type-para">
+                    <h5>Stretched Canvas Print</h5>
+                    <p>
+                      It comes with Pine wood frame, which has white border on
+                      side.If user photo dont have margin of 2 Inch on each side
+                      then customer can select this type of Canvas Prints.
+                    </p>
+                  </div>
+                </div>
+                <div class="type-content border">
+                  <img
+                    src="https://printposters.in/skin/frontend/printshop/default/images/canvaspage/type-canvas-img4.png"
+                    alt="Mounted Canvas Print"
+                  />
+                  <div class="type-para">
+                    <h5>Mounted Canvas Print</h5>
+                    <p>
+                      Canvas Print that has been produced using a computerized
+                      photograph where customer upload his Wedding Photograph,
+                      Birthday Photographs, any famous Painting or any special
+                      occasion photo to turn this into wall art.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+
+    <div class="c-90-a">
+      <div class="row">
+        <div class="col">
+          <div
+            class="col-sm-12 col-xs-12"
+            style="padding-left: 0px; padding-right: 0px; margin-top: 30px"
+          >
+            <div class="v-middle">
+              <p class="text-justify justify-text">
+                Premium Textured canvas media printed on Branded LF Multicolour
+                Printer & mounting on pinewood stretcher to get 3D effect Canvas
+                printing also known as Giclee Printing. Available in 2 types
+                Rolled Canvas Print: High Definition printing in done on cotton
+                textured canvas to exact ordered size, then rolled and packed in
+                hard paper core. This printed rolled canvas then can be framed
+                at customer end as per their choice of frame. No need to put any
+                clear glass while making frame, in order to see desired textured
+                effect. Print is water proof and can be easily clean with dry
+                cloth. Gallery Wrapped Canvas Print : Printed Gallery Wrapped
+                Canvas is similar to stretched, only difference is the sides or
+                wrapped edges of canvas are printed either with the part of
+                image (either mirrored or extended image) or with dominant
+                colour from image. A Printed Cotton Canvas is hand stretched
+                over a “pine wood stretcher bar” - a thick, light weight pine
+                wooden frame, to which the printed canvas is stapled to. Printed
+                photo or painting is correctly sized & positioned over pine wood
+                stretcher bar frame. Hooks are attached at the backside of
+                Stretched Canvas for hanging this borderless frame on the wall.
+                Pine wood stretcher bars are usually 1 inch thick & 1.5 to 2
+                inch in width depending on ordered size. Masking tape is used to
+                hide stapled pins which are used to secure or hold the canvas on
+                the stretcher frame. Ordering is very simple on our
+                www.printposters.in website, where you can have an option of
+                getting images from our gallery of stock & premium
+                high-resolution images, or can upload image from your collection
+                thereby selecting size, type and minor retouching if required.
+                Then for order confirmation, checking out by paying online
+                through secured payment gateway, which covers all banks and
+                credit cards, you can place your order. Usually order turnaround
+                duration is of 1 to 5 working days, where we have shipment tie
+                up with reputed shipping partner who offers online tracking of
+                order once order gets shipped. We offer several sizes, variety
+                of shapes i.e. square, rectangular or panoramic to fit your
+                Canvas perfectly on wall. Various types of images can be printed
+                on Canvas.
+              </p>
+              <p style="text-align: justify; font-weight: bold">
+                We do following Canvas printing
+              </p>
+              <div class="row clearfix">
+                <div class="col-lg-4">
+                  <ul class="list-style">
+                    <li>Photo Printing on canvas</li>
+                    <li>Print your photos on Canvas</li>
+                    <li>Art printing on canvas</li>
+                    <li>Print painting on canvas</li>
+                    <li>canvas wall paintings</li>
+                  </ul>
+                </div>
+                <div class="col-lg-4">
+                  <ul class="list-style">
+                    <li>Photo canvas Online India</li>
+                    <li>Canvas Photo art prints</li>
+                    <li>Bedroom wall canvas art</li>
+                    <li>Gallery Prints</li>
+                    <li>personalized canvas art</li>
+                  </ul>
+                </div>
+                <div class="col-lg-4">
+                  <ul class="list-style">
+                    <li>art prints on canvas</li>
+                    <li>canvas art for sale</li>
+                    <li>discount canvas art prints</li>
+                    <li>custom canvas art</li>
+                    <li>canvas paintings ideas</li>
+                  </ul>
+                </div>
+                <p>&nbsp;</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="container" style="max-width: 900px">
+            <div class="grey-box">
+              <h5
+                style="margin: 8px; line-height: 20px"
+                class="head-custom text-center btn-primary"
+              >
+                Why Should You Buy From PrintPosters
+              </h5>
+              <table class="mobile-font mid-padding table table-responsive">
+                <thead>
+                  <tr>
+                    <th class="text-orange"><b></b></th>
+                    <th class="text-orange"><b>printposters.in</b></th>
+                    <th class="text-orange min-w-130">
+                      <b>Other Printing Websites</b>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th class="text-orange">Printers</th>
+                    <td>Branded LF Epson and Canon Printers</td>
+                    <td>Non Branded Chinese Printers</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Inks</th>
+                    <td>10 Colours (CMYK,LC,LM,BK,MBK,O,R)</td>
+                    <td>4 Colours (CMYK)</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Colour Gamut</th>
+                    <td>98% achieved, Good Colour Control</td>
+                    <td>60 to 70% achieved, Poor Colour Control</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Ink Quality</th>
+                    <td>Archival Quality, Durable</td>
+                    <td>Cheap Non-Branded, Non-durable</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Water proof</th>
+                    <td>Water Resistant - No Lamination Required</td>
+                    <td>Moisture Affets, Film Lamination is Must</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Image processing</th>
+                    <td>Onyx & Epson Rip Software</td>
+                    <td>Non-standard Software</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Life of Canvas</th>
+                    <td>100 + years</td>
+                    <td>1 to 1.5 years</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Media for Printing</th>
+                    <td>Avery, Technova, 3M, LG, Star</td>
+                    <td>Non-branded</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Setup</th>
+                    <td>In-house & Equipt with Branded Machines</td>
+                    <td>Many services Outsourced</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Canvas</th>
+                    <td>360 to 400 GSM branded Canvas</td>
+                    <td>240 - 260 GSM non branded Canvas</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Wood</th>
+                    <td>Original Pine wood</td>
+                    <td>Some cheap wood</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Frame Thickness</th>
+                    <td>0.75 inch to 1 inch</td>
+                    <td>0.50 Inch</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Ripping Software</th>
+                    <td>Onyx & Epson Rip</td>
+                    <td>No colour control Software</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Preview</th>
+                    <td>3 D Preview</td>
+                    <td>No preview</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Size Possible</th>
+                    <td>56 inch x 150 Inch</td>
+                    <td>24 Inch X 40 Inch</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Custom size</th>
+                    <td>Any Custom size possible</td>
+                    <td>Pre Defined sizes</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Shipping</th>
+                    <td>Shipping free Across India</td>
+                    <td>Depends on Size</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Shipping or Delivery</th>
+                    <td>Mostly via FedEx, Free Door Delivery</td>
+                    <td>Local Shipping, Paid Delivery</td>
+                  </tr>
+                  <tr>
+                    <th class="text-orange">Ordering Process</th>
+                    <td>Online & Offline via Call & Email</td>
+                    <td>Offline Only</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="text-center">
+                <a href="tel:8999456975">
+                  <button mat-raised-button class="bg-primary text-light m-2">
+                    Contact Us
+                  </button>
+                </a>
+                <a
+                  [routerLink]="['/order']"
+                  routerLinkActive="router-link-active"
+                >
+                  <button mat-raised-button class="bg-success text-light m-2">
+                    Get Started
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="bg-light">
+  <div class="container">
+    <h3 class="text-center pt-4">Some Features</h3>
+    <div class="row p-2">
+      <div class="col-md-6 p-4">
+        <img src="assets/imgs/artMuseum.webp" width="100%" alt="art museum">
+      </div>
+      <div class="col-md-6 p-4 d-flex justify-content-center align-items-center">
+        <div>
+          <h4>Some Heading 1</h4>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, minima tempora ex consequuntur molestiae odio necessitatibus asperiores quaerat quos eum ipsa esse est voluptates quam corporis laboriosam quibusdam maiores dolor.</p>
+        </div>
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col-md-6 p-4">
+        <img src="assets/imgs/socialDashboard.webp" width="100%" alt="Social Dashboard">
+      </div>
+      <div class="col-md-6 order-md-first p-4 d-flex justify-content-center align-items-center">
+        <div>
+          <h4>Some Heading 2</h4>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, minima tempora ex consequuntur molestiae odio necessitatibus asperiores quaerat quos eum ipsa esse est voluptates quam corporis laboriosam quibusdam maiores dolor.</p>
+        </div>
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col-md-6 p-4">
+        <img src="assets/imgs/photoMobile.webp" width="100%" alt="photo mobile">
+      </div>
+      <div class="col-md-6 p-4 d-flex justify-content-center align-items-center">
+        <div>
+          <h4>Some Heading 3</h4>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, minima tempora ex consequuntur molestiae odio necessitatibus asperiores quaerat quos eum ipsa esse est voluptates quam corporis laboriosam quibusdam maiores dolor.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+ </div> -->

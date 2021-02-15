@@ -1,0 +1,36 @@
+<!-- Page Content -->
+<div class="image-upload">
+    <ngx-dropzone (change)="onSelect($event)" [disabled]="dropZoneStatus" accept="image/jpeg,image/jpg,image/png,image/gif" class="mx-1" expandable>
+      <ngx-dropzone-label>
+          <i class="fa fa-cloud-upload" style="font-size: 50px"></i><br>
+          Drag&Drop files here<br>
+          <span style="font-size: 12px">or</span><br>
+          <button class="btn btn-outline-primary btn-sm">
+            Browse Files
+          </button>
+      </ngx-dropzone-label>
+      <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
+        <!-- <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label> -->
+      </ngx-dropzone-image-preview>
+    </ngx-dropzone>
+      
+    <mat-progress-bar mode="indeterminate" *ngIf="progressShow" class="mx-1"></mat-progress-bar>
+  
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <button type="button" class="btn btn-primary btn-sm shadow mt-2 upload-button" [disabled]="dropZoneStatus" (click)="uploadFiles()">Upload</button>
+      </div>
+    </div>
+    <hr class="mt-2 mb-2">
+  
+    <div class="row text-center text-lg-left p-3 m-0">
+        <div *ngFor="let image of images" class="col-lg-6 col-md-6 col-6">
+          <a href="#" class="d-block mb-4 h-200">
+            <button type="button" class="close" aria-label="Close" style="position: absolute; right: 20px" (click)="deleteImage(image)">
+              <span aria-hidden="true" style="color: #dc3545">&times;</span>
+            </button>
+            <img class="img-fluid img-thumbnail" width="100%" src="{{image}}" alt="">
+          </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+// .side-container{
+//     top:56px !important;
+
+// }
+// mat-sidenav{
+//     width:65%;
+//     background-image: linear-gradient( 109.6deg,  rgba(75,153,245,1) 11.3%, rgba(177,226,254,1) 100.2% );
+// }
+// .leftitem{
+// flex: 1 1 auto;
+// }
+// .menulist{
+//     font-family: 'Nunito', sans-serif !important;
+// }
+// .header-container {
+//   width: 500px;
+//   height: 300px;
+//   // border: 1px solid rgba(0, 0, 0, 0.5);
+// }
+
+.header-sidenav-content {
+  height: 100vh;
+}
+
+.header-sidenav {
+  padding: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+  .main-header-container {
+    display: none;
+  }
+  .header-container {
+    display: block;
+  }
+}
+  .main-header-container {
+    display: block;
+  }
+  .header-container {
+    display: none;
+  }

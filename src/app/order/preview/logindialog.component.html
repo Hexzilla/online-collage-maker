@@ -1,0 +1,36 @@
+<mat-dialog-content class="mat-typography">
+    <div>
+        <h2>Login to your Account</h2>
+    </div>
+    <form [formGroup]="loginForm" class="login-form" (ngSubmit)="login()">
+        <mat-form-field class="login-full-width">
+            <input matInput placeholder="Enter Email" [formControl]="loginForm.get('email')" formControlName="email">
+            <mat-error *ngIf="loginForm.get('email').hasError('email') && !loginForm.get('email').hasError('required')">
+                Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="loginForm.get('email').hasError('required')">
+                Email is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="login-full-width">
+            <input matInput type="password" placeholder="Enter Password" [formControl]="loginForm.get('password')"
+                formControlName="password">
+            <mat-error
+                *ngIf="loginForm.get('password').hasError('email') && !loginForm.get('password').hasError('required')">
+                Password must be 5 character long
+            </mat-error>
+            <mat-error *ngIf="loginForm.get('password').hasError('required')">
+                Password is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+        <div fxLayout="row" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center">
+            <button class="login-form" style="margin-bottom:10px" mat-raised-button color="accent" type="submit"
+                (disabled)="!loginForm.valid">Login</button>
+            <button type="button" class="login-form" mat-raised-button color="primary" (click)="goToRegister()">Create
+                Account</button>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

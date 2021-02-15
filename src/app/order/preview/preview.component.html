@@ -1,0 +1,281 @@
+<div class="row c-90">
+  <div class="col-12 col-md-6">
+    <div class="container">
+      <h4 class="mt-3 head-custom text-center">Gallery Wrap Canvas</h4>
+      <div class="d-flex justify-content-center align-items-center">
+        <div class="w-100">
+          <div class="text-center row">
+            <div class="col-md-6">
+              <span>Selected Wrap: </span>
+              <span>{{selectedWrap ? selectedWrap : 'Rolled Canvas'}}</span>
+            </div>
+            <div class="col-md-6">
+              <span>Selected Size(in inches) : </span>
+              <span>{{ isize }}</span>
+            </div>
+          </div>
+          <br>
+          <br>
+          <div class="fix-content" *ngIf="gallaryWrap && selectedWrap != 'mirrorWrap' && selectedWrap!=='colorWrap'">
+            <img src="{{imgsrc.src}}" width="{{widthV}}" height="{{heightV}}">
+            <div class="top-left notch"></div>
+            <div class="top-right notch"></div>
+            <div class="bottom-left notch"></div>
+            <div class="bottom-right notch"></div>
+          </div>
+          <div *ngIf="gallaryWrap && selectedWrap ==='colorWrap'" class="grid-container"
+            [style.width]="widthV + 20 + 'px'" [style.height]="(heightV+10) + 'px'"
+            [style.grid-template-columns]="10 + 'px ' + widthV + 'px ' + 10 + 'px'"
+            [style.grid-template-rows]="10 + 'px ' + (heightV-10) + 'px ' + 10 + 'px'"
+            [ngStyle]="selectedWrap=='gallaryWrap'?{'background-image': 'url(' + imgsrc.src + ')', 'background-size': 'cover'  }:{'text-align':'center'}">
+            <div class="grid-item item1"></div>
+            <div class="grid-item item2" [ngStyle]="borderLeft"></div>
+            <div class="grid-item item3"></div>
+            <div class="grid-item item4" [ngStyle]="borderTop"></div>
+            <div class="grid-item item5"
+              [ngStyle]="selectedWrap=='colorWrap' || selectedWrap=='mirrorWrap'?{'background-image': 'url(' + imgsrc.src + ')', 'background-size': 'cover'  }:{'text-align':'center'}">
+            </div>
+            <div class="grid-item item6" [ngStyle]="borderRight"></div>
+            <div class="grid-item item7"></div>
+            <div class="grid-item item8" [ngStyle]="borderBottom"></div>
+            <div class="grid-item item9"></div>
+          </div>
+
+          <div *ngIf="gallaryWrap && selectedWrap =='mirrorWrap'">
+            <div id="canvasBoard" style="position: relative;" [style.height]="heightV + 40 + 'px'">
+              <div id="canvasImageboard" style="position: relative; top: 30px; left: 10px;">
+
+                <div *ngIf="this.display.potrait" id="canvas156079179802324" class="cf-photoframe unselectable"
+                  style="top: 0px; left: 0px;" draggable="false" unselectable="on">
+                  <div style="float:left;" class="cf-photoframe-wrap-container">
+
+                    <canvas class="cf-photoframe-wraps cf-photoframe-wrap-noshadow" width="10" id="1" height="200"
+                      style="opacity: 0; background-color: rgba(0, 0, 0, 0);"></canvas>
+                  </div>
+                  <div style="float:left;">
+                    <canvas
+                      class="canvas-border cf-photoframe-container cf-photoframe-container-curorMove cf-preview-canvas-noshadow"
+                      style="display: block;" id="2" width="{{widthV}}" height="{{heightV}}"></canvas>
+                  </div>
+
+                  <canvas class="item4 cf-photoframe-wrap-left cf-photoframe-wraps"
+                    style="position: absolute; z-index: 999; left: -10px; transform: scaleX(-1);" id="3" width="20"
+                    height="{{heightV}}"></canvas>
+                  <canvas class="item6 cf-photoframe-wrap-right cf-photoframe-wraps"
+                    style="position: absolute; z-index: 999;" [style.left]="widthV + 10 + 'px'" id="4" width="20"
+                    height="{{heightV}}"></canvas>
+                  <canvas class="item2 cf-photoframe-wrap-top cf-photoframe-wraps"
+                    style="position: absolute; z-index: 999; left: 10px; top: -20px;" id="5" width="{{widthV}}"
+                    height="20"></canvas>
+                  <canvas class="item8 cf-photoframe-wrap-bottom cf-photoframe-wraps"
+                    style="position: absolute; z-index: 999; left: 10px;" [style.top]="heightV + 'px'" id="6"
+                    width="{{widthV}}" height="20"></canvas>
+                </div>
+
+                <div *ngIf="this.display.landscape" id="canvas156079179802324" class="cf-photoframe unselectable"
+                  style="top: 0px; left: 0px;" draggable="false" unselectable="on">
+                  <div style="float:left;" class="cf-photoframe-wrap-container">
+
+                    <canvas class="cf-photoframe-wraps cf-photoframe-wrap-noshadow" width="10" id="1"
+                      height="{{heightV}}" style="opacity: 0; background-color: rgba(0, 0, 0, 0);"></canvas>
+                  </div>
+                  <div style="float:left;">
+                    <canvas
+                      class="canvas-border cf-photoframe-container cf-photoframe-container-curorMove cf-preview-canvas-noshadow"
+                      style="display: block;" id="2" width="{{widthV}}" height="{{heightV}}"></canvas>
+                  </div>
+
+                  <canvas class="item4 cf-photoframe-wrap-left cf-photoframe-wraps"
+                    style="position: absolute; z-index: 999; left: 0px; transform: scaleX(-1);" id="3" width="10"
+                    height="{{heightV}}"></canvas>
+                  <canvas class="item6 cf-photoframe-wrap-right cf-photoframe-wraps"
+                    style="position: absolute; z-index: 999;" [style.left]="widthV + 10 + 'px'" id="4" width="10"
+                    height="{{heightV}}"></canvas>
+                  <canvas class="item2 cf-photoframe-wrap-top cf-photoframe-wraps"
+                    style="position: absolute; z-index: 999; left: 10px; top: -10px;" id="5" width="{{widthV}}"
+                    height="10"></canvas>
+                  <canvas class="item8 cf-photoframe-wrap-bottom cf-photoframe-wraps"
+                    style="position: absolute; z-index: 999; left: 10px; top: 150px;" id="6" width="{{widthV}}"
+                    height="10"></canvas>
+                </div>
+
+                <div *ngIf="this.display.square" id="canvas156079179802324" class="cf-photoframe unselectable"
+                  style="top: 0px; left: 0px;" draggable="false" unselectable="on">
+                  <div style="float:left;" class="cf-photoframe-wrap-container">
+
+                    <canvas class="cf-photoframe-wraps cf-photoframe-wrap-noshadow" width="10" id="1"
+                      height="{{heightV}}" style="opacity: 0; background-color: rgba(0, 0, 0, 0);"></canvas>
+                  </div>
+                  <div style="float:left;">
+                    <canvas
+                      class="canvas-border cf-photoframe-container cf-photoframe-container-curorMove cf-preview-canvas-noshadow"
+                      style="display: block;" id="2" width="{{widthV}}" height="{{heightV}}"></canvas>
+                  </div>
+
+                  <canvas class="item4 cf-photoframe-wrap-left cf-photoframe-wraps"
+                    style="position: absolute; z-index: 999; left: -10px; transform: scaleX(-1);" id="3" width="20"
+                    height="{{heightV}}"></canvas>
+                  <canvas class="item6 cf-photoframe-wrap-right cf-photoframe-wraps"
+                    style="position: absolute; z-index: 999;" [style.left]="widthV + 10 + 'px'" id="4" width="20"
+                    height="{{heightV}}"></canvas>
+                  <canvas class="item2 cf-photoframe-wrap-top cf-photoframe-wraps"
+                    style="position: absolute; z-index: 999; left: 10px; top: -20px;" id="5" width="{{widthV}}"
+                    height="20"></canvas>
+                  <canvas class="item8 cf-photoframe-wrap-bottom cf-photoframe-wraps"
+                    style="position: absolute; z-index: 999; left: 10px;" [style.top]="heightV + 'px'" id="6"
+                    width="{{widthV}}" height="20"></canvas>
+                </div>
+
+
+
+                <div class="cf-photoframe-mask" style="display: none;">
+
+                  <canvas width="100%" height="100%" style="background-color:transparent;"></canvas>
+                </div>
+
+
+
+              </div>
+              <div class="cf-singleCanvasDialogContainer" style="height: 404px; width: 465px; display: none; ">
+                <div class="cf-singleCanvasDialog" style="">
+                  <i class="icon-remove-sign" id="btnSingleCanvasDialogClose"></i>
+                  <canvas width="10" height="10"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <form style="display: none">
+            <input type="checkbox" id="horizontalCheckbox" /> <label for="horizontalCheckbox">Flip horizontal</label>
+            <input type="checkbox" id="verticalCheckbox" /> <label for="verticalCheckbox">Flip vertical</label>
+            <button id="flipButton">Flip ninjas!</button>
+          </form>
+
+          <br>
+          <br>
+          <br>
+          <!-- Bottom Menu -->
+          <!-- TODO: animate it -->
+          <div *ngIf="gallaryWrap" class="main">
+            <div class="nav">
+              <div class="nav-slot bg-white round-top-left">
+                <a class="nav-link" [ngClass]="{'floating-button': selectedWrap === 'gallaryWrap'}"
+                  (click)="onSelected('gallaryWrap')" [ngClass]>
+                  <i class="material-icons">image</i>
+                  Gallery Wrap
+                </a>
+              </div>
+              <div class="nav-slot bg-white">
+                <a role="button" [ngClass]="{'floating-button': selectedWrap === 'mirrorWrap'}" class="nav-link"
+                  (click)="onSelected('mirrorWrap')">
+                  <i class="material-icons">image</i>
+                  Mirror Wrap
+                </a>
+              </div>
+              <div class="nav-slot bg-white round-top-right">
+                <a class="nav-link" [ngClass]="{'floating-button': selectedWrap === 'colorWrap'}"
+                  (click)="onSelected('colorWrap')">
+                  <i class="material-icons">image</i>
+                  Color Wrap
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+  <div class="col-12 col-md-6">
+    <div [style.visibility]="(gallaryWrap && imgsrc) ? 'visible' : 'hidden'"
+      [style.height]="(!(gallaryWrap && imgsrc)) ? '0px' : '100%'">
+
+      <br>
+      <h4 class="head-custom text-center">3D Canvas Preview</h4>
+      <div class="ex1">
+        <div id="cube" class="cube" [style.width]="widthV + 'px'" [style.height]="heightV + 'px'">
+          <div [style.width]="widthV + 'px'" [style.height]="heightV + 'px'" class="side front">
+            <div>
+              <img *ngIf="imgsrc" src="{{imgsrc.src}}" width="100%">
+            </div>
+          </div>
+          <!-- <div [style.width]="widthV + 'px'" [style.height]="heightV + 'px'" class="side back">
+          <div><img *ngIf="imgsrc" src="{{imgsrc.src}}" width="100%"></div>
+        </div> -->
+          <div [style.width]="widthV + 'px'" [style.height]="heightV + 'px'" class="side right">
+            <div style="width:20px;float:right;position:relative;overflow:hidden;height:100%;" [ngStyle]="previewColor">
+              <img style="position:absolute;right:0" *ngIf="imgsrc && selectedWrap!=='colorWrap'" src="{{imgsrc.src}}"
+                height="100%">
+            </div>
+          </div>
+          <div [style.width]="widthV + 'px'" [style.height]="heightV + 'px'" class="side left">
+            <div style="width:20px;position:relative;overflow:hidden;height:100%;" [ngStyle]="previewColor">
+              <img *ngIf="imgsrc && selectedWrap!=='colorWrap'" src="{{imgsrc.src}}" height="100%">
+            </div>
+          </div>
+          <div [style.width]="widthV + 'px'" [style.height]="heightV + 'px'" class="side top">
+            <div style="height:20px;position:relative;overflow:hidden;" [ngStyle]="previewColor">
+              <img *ngIf="imgsrc && selectedWrap!=='colorWrap'" src="{{imgsrc.src}}" width="100%"></div>
+          </div>
+          <div [style.width]="widthV + 'px'" [style.height]="heightV + 'px'"
+            style="display:flex;flex-direction:column-reverse" class="side bottom">
+            <div style="height:20px;position:relative;overflow:hidden;" [ngStyle]="previewColor">
+              <img style="position:absolute;bottom:0" *ngIf="imgsrc && selectedWrap!=='colorWrap'" src="{{imgsrc.src}}"
+                width="100%">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form id="controls" class="controls">
+        <div class="form-row">
+          <label for="x"><i class="material-icons" style="transform: rotate(90deg);">code</i></label>
+          <input (change)="update()" class="slider" type="range" id="x" min="-360" max="360" value="135">
+          <input type="text" id="x-val" hidden readonly>
+        </div>
+        <div class="form-row">
+          <label for="y"><i class="material-icons">code</i></label>
+          <input (change)="update()" class="slider" type="range" id="y" min="-360" max="360" value="45">
+          <input type="text" id="y-val" hidden readonly>
+        </div>
+        <div class="form-row">
+          <label for="z"><i class="material-icons">zoom_in</i></label>
+          <input (change)="update()" class="slider" type="range" id="z" min="-400" max="400" value="0">
+          <input type="text" id="z-val" hidden readonly>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="!gallaryWrap">
+      <h2 mat-dialog-title>Actual Preview Of Image</h2>
+      <div label="Preview" style="position: relative">
+        <img src="assets/imgs/preview.png" width="100%">
+        <div>
+          <img *ngIf="imgsrc" [src]="imgsrc.src" class="preview" [height]="'80'">
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+<div class="container">
+  <div class="footer row">
+    <button [disabled]="uploadProgress !== -1" class="col mr-2 mt-2" mat-raised-button color="primary"
+      (click)="openDialog()">Preview</button>
+    <!-- <button class="col mr-2 mt-2" mat-raised-button color="accent" (click)="makePayment()">Add To Cart</button> -->
+    <button [disabled]="uploadProgress !== -1" id="img-button" class="col mr-2 mt-2" mat-raised-button color="accent"
+      (click)="addToCart()">Add To
+      Cart</button>
+  </div>
+
+  <div class="footer row" *ngIf="uploadProgress !== -1">
+    Uploading please wait ({{uploadProgress}} %)
+    <!-- <mat-progress-bar mode="determinate" value="{{uploadProgress}}"></mat-progress-bar> -->
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+</div>

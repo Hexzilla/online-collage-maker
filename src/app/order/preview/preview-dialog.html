@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>Actual Preview Of Image</h2>
+<mat-dialog-content class="mat-typography">
+    <div label="Preview" style="position: relative">
+        <img src="assets/imgs/preview.png" width="100%">
+        <div>
+            <img *ngIf="previewImg" [src]="previewImg.src" class="preview" [height]="80">
+        </div>
+
+        <!-- <div *ngIf="previewImg" class="" id="cubeContainer">
+            <div product-cube="" class="" id="product-cube" style="perspective: 1800px;">
+                <div id="cubeBox" ng-show="ImageLoadedAndReady"
+                    style="transform-style: preserve-3d; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); height: 336.75px; width: 420.938px; transform: rotateX(0deg) rotateY(20deg);">
+                    <figure id="cubeFront"
+                        style="max-width: none; position: absolute; opacity: 1; box-shadow: rgba(150, 150, 150, 0.7) 0px 0px 30px 0px inset; height: 336.75px; width: 420.938px; transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateX(0px) translateY(0px) translateZ(18.416px);">
+                        <img id="cubeFrontImg"
+                            style="max-width: none; position: absolute; clip: rect(0px, 509.865px, 337px, 88.8645px); top: 0px; left: -88.8645px;"
+                            [src]="previewImg.src" width="599" height="337"></figure>
+                    <figure id="cubeLeft"
+                        style="max-width: none; position: absolute; opacity: 1; box-shadow: rgba(150, 150, 150, 0.7) 0px 0px 30px 0px inset; height: 336.75px; width: 36.832px; transform: rotateX(0deg) rotateY(-90deg) rotateZ(0deg) translateX(0px) translateY(0px) translateZ(18.416px);">
+                        <img id="cubeLeftImg"
+                            style="max-width: none; position: absolute; display: inline; clip: rect(0px, 125.865px, 337px, 88.8645px); transform: scaleX(-1) scaleY(1); top: 0px; left: -473.016px;"
+                            [src]="previewImg.src" width="599" height="337"></figure>
+                    <figure id="cubeRight"
+                        style="max-width: none; position: absolute; opacity: 1; box-shadow: rgba(150, 150, 150, 0.7) 0px 0px 30px 0px inset; height: 336.75px; width: 36.832px; transform: rotateX(0deg) rotateY(90deg) rotateZ(0deg) translateX(0px) translateY(0px) translateZ(402.521px);">
+                        <img id="cubeRightImg"
+                            style="max-width: none; position: absolute; display: inline; clip: rect(0px, 509.865px, 337px, 472.865px); transform: scaleX(-1) scaleY(1); top: 0px; left: -89.016px;"
+                            [src]="previewImg.src" width="599" height="337"></figure>
+                    <figure id="cubeTop"
+                        style="max-width: none; position: absolute; opacity: 1; box-shadow: rgba(150, 150, 150, 0.7) 0px 0px 30px 0px inset; height: 36.832px; width: 420.938px; transform: rotateX(90deg) rotateY(0deg) rotateZ(0deg) translateX(0px) translateY(0px) translateZ(18.416px);">
+                        <img id="cubeTopImg"
+                            style="max-width: none; position: absolute; display: inline; clip: rect(0px, 509.865px, 37px, 88.8645px); transform: scaleX(1) scaleY(-1); top: -299.87px; left: -88.8645px;"
+                            [src]="previewImg.src" width="599" height="337"></figure>
+                    <figure id="cubeBottom"
+                        style="max-width: none; position: absolute; opacity: 1; box-shadow: rgba(150, 150, 150, 0.7) 0px 0px 30px 0px inset; height: 36.832px; width: 420.938px; transform: rotateX(-90deg) rotateY(0deg) rotateZ(0deg) translateX(0px) translateY(0px) translateZ(318.334px);">
+                        <img id="cubeBottomImg"
+                            style="max-width: none; position: absolute; display: inline; clip: rect(300px, 509.865px, 337px, 88.8645px); transform: scaleX(1) scaleY(-1); top: 0.129713px; left: -88.8645px;"
+                            [src]="previewImg.src" width="599" height="337"></figure>
+                    <figure id="cubeOverlay"
+                        style="max-width: none; position: absolute; opacity: 1; box-shadow: rgba(150, 150, 150, 0.7) 0px 0px 30px 0px inset; height: 336.75px; width: 420.938px; transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateX(0px) translateY(0px) translateZ(18.416px); display: none;">
+                        <img id="cubeOverlayImg"
+                            style="max-width: none; position: absolute; top: 168.5px; left: 210.5px;">
+                    </figure>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

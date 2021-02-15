@@ -1,0 +1,460 @@
+<div>
+  <div>
+    <!-- <mat-tab-group class="maintab" [selectedIndex]="0"> -->
+    <!-- <mat-tab label="Manage"> -->
+    <mat-horizontal-stepper
+      #stepper
+      [linear]="true"
+      (selectionChange)="checkImage(stepper)"
+    >
+      <mat-step>
+        <ng-template matStepLabel>Upload</ng-template>
+        <div class="c-90-a">
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <div class="grey-box">
+                <app-image-selector
+                  (onImageSelected)="imageSelected($event)"
+                ></app-image-selector>
+                <div [style.text-align]="'center'">
+                  <button
+                    [disabled]="!isloggedin()"
+                    style="box-shadow: 0px 9px 16px #333"
+                    [style.margin-top]="20 + 'px'"
+                    *ngIf="previewImg"
+                    mat-raised-button
+                    color="primary"
+                    matStepperNext
+                  >
+                    Choose Size And Type
+                  </button>
+                  <button
+                    *ngIf="!isloggedin()"
+                    routerLink="/login"
+                    style="box-shadow: 0px 9px 16px #333; margin-left: 10px"
+                    [style.margin-top]="20 + 'px'"
+                    mat-raised-button
+                    color="primary"
+                  >
+                    Log In / Register
+                  </button>
+                  <!-- <button (click)="autoNext()">Next</button> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div>
+                <p class="text-center head-custom bg-primary">Popular Sizes</p>
+                <table class="mid-padding table table-resposive">
+                  <tbody class="text-center">
+                    <tr>
+                      <th class="text-orange">
+                        <b class="text-orange">Size</b>
+                      </th>
+                      <th class="text-orange">
+                        <b class="text-orange">Value</b>
+                      </th>
+                      <th class="text-orange">
+                        <b class="text-orange">Your Price</b>
+                      </th>
+                    </tr>
+                    <tr>
+                      <td>8" x 12"</td>
+                      <td>
+                        <span class="linethrough">&#8377; 374</span>
+                      </td>
+                      <td
+                        class="info-table__callout info-table__price"
+                        itemprop="price"
+                      >
+                        &#8377; 267
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>18" x 24"</td>
+                      <td>
+                        <span class="linethrough">&#8377; 1386</span>
+                      </td>
+                      <td class="info-table__callout info-table__price">
+                        &#8377; 990
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>24" x 36"</td>
+                      <td>
+                        <span class="linethrough">&#8377; 1932</span>
+                      </td>
+                      <td class="info-table__callout info-table__price">
+                        &#8377; 1380
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>36" x 48"</td>
+                      <td>
+                        <span class="linethrough">&#8377; 3864</span>
+                      </td>
+                      <td class="info-table__callout info-table__price">
+                        &#8377; 2760
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>50" x 90"</td>
+                      <td>
+                        <span class="linethrough">&#8377; 11375</span>
+                      </td>
+                      <td class="info-table__callout info-table__price">
+                        &#8377; 8125
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div id="howto" class="mb-2">
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <div class="grey-box">
+                  <h5>How to Create Canvas Prints with Printposters?</h5>
+                  <ol>
+                    <li>Choose the High-resolution photo to print on Canvas</li>
+                    <li>
+                      Upload the photo by selecting Upload photo tab or Email
+                      the photo with size
+                    </li>
+                    <li>
+                      Website will recommend size as per aspect ratio and
+                      pixels.
+                    </li>
+                    <li>
+                      If you want custom size you can select custom size tab
+                    </li>
+                    <li>
+                      Check the 3 D Preview of the Canvas print with frame
+                    </li>
+                    <li>
+                      Proceed to checkout page to place your order with full
+                      address details.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="grey-box">
+                  <h5>Type Of Canvas</h5>
+                  <div class="row">
+                    <div class="col-12 col-md-6">
+                      <img
+                        src="assets/images/roll-canvas-1.png"
+                        class="img-responsive w-100"
+                        height="200px"
+                        title="Roll canvas"
+                        alt="Roll canvas"
+                      />
+                      <h4>Roll Canvas</h4>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <img
+                        src="assets/images/gallery-wrap-1.png"
+                        class="img-responsive w-100"
+                        height="200px"
+                        title="Gallery Wrap"
+                        alt="Gallery Wrap"
+                      />
+                      <h4>Gallery Wrap</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr />
+
+          <div id="services-section">
+            <div class="row">
+              <div class="col-12 col-md-3">
+                <div class="text-center p-2">
+                  <img
+                    src="assets/images/lowest-price.webp"
+                    alt="LOWEST PRICE GUARANTEED"
+                    height="180px"
+                    width="100%"
+                  />
+                </div>
+                <h5>LOWEST PRICE GUARANTEED</h5>
+                <p>
+                  One of the leading in-house printing service provider from
+                  India, offers competitive acceptable rates without
+                  compromising on quality. We assure you with "BEST PRICE
+                  GUARANTEE". LONG-LASTING Printed Results We always use premium
+                  original brand archival quality inks. With these inks, printed
+                  result or output on Canvas, Photo, Vinyl and on any other
+                  media give outstanding vibrant results, water or moisture
+                  resistant property, shelf life of more than 100 years.
+                </p>
+              </div>
+              <div class="col-12 col-md-3">
+                <div class="text-center p-2">
+                  <img
+                    src="assets/images/shipping.webp"
+                    alt="LIGHTNING FAST SHIPPING"
+                    height="180px"
+                    width="100%"
+                  />
+                </div>
+                <h5>LIGHTNING FAST SHIPPING</h5>
+                <p>
+                  Once order is received, production turnaround time is within 1
+                  or 3 working day due to our in-house printing facility. We
+                  always ship products via reputed shipping partner FedEx and in
+                  other cases (where FedEx has no service) we take service from
+                  strong shipping & courier network partners like Delhivery,
+                  DotZot, & Speed Post etc. "We do shipments all over India"
+                </p>
+              </div>
+              <div class="col-12 col-md-3">
+                <div class="text-center p-2">
+                  <img
+                    src="assets/images/long-lasting.webp"
+                    alt="PREMIUM RAW MATERIAL"
+                    height="180px"
+                    width="100%"
+                  />
+                </div>
+                <h5>PREMIUM RAW MATERIAL</h5>
+                <p>
+                  Media on which we printing is branded. We use premium Cotton
+                  Canvas, Ink which we use in printing is Original Epson, Canon
+                  inks, which has properties like Water proof, Wide Colour
+                  Gamut, True Colour & High Fade Resistant, Excellent Adhesion,
+                  High Rub & Scratch Resistance, Superior Sharpness, No
+                  Inter-colour Bleeds, High Stability, High Optical Density,
+                  Superior Depth, Dust can be clean with water and soft cloth,
+                  Archival Quality for long lasting quality shelf life of
+                  prints.
+                </p>
+              </div>
+              <div class="col-12 col-md-3">
+                <div class="text-center p-2">
+                  <img
+                    src="assets/images/frames.webp"
+                    alt="QUALITY Stretcher Bar FRAMES"
+                    height="180px"
+                    width="100%"
+                  />
+                </div>
+                <h5>QUALITY Stretcher Bar FRAMES</h5>
+                <p>
+                  We use Imported lightweight pine wood stretcher bars having
+                  approx. 1-inch thickness and 1.5 to 2-inch width. Bars easily
+                  gets assembled to form frames for mounting printed canvas. We
+                  always have inventory of regularly ordered sizes and any
+                  custom size or bigger quantity can be manufactured in very
+                  short time. Our Experienced staff does hand stretching of
+                  printed canvas and now we are equipped with automated machine
+                  to stretch of printed canvas on to pine wood stretcher bar
+                  borderless frame.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div id="interested-section">
+            <p class="text-center head-custom bg-primary">
+              You may also be interested in our following Products
+            </p>
+            <div class="row">
+              <div class="col-12 col-md-4">
+                <div class="card shadow">
+                  <img
+                    src="assets/images/photo-print2.webp"
+                    alt="Photo Print"
+                    class="img-responsive center-block p-2 w-100"
+                  />
+                  <div class="card-body text-center">
+                    <a
+                      href="https://m.printposters.in/photo-prints"
+                      class="btn btn-primary"
+                    >
+                      <i class="material-icons float-left pr-2">link</i>
+                      Photo Prints
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="card shadow">
+                  <img
+                    src="assets/images/poster3.webp"
+                    alt="Photo Print"
+                    class="img-responsive center-block p-2 w-100"
+                  />
+                  <div class="card-body text-center">
+                    <a
+                      href="https://m.printposters.in/poster-prints"
+                      class="btn btn-primary"
+                    >
+                      <i class="material-icons float-left pr-2">link</i>
+                      Poster Prints
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="card shadow">
+                  <img
+                    src="assets/images/vinyl-wallpaper6.webp"
+                    alt="Photo Print"
+                    class="img-responsive center-block p-2 w-100"
+                  />
+                  <div class="card-body text-center">
+                    <a
+                      href="https://m.printposters.in/vinyl-prints"
+                      class="btn btn-primary"
+                    >
+                      <i class="material-icons float-left pr-2">link</i>
+                      Vinyl Prints
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h5 class="text-center mt-2">Gallery Wrap Canvas Prints</h5>
+        <div class="container">
+          <img
+            src="assets/images/roll-canvas.webp"
+            alt="roll canvas"
+            width="100%"
+          />
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Size</ng-template>
+        <div>
+          <app-size
+            [size]="sizeParam"
+            (onSizeChange)="onSizeSelected($event, stepper)"
+          ></app-size>
+        </div>
+
+        <!-- <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div> -->
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Customize</ng-template>
+        <div *ngIf="showPreview">
+          <!-- <app-preview-selector [imgsrc]="previewImg" [size]="selectedSize"></app-preview-selector> -->
+          <app-preview
+            [imgsrc]="previewImg"
+            [size]="selectedSize"
+          ></app-preview>
+          <!-- <app-canvas [_img]="img"></app-canvas> -->
+        </div>
+
+        <!--
+          <div>
+            <button mat-button matStepperNext>Back</button>
+            <button mat-button (click)="stepper.next()">Next</button>
+          </div>
+        -->
+      </mat-step>
+      <!-- <mat-step>
+                                    <ng-template matStepLabel>Payment</ng-template>
+                                    <div>
+                                      <app-payment [order]="order"></app-payment>
+                                      <button mat-button matStepperNext>Back</button>
+                                      <button mat-button (click)="stepper.re()">Next</button>
+                                    </div>
+                                  </mat-step> -->
+    </mat-horizontal-stepper>
+    <!-- </mat-tab> -->
+    <!-- <mat-tab label="Preview">
+        <img src="assets/imgs/preview.png" width="100%">
+        <div>
+          <img *ngIf="previewImg" [src]="previewImg.src" class="preview" [width]="150">
+        </div>
+
+        <div *ngIf="previewImg" class="" id="cubeContainer">
+          <div product-cube="" class="" id="product-cube" style="perspective: 1800px;">
+            <div id="cubeBox" ng-show="ImageLoadedAndReady"
+              style="transform-style: preserve-3d; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); height: 336.75px; width: 420.938px; transform: rotateX(0deg) rotateY(20deg);">
+              <figure id="cubeFront"
+                style="max-width: none; position: absolute; opacity: 1; box-shadow: rgba(150, 150, 150, 0.7) 0px 0px 30px 0px inset; height: 336.75px; width: 420.938px; transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateX(0px) translateY(0px) translateZ(18.416px);">
+                <img id="cubeFrontImg"
+                  style="max-width: none; position: absolute; clip: rect(0px, 509.865px, 337px, 88.8645px); top: 0px; left: -88.8645px;"
+                  [src]="previewImg.src" width="599" height="337"></figure>
+              <figure id="cubeLeft"
+                style="max-width: none; position: absolute; opacity: 1; box-shadow: rgba(150, 150, 150, 0.7) 0px 0px 30px 0px inset; height: 336.75px; width: 36.832px; transform: rotateX(0deg) rotateY(-90deg) rotateZ(0deg) translateX(0px) translateY(0px) translateZ(18.416px);">
+                <img id="cubeLeftImg"
+                  style="max-width: none; position: absolute; display: inline; clip: rect(0px, 125.865px, 337px, 88.8645px); transform: scaleX(-1) scaleY(1); top: 0px; left: -473.016px;"
+                  [src]="previewImg.src" width="599" height="337"></figure>
+              <figure id="cubeRight"
+                style="max-width: none; position: absolute; opacity: 1; box-shadow: rgba(150, 150, 150, 0.7) 0px 0px 30px 0px inset; height: 336.75px; width: 36.832px; transform: rotateX(0deg) rotateY(90deg) rotateZ(0deg) translateX(0px) translateY(0px) translateZ(402.521px);">
+                <img id="cubeRightImg"
+                  style="max-width: none; position: absolute; display: inline; clip: rect(0px, 509.865px, 337px, 472.865px); transform: scaleX(-1) scaleY(1); top: 0px; left: -89.016px;"
+                  [src]="previewImg.src" width="599" height="337"></figure>
+              <figure id="cubeTop"
+                style="max-width: none; position: absolute; opacity: 1; box-shadow: rgba(150, 150, 150, 0.7) 0px 0px 30px 0px inset; height: 36.832px; width: 420.938px; transform: rotateX(90deg) rotateY(0deg) rotateZ(0deg) translateX(0px) translateY(0px) translateZ(18.416px);">
+                <img id="cubeTopImg"
+                  style="max-width: none; position: absolute; display: inline; clip: rect(0px, 509.865px, 37px, 88.8645px); transform: scaleX(1) scaleY(-1); top: -299.87px; left: -88.8645px;"
+                  [src]="previewImg.src" width="599" height="337"></figure>
+              <figure id="cubeBottom"
+                style="max-width: none; position: absolute; opacity: 1; box-shadow: rgba(150, 150, 150, 0.7) 0px 0px 30px 0px inset; height: 36.832px; width: 420.938px; transform: rotateX(-90deg) rotateY(0deg) rotateZ(0deg) translateX(0px) translateY(0px) translateZ(318.334px);">
+                <img id="cubeBottomImg"
+                  style="max-width: none; position: absolute; display: inline; clip: rect(300px, 509.865px, 337px, 88.8645px); transform: scaleX(1) scaleY(-1); top: 0.129713px; left: -88.8645px;"
+                  [src]="previewImg.src" width="599" height="337"></figure>
+              <figure id="cubeOverlay"
+                style="max-width: none; position: absolute; opacity: 1; box-shadow: rgba(150, 150, 150, 0.7) 0px 0px 30px 0px inset; height: 336.75px; width: 420.938px; transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateX(0px) translateY(0px) translateZ(18.416px); display: none;">
+                <img id="cubeOverlayImg" style="max-width: none; position: absolute; top: 168.5px; left: 210.5px;">
+              </figure>
+            </div>
+          </div>
+        </div>
+      </mat-tab> -->
+    <!-- <mat-tab label="Test">
+                      <div>
+                          <app-test></app-test>
+                      </div>
+                    </mat-tab> -->
+    <!-- </mat-tab-group> -->
+
+    <!-- <div [style.visibility]="previewImg ? 'visible' : 'hidden'">
+      <br><br><br><br>
+      <div class="ex1">
+        <div id="cube" class="cube">
+        <div class="side front"><img *ngIf="previewImg" src="{{previewImg.src}}" width="100%"></div>
+        <div class="side back"><img *ngIf="previewImg" src="{{previewImg.src}}" width="100%"></div>
+        <div class="side right"><img *ngIf="previewImg" src="{{previewImg.src}}" width="100%"></div>
+        <div class="side left"><img *ngIf="previewImg" src="{{previewImg.src}}" width="100%"></div>
+        <div class="side top"><img *ngIf="previewImg" src="{{previewImg.src}}" width="100%"></div>
+        <div class="side bottom"><img *ngIf="previewImg" src="{{previewImg.src}}" width="100%"></div>
+        </div>
+      </div>
+
+      <br><br><br><br><br>
+          <form id="controls" class="controls">
+            <div class="form-row">
+              <label for="x">X</label>
+              <input class="slider" type="range" id="x" min="0" max="360" value="135">
+              <input type="text" id="x-val" hidden readonly>
+            </div>
+            <div class="form-row">
+              <label for="y">Y</label>
+              <input class="slider" type="range" id="y" min="0" max="360" value="45">
+              <input type="text" id="y-val" hidden readonly>
+            </div>
+            <div class="form-row">
+              <label for="z">Z</label>
+              <input class="slider" type="range" id="z" min="-400" max="400" value="0">
+              <input type="text" id="z-val" hidden readonly>
+            </div>
+          </form>
+    </div> -->
+  </div>
+</div>

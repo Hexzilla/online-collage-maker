@@ -1,0 +1,11 @@
+<div class="container">
+  <div class="image">
+    <img src="assets/imgs/emptycart.svg" height="200px" width="200px">
+    <hr style="width:250px">
+    <br>
+    <h5 class="alert alert-success">{{successText}}</h5>
+
+    <a [routerLink]="['/profile']" routerLinkActive="router-link-active">
+      <button mat-raised-button color="accent">Check Order Status</button>
+    </a>
+  </div>
