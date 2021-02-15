@@ -4,8 +4,8 @@
   "theme_color": "#673ab7",
   "background_color": "#fafafa",
   "display": "standalone",
-  "scope": "/canvas-prints/",
-  "start_url": "/canvas-prints/",
+  "scope": "/online-collage-maker/",
+  "start_url": "/online-collage-maker/",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",
