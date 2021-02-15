@@ -38,11 +38,12 @@
             ],
             "allowedCommonJsDependencies" : [
               "rxjs/add/operator/filter",
+              "rxjs/Subject",
               "jquery",
               "hammerjs",
               "fabric",
-	      "url",
-	      "lodash"
+              "url",
+              "lodash"
             ]
           },
           "configurations": {
