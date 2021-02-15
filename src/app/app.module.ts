@@ -12,7 +12,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 
 import { SidenavComponent } from './sidenav/sidenav.component';
-//import { LandingComponent } from './landing/landing.component';
 import { CollageMakeComponent } from "./collage-make/collage-make.component";
 import { ControlPanelComponent } from "./control-panel/control-panel.component";
 import { ImageEditorComponent } from "./image-editor/image-editor.component";
