@@ -41,7 +41,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //import { NgMasonryGridModule } from 'ng-masonry-grid';
-import { SamplesComponent } from './pages/samples/samples.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { ToastrModule } from "ngx-toastr";
@@ -58,7 +57,6 @@ const appRoutes: Routes = [
   { path: 'cart', component: CartComponent },
   { path: 'crud', component: CrudComponent },
   { path: 'success', component: OrderSuccessComponent },
-  { path: 'samples', component: SamplesComponent },
   { path: 'gallary/:slug', component: GalleryComponent },
   { path: '**', pathMatch: 'full', redirectTo: '' }
 ];
@@ -78,7 +76,6 @@ const appRoutes: Routes = [
     PreviewDialog,
     DialogLoginComponent,
     OrderSuccessComponent,
-    SamplesComponent,
     GalleryComponent,
   ],
   imports: [
