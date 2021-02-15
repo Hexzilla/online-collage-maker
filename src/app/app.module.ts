@@ -29,6 +29,7 @@ import { MatSliderModule } from "@angular/material/slider";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS } from "@angular/material/dialog";
 import { NgxDropzoneModule } from "ngx-dropzone";
 import { ColorPickerModule } from "ngx-color-picker";
 import { MainNavComponent } from './main-nav/main-nav.component';
@@ -102,6 +103,7 @@ const appRoutes: Routes = [
     MatSliderModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    ImageEditorComponent,
   ],
   providers: [
     TokenService,
@@ -111,6 +113,8 @@ const appRoutes: Routes = [
       useClass: TokenInterceptor,
       multi: true,
     },
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
   ],
   entryComponents: [PreviewDialog, DialogLoginComponent],
   bootstrap: [AppComponent],

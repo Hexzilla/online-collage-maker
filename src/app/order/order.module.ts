@@ -11,7 +11,6 @@ import { CanvasComponent } from './canvas/canvas.component';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TestComponent } from './test/test.component';
-import { PreviewSelectorComponent, ImageEditorDialog } from './preview-selector/preview-selector.component';
 import { PaymentComponent } from './payment/payment.component';
 import { PreviewComponent } from './preview/preview.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
@@ -38,8 +37,8 @@ const routes: Routes = [
 
   ],
   entryComponents: [
-    ImageEditorDialog, ColorPickerComponent
+    ColorPickerComponent
   ],
-  declarations: [OrderComponent, OrderSelectorComponent, CanvasComponent, TestComponent, PreviewSelectorComponent, PaymentComponent, ImageEditorDialog, PreviewComponent, ColorPickerComponent]
+  declarations: [OrderComponent, OrderSelectorComponent, CanvasComponent, TestComponent, PaymentComponent, PreviewComponent, ColorPickerComponent]
 })
 export class OrderModule { }

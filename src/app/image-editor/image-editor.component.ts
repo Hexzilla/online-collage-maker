@@ -1,6 +1,11 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, Inject, OnInit, Input } from "@angular/core";
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { fabric } from "fabric";
 import { Collage } from "../collage/collage";
+
+export interface DialogData {
+  imageUrl: string;
+}
 
 @Component({
   selector: "image-editor",
@@ -15,28 +20,26 @@ export class ImageEditorComponent implements OnInit {
   startPoint: fabric.Point;
   brightness: number = 0.1;
 
-  @Input("imageUrl") imageUrl: string;
-
   constructor(
+    public dialogRef: MatDialogRef<ImageEditorComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private collage: Collage
   ) {}
 
-
   ngOnInit() {
-    
-  }
-
-  ngOnChanges() {
-    this.createCanvas()
-    if (this.imageUrl) {
+    console.log("dialog-init", this.data);
+    this.createCanvas();
+    if (this.data.imageUrl) {
       this.image && this.canvas.remove(this.image);
-      fabric.Image.fromURL(this.imageUrl, (img) => this.onImageLoaded(img));
+      fabric.Image.fromURL(this.data.imageUrl, (img) =>
+        this.onImageLoaded(img)
+      );
     }
   }
 
   createCanvas() {
     if (this.canvas) {
-      this.canvas.dispose()
+      this.canvas.dispose();
     }
 
     this.canvas = new fabric.Canvas("crop-canvas", {
@@ -190,5 +193,10 @@ export class ImageEditorComponent implements OnInit {
       this.canvas.remove(this.selectionRect);
       this.selectionRect = null;
     }
+  }
+
+  onClose() {
+    console.log('close')
+    this.dialogRef.close();
   }
 }

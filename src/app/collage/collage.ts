@@ -13,6 +13,7 @@ export class Collage {
 
   onSelectedImageUrl: Function;
   onLoadingStateChanged: Function;
+  openDialog: Function;
 
   width: number = 8;
   height: number = 12;
@@ -81,8 +82,7 @@ export class Collage {
         .catch((err) => {
           this.setLoadingState(false);
         });
-    }
-    else {
+    } else {
       this.setLoadingState(false);
     }
   }
@@ -246,9 +246,10 @@ export class Collage {
   }
 
   onEditImage(url) {
-    this.onSelectedImageUrl && this.onSelectedImageUrl(url);
-    var button = document.getElementById("showModal");
-    button.click();
+    this.onSelectedImageUrl && this.onSelectedImageUrl(url); //TODO
+    //var button = document.getElementById("showModal");
+    //button.click();
+    this.openDialog && this.openDialog(url)
   }
 
   generate(
@@ -271,9 +272,9 @@ export class Collage {
 
   saveTemplate() {
     if (!this.board) {
-      return
+      return;
     }
-     
+
     const result = {
       width: this.width,
       height: this.height,
