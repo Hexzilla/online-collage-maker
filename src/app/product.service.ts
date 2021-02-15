@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Subject } from 'rxjs'; 
+//import { Subject } from 'rxjs'; 
 
 // import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 // import { Observable } from 'rxjs';
@@ -12,8 +12,8 @@ import { Subject } from 'rxjs';
 })
 export class ProductService {
 
-  invokeEvent: Subject<any> = new Subject(); 
-  invokeEvent1: Subject<any> = new Subject();
+  //invokeEvent: Subject<any> = new Subject(); 
+  //invokeEvent1: Subject<any> = new Subject();
 
   constructor(
     // private afs: AngularFirestore
@@ -47,11 +47,11 @@ export class ProductService {
 
 
   loadImageCategory(someValue){
-    this.invokeEvent.next(someValue)
+    //this.invokeEvent.next(someValue)
   }
 
   reloadComp(){
-      this.invokeEvent1.next();
+    //this.invokeEvent1.next();
   }
 
   // getCanvasContent(){
