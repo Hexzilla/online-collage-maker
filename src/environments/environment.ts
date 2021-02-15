@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   url: "https://m.printposters.in",
-  apiUrl: "",
+  apiUrl: "https://m.printposters.in",
   baseUrl: "https://m.printposters.in/online-collage-maker/",
 };
 

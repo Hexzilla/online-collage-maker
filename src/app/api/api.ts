@@ -51,9 +51,9 @@ export class ApiService {
         };
     }
 
-    async deleteImage(image) {
+    async deleteImage(url) {
+        console.log(url);
         try {
-            const url = environment.apiUrl + "/collage/images/" + this.getUserId() + "/" + image;
             const result = await this.http.delete(url).toPromise();
             if (result == 1) {
                 return true;
