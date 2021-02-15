@@ -30,10 +30,10 @@ export class CollageMakeComponent implements OnInit {
 
     document.addEventListener("contextmenu", (event) => event.preventDefault());
 
-    /*if (!this.loggedIn()) {
+    if (!this.loggedIn()) {
       this.router.navigate(['/login']);
       return false;
-    }*/
+    }
   }
 
   loggedIn() {
