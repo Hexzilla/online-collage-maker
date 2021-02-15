@@ -303,7 +303,8 @@ export class AuthService {
 
   getUserId() {
     if (localStorage.user) {
-      return localStorage.user.id;
+      const user = JSON.parse(localStorage.user);
+      return user.id;
     }
     return '';
   }
