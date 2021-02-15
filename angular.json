@@ -35,6 +35,14 @@
             ],
             "scripts": [
               "./node_modules/cropperjs/dist/cropper.min.js",
+            ],
+            "allowedCommonJsDependencies" : [
+              "rxjs/add/operator/filter",
+              "jquery",
+              "hammerjs",
+              "fabric",
+	      "url",
+	      "lodash"
             ]
           },
           "configurations": {

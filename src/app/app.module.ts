@@ -13,6 +13,7 @@ import { MaterialModule } from './material/material.module';
 
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { CollageMakeComponent } from "./collage-make/collage-make.component";
+import { CollageTemplateComponent } from "./collage-template/collage-template.component";
 import { ControlPanelComponent } from "./control-panel/control-panel.component";
 import { ImageEditorComponent } from "./image-editor/image-editor.component";
 import { ImageUploadComponent } from "./image-upload/image-upload.component";
@@ -66,6 +67,7 @@ const appRoutes: Routes = [
     SidenavComponent,
     FooterComponent,
     CollageMakeComponent,
+    CollageTemplateComponent,
     CartComponent,
     CrudComponent,
     ControlPanelComponent,
@@ -99,6 +101,11 @@ const appRoutes: Routes = [
     ServiceWorkerModule.register("ngsw-worker.js", {
       enabled: environment.production,
     }),
+  ],
+  exports: [
+    MatSliderModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     TokenService,
