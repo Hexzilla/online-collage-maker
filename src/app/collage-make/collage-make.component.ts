@@ -12,7 +12,6 @@ import { Collage } from '../collage/collage'
   styleUrls: ["collage-make.component.scss"],
 })
 export class CollageMakeComponent implements OnInit {
-  public selectedImageUrl: string = null;
   public loading: boolean = false;
 
   constructor(
@@ -24,7 +23,6 @@ export class CollageMakeComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.collage.onSelectedImageUrl = (url) => (this.selectedImageUrl = url);
     this.collage.onLoadingStateChanged = (state) => (this.loading = state);
     this.collage.openDialog = (url) => this.openDialog(url);
 

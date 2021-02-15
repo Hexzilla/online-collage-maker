@@ -177,6 +177,7 @@ export class ImageEditorComponent implements OnInit {
       this.canvas.remove(this.selectionRect);
       this.selectionRect = null;
     }
+    this.onClose()
   }
 
   onCropImage() {
@@ -193,10 +194,10 @@ export class ImageEditorComponent implements OnInit {
       this.canvas.remove(this.selectionRect);
       this.selectionRect = null;
     }
+    this.onClose()
   }
 
   onClose() {
-    console.log('close')
     this.dialogRef.close();
   }
 }

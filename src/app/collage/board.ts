@@ -98,11 +98,6 @@ class Board {
     return this.images[this.selectedTag]
   }
 
-  getSelectedImageUrl() {
-    const image: ImageBox = this.getSelectedImage()
-    return image.getImageUrl()
-  }
-
   getCollageInfo() {
     const collages = []
     console.log(this.images);

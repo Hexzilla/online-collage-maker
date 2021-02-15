@@ -11,7 +11,6 @@ export class Collage {
   public board: Board;
   loading: boolean = false;
 
-  onSelectedImageUrl: Function;
   onLoadingStateChanged: Function;
   openDialog: Function;
 
@@ -246,9 +245,6 @@ export class Collage {
   }
 
   onEditImage(url) {
-    this.onSelectedImageUrl && this.onSelectedImageUrl(url); //TODO
-    //var button = document.getElementById("showModal");
-    //button.click();
     this.openDialog && this.openDialog(url)
   }
 
