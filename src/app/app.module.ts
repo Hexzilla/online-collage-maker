@@ -51,7 +51,6 @@ const appRoutes: Routes = [
   { path: 'login', loadChildren: './login/login.module#LoginModule' },
   { path: 'register', loadChildren: './register/register.module#RegisterModule' },
   { path: 'profile', loadChildren: './profile/profile.module#ProfileModule' },
-  { path: 'product', loadChildren: './product/product.module#ProductModule' },
   { path: 'order', loadChildren: './order/order.module#OrderModule' },
   { path: 'cart', component: CartComponent },
   { path: 'crud', component: CrudComponent },

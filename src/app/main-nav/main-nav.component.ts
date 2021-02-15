@@ -7,7 +7,6 @@ import {
 } from "@angular/cdk/layout";
 import { AuthService } from "../auth.service";
 import { Router } from "@angular/router";
-import { ProductService } from "../product.service";
 
 @Component({
   selector: "app-main-nav",
@@ -82,8 +81,7 @@ export class MainNavComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private authSvc: AuthService,
-    private router: Router,
-    private prdsvc: ProductService
+    private router: Router
   ) {}
 
   categories: any;
@@ -107,34 +105,11 @@ export class MainNavComponent implements OnInit {
   url: any;
 
   getAllGalleryCats() {
-    this.prdsvc.getGalleryCats().subscribe(
-      (resp: any) => {
-        if (resp.success) {
-          this.categories = resp.data;
-          // console.log(resp.data);
-          for (let i = 0; i < this.categories.length; i++) {
-            this.categories[i].url =
-              "https://m.printposters.in/gallery/category/" +
-              this.removeSpace(this.categories[i].title);
-            if (i == 0) {
-              this.url =
-                "https://m.printposters.in/gallery/category/" +
-                this.removeSpace(this.categories[i].title);
-              // this.router.navigateByUrl('/category/'+url);
-            }
-          }
-        } else {
-          console.log(resp.msg);
-        }
-      },
-      (err) => {
-        console.log(err.message);
-      }
-    );
+    
   }
 
   reloadLandingComp() {
-    this.prdsvc.reloadComp();
+    
   }
 
   removeSpace(str) {
@@ -143,8 +118,7 @@ export class MainNavComponent implements OnInit {
   }
 
   setCategories(loadCatgory) {
-    this.selectedItem = loadCatgory;
-    this.prdsvc.loadImageCategory(loadCatgory);
+    
   }
 
   isOpened: boolean = false;
