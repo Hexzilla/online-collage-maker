@@ -45,7 +45,7 @@ export class ImageUploadComponent implements OnInit {
       this.toastr.error("Please select file");
       return;
     }
-    console.log("progressShow=true");
+    
     this.progressShow = true;
     this.dropZoneStatus = true;
     let formData = new FormData();

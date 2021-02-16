@@ -24,7 +24,9 @@ export class ImageEditorComponent implements OnInit {
     public dialogRef: MatDialogRef<ImageEditorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private collage: Collage
-  ) {}
+  ) {
+    console.log('ImageEditor.Constructor')    
+  }
 
   ngOnInit() {
     console.log("dialog-init", this.data);
@@ -32,8 +34,7 @@ export class ImageEditorComponent implements OnInit {
     if (this.data.imageUrl) {
       this.image && this.canvas.remove(this.image);
       fabric.Image.fromURL(this.data.imageUrl, (img) =>
-        this.onImageLoaded(img)
-      );
+        this.onImageLoaded(img), {crossOrigin: 'anonymous'});
     }
   }
 
@@ -171,7 +172,7 @@ export class ImageEditorComponent implements OnInit {
 
   onApply() {
     if (this.scale != 1.0 || this.brightness != 0.1) {
-      this.collage.board.onImageChanged(this.scale, this.brightness);
+      this.collage.onImageChanged(this.scale, this.brightness);
     }
     if (this.selectionRect) {
       this.canvas.remove(this.selectionRect);
@@ -189,7 +190,7 @@ export class ImageEditorComponent implements OnInit {
       const width = rect.width / scale;
       const height = rect.height / scale;
       console.log(left, top, width, height);
-      this.collage.board.onImageCropped(left, top, width, height);
+      this.collage.onImageCropped(left, top, width, height);
 
       this.canvas.remove(this.selectionRect);
       this.selectionRect = null;

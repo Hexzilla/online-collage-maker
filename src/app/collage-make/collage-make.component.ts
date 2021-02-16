@@ -39,6 +39,7 @@ export class CollageMakeComponent implements OnInit {
   }
 
   openDialog(imageUrl) {
+    console.log("OpenDialog", this.dialog)
     this.dialog.open(ImageEditorComponent, {
       data: {
         imageUrl: imageUrl,

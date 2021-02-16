@@ -29,7 +29,6 @@ export class ApiService {
             const items = await this.http.get(url).toPromise();
             for (let key in items) {
                 const src = environment.apiUrl + items[key];
-                console.log("getImage", src);
                 images.push(src);
             }
             return images;
@@ -39,7 +38,7 @@ export class ApiService {
         return [];
     }
 
-    async getData() {
+    async getImageList() {
         const images = await this.getImages();
         return {
             images: images.map((it, index) => {
@@ -80,9 +79,9 @@ export class ApiService {
         return false;
     }
 
-    async createTemplate(data) {
+    async saveTemplate(data) {
         try {
-            const url = environment.apiUrl + "/collage/template/create";
+            const url = environment.apiUrl + "/collage/templates/save";
             const result = await this.http.post(url, data).toPromise();
             if (result == 1) {
                 return true;
@@ -95,7 +94,7 @@ export class ApiService {
 
     async deleteTemplate(templateId) {
         try {
-            const url = environment.apiUrl + "/collage/template/delete/" + templateId;
+            const url = environment.apiUrl + "/collage/templates/delete/" + templateId;
             const result = await this.http.delete(url).toPromise();
             if (result == 1) {
                 return true;

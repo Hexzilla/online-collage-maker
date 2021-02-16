@@ -54,7 +54,7 @@ class ImageBox {
 
   getImageInfo() {
     return {
-      url: this.url,
+      url: '', //this.url,
       offsetX: this.offsetX,
       offsetY: this.offsetY,
       initialScale: this.initialScale,
