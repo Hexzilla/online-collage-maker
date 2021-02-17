@@ -32,24 +32,34 @@ class ImageBox {
   strokeColor: string = 'rgb(136, 0, 26)'
   strokeWidth: number = 0
 
-  constructor({ canvas, url, offsetX, offsetY, scale, tag, borderWidth, borderColor }) {
+  constructor(canvas) {
     this.canvas = canvas
-    this.url = url
-    this.offsetX = offsetX
-    this.offsetY = offsetY
-    this.initialScale = this.scale = scale
-    this.tag = tag
-    this.strokeWidth = borderWidth
-    this.strokeColor = borderColor
     this.canvas.on('mouse:down', (e) => this.onMouseDown(e))
     this.canvas.on('object:moving', (e) => this.onObjectMoving(e))
     this.canvas.on('object:moved', (e) => this.onObjectMoved(e))
     this.canvas.on('object:scaling', (e) => this.onObjectScaling(e))
-    fabric.Image.fromURL(this.url, (img) => this.onImageLoaded(img), {crossOrigin: 'anonymous'})
   }
 
-  getImageUrl() {
-    return this.url
+  setImageOffset(offsetX, offsetY) {
+    this.offsetX = offsetX
+    this.offsetY = offsetY
+    return this
+  }
+
+  setTag(tag) {
+    this.tag = tag
+    return this
+  }
+
+  setScale(scale) {
+    this.scale = scale
+    return this
+  }
+
+  setBorder(borderWidth, borderColor) {
+    this.strokeWidth = borderWidth
+    this.strokeColor = borderColor
+    return this
   }
 
   getImageInfo() {
@@ -65,7 +75,19 @@ class ImageBox {
     }
   }
 
-  onImageLoaded(img) {
+  getImageUrl() {
+    return this.url
+  }
+
+  setImageUrl(url) {
+    this.url = url
+    if (this.url) {
+      fabric.Image.fromURL(this.url, (img) => this.onImageLoaded(img), {crossOrigin: 'anonymous'})
+    }
+    return this
+  }
+
+  private onImageLoaded(img) {
     this.image = img
     this.updateClipPath(this.offsetX, this.offsetY)
     this.updateImage()
@@ -121,7 +143,7 @@ class ImageBox {
     this.canvas.renderAll()
   }
 
-  updateImage() {
+  private updateImage() {
     const iw = this.image.width
     const ih = this.image.height
     const bw = this.scale * iw
@@ -164,7 +186,7 @@ class ImageBox {
     })
   }
 
-  updateClipPath(left, top) {
+  private updateClipPath(left, top) {
     const width = this.image.width * this.scale
     const height = this.image.height * this.scale
 
@@ -224,7 +246,7 @@ class ImageBox {
     this.canvas.add(this.boardRect)
   }
 
-  updateBoardRect() {
+  private updateBoardRect() {
     const width = this.image.width * this.scale
     const height = this.image.height * this.scale
     this.boardRect.set({

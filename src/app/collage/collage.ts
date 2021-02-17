@@ -145,16 +145,12 @@ export class Collage {
   }
 
   createImageBox(data, tag, borderWidth, borderColor) {
-    return new ImageBox({
-      canvas: this.canvas,
-      url: data.src,
-      offsetX: data.left,
-      offsetY: data.top,
-      scale: data.scale,
-      tag: tag,
-      borderWidth: borderWidth,
-      borderColor: borderColor
-    })
+    return new ImageBox(this.canvas)
+      .setImageOffset(data.left, data.top)
+      .setScale(data.scale)
+      .setTag(tag)
+      .setBorder(borderWidth, borderColor)
+      .setImageUrl(data.src)
   }
 
   getSelectedImage() {
