@@ -5,13 +5,66 @@ import { CanvasLayout } from "./cavas-layout";
 import { Setting } from "./setting";
 import { loadImage, shuffle } from "./util";
 import ImageBox from "./image-box"
+import ImageBoardBox from "./image-board-box"
 import CanvasContextMenu from "./contextmenu"
+
+
+const admin_templates = [
+  {
+    id: 1,
+    setting: {
+      widthInch: 16,
+      heightInch: 12,
+      landscape: false,
+      borderWidth: 10,
+      borderColor: "rgb(0, 0, 255)"
+    },
+    images: [
+      {
+        index: 1,
+        left: 0,
+        top: 0,
+        width: 300,
+        height: 400,
+      },
+      {
+        index: 2,
+        left: 400,
+        top: 0,
+        width: 300,
+        height: 400,
+      },
+      {
+        index: 3,
+        left: 800,
+        top: 0,
+        width: 300,
+        height: 400,
+      },
+      {
+        index: 4,
+        left: 0,
+        top: 450,
+        width: 600,
+        height: 400,
+      },
+      {
+        index: 5,
+        left: 650,
+        top: 450,
+        width: 400,
+        height: 400,
+      }
+    ]
+  }
+]
+
 
 @Injectable({
   providedIn: "root",
 })
 export class Collage {
-  private canvas: any;
+  private canvas: fabric.Canvas;
   private loading: boolean = false;
   private layout: CanvasLayout
   private contextMenu: CanvasContextMenu
@@ -26,17 +79,12 @@ export class Collage {
     this.contextMenu.onMenuItemClicked = (e) => this.onMenuItemClicked(e)
   }
 
-  async ngOnInit() {
-    // Remove mouse click on page
-    document.addEventListener("contextmenu", (event) => event.preventDefault());
-  }
-
-  setLoadingState(state) {
+  private setLoadingState(state) {
     this.loading = state;
     this.onLoadingStateChanged && this.onLoadingStateChanged(state);
   }
 
-  createCanvasElement(width, height) {
+  private createCanvasElement(width, height) {
     const container = document.getElementById("canvas-container");
     var element = document.createElement("canvas");
     element.id = "main-canvas";
@@ -47,41 +95,73 @@ export class Collage {
     container.appendChild(element);
   }
 
-  removeCanvasElement() {
+  private removeCanvasElement() {
     const container = document.getElementById("canvas-container");
     if (container.childNodes.length > 0) {
       container.removeChild(container.childNodes[0]);
     }
   }
 
-  async createCollage(setting: Setting) {
+  private getCanvasContainerWidth() {
+    return document.getElementById("canvas-container").offsetWidth;
+  }
+
+  //////////////////////////////////////////////////////
+  //Smart Collage
+  //////////////////////////////////////////////////////
+  async createSmartCollage(setting: Setting) {
     if (this.loading) {
       return
     }
 
-    const containerWidth = document.getElementById("canvas-container").offsetWidth;
-    this.layout = new CanvasLayout(setting, containerWidth)
-
     try {
+      const ccw = this.getCanvasContainerWidth()
+      this.layout = new CanvasLayout(setting, ccw)
+
       this.removeCanvasElement()
       this.setLoadingState(true);
 
       let res = await this.api.getImageList();
-      if (res && res.images && res.images.length) {
-        const shuffledImages = shuffle(res.images);
-        const images = await Promise.all(shuffledImages.map(async (item) => {
-            const image = await loadImage(item.src);
-            console.log("LoadImage", image['width'], image['height'])
-            return Object.assign(item, {
-              image: image,
-              ratio: image['width'] / image['height'],
-            });
-          })
-        )
+      if (!res || !res.images || !res.images.length) {
+        return
+      }
 
-        console.log("LoadImage, Completed")
-        this.createCanvas(images);
-      } 
+      const shuffledImages = shuffle(res.images);
+      const images = await Promise.all(shuffledImages.map(async (item) => {
+          const image = await loadImage(item.src);
+          console.log("LoadImage", image['width'], image['height'])
+          return Object.assign(item, {
+            image: image,
+            ratio: image['width'] / image['height'],
+          });
+        })
+      )
+      console.log("LoadImage, Completed")
+
+      // Get perfect layouts
+      const perfectRows = this.layout.getCanvasLayout(images);
+      const layoutItems = this.layout.getLayoutItems(images, perfectRows);
+      const sumOfHeight = layoutItems.reduce((accumulator, item) => {
+        return Math.max(accumulator, item.top + item.height);
+      }, 0);
+
+      // Create canvas and fabric
+      const canvasHeight = setting.borderWidth + sumOfHeight
+      const canvasWidth = this.layout.calculateWidth();
+      this.createCanvasElement(canvasWidth, canvasHeight)
+      this.createFabricCanvas(canvasWidth, canvasHeight)
+
+      // Add images to canvas.
+      this.images = []
+      layoutItems.forEach(data => {
+        const tag = `img_${data.col}_${data.row}`
+        this.images[tag] = new ImageBox(this.canvas)
+          .setImageOffset(data.left, data.top)
+          .setScale(data.scale)
+          .setTag(tag)
+          .setBorder(setting.borderWidth, setting.borderColor)
+          .setImageUrl(data.src)
+      })
     }
     catch (err) {
       console.log(err)
@@ -91,32 +171,11 @@ export class Collage {
     }
   }
 
-  createCanvas(images) {
-    const setting = this.layout.getSetting()
+  private createFabricCanvas(width, height) {
+    if (this.canvas) {
+      this.canvas.dispose()
+    }
 
-    // Get perfect layouts
-    const perfectRows = this.layout.getCanvasLayout(images);
-    const layoutItems = this.layout.getLayoutItems(images, perfectRows);
-    const sumOfHeight = layoutItems.reduce((accumulator, item) => {
-      return Math.max(accumulator, item.top + item.height);
-    }, 0);
-
-    // Create canvas and fabric
-    const canvasHeight = setting.borderWidth + sumOfHeight
-    const canvasWidth = this.layout.calculateWidth();
-    this.createCanvasElement(canvasWidth, canvasHeight)
-    this.createFabricCanvas(canvasWidth, canvasHeight)
-
-    // Add images to canvas.
-    this.images = []
-    layoutItems.forEach(data => {
-      const tag = `img_${data.col}_${data.row}`
-      const imagebox = this.createImageBox(data, tag, setting.borderWidth, setting.borderColor)
-      this.images[tag] = imagebox
-    })
-  }
-
-  createFabricCanvas(width, height) {
     this.canvas = new fabric.Canvas("main-canvas", {
       fireRightClick: true,
       stopContextMenu: true,
@@ -144,33 +203,11 @@ export class Collage {
     })
   }
 
-  createImageBox(data, tag, borderWidth, borderColor) {
-    return new ImageBox(this.canvas)
-      .setImageOffset(data.left, data.top)
-      .setScale(data.scale)
-      .setTag(tag)
-      .setBorder(borderWidth, borderColor)
-      .setImageUrl(data.src)
-  }
-
-  getSelectedImage() {
+  private getSelectedImage() {
     return this.images[this.selectedTag]
   }
 
-  getCollageInfo() {
-    const collages = []
-    for (const tag in this.images) {
-      const img: ImageBox = this.images[tag]
-      collages.push(img.getImageInfo());
-    }
-    return collages
-  }
-
-  setTemplate(template) {
-    
-  }
-
-  onMenuItemClicked(e) {
+  private onMenuItemClicked(e) {
     const elementId = e.target['id'];
     if (elementId == 'edit') {
       const image: ImageBox = this.getSelectedImage()
@@ -198,23 +235,69 @@ export class Collage {
     image.onImageCropped(left, top, width, height)
   }
 
-  onEditImage(url) {
+  private onEditImage(url) {
     this.openDialog && this.openDialog(url)
+  }
+
+  //////////////////////////////////////////////////////
+  //Create Collage by Template ID
+  //////////////////////////////////////////////////////
+  async createCollageByTemplateId(templateId) {
+    const template = admin_templates.find(it => it.id == templateId)
+    if (!template) {
+      return
+    }
+
+    if (this.loading) {
+      return
+    }
+
+    try {
+      const setting = template.setting
+      const ccw = this.getCanvasContainerWidth()
+      this.layout = new CanvasLayout(setting, ccw)
+
+      this.removeCanvasElement()
+      this.setLoadingState(true);
+
+      const canvasWidth = this.layout.calculateWidth()
+      const canvasHeight = this.layout.calculateHeight()
+      this.createCanvasElement(canvasWidth, canvasHeight)
+      this.createFabricCanvas(canvasWidth, canvasHeight)
+
+      // Add images to canvas.
+      this.images = []
+      template.images.forEach(it => {
+        const tag = `img_${it.index}`
+        this.images[tag] = new ImageBoardBox(this.canvas)
+          .setImageOffset(it.left, it.top)
+          .setScale(1.0)
+          .setTag(tag)
+          .setBorder(setting.borderWidth, setting.borderColor)
+          .setBoard(it.width, it.height)
+      })
+    }
+    catch (err) {
+      console.log(err)
+    }
+    finally {
+      this.setLoadingState(false);
+    }
+  }
+
+  getCollageInfo() {
+    const collages = []
+    for (const tag in this.images) {
+      const img: ImageBox = this.images[tag]
+      collages.push(img.getImageInfo());
+    }
+    return collages
   }
 
   async saveTemplate() {
     const setting = this.layout.getSetting()
-    const data = {...setting, images: this.getCollageInfo()};
+    const data = {setting: setting, images: this.getCollageInfo()};
     console.log("Save Template:", data);
     await this.api.saveTemplate(data)
-  }
-
-  async selectTemplate() {
-    await this.saveTemplate()
-  }
-
-  async createBoardByTemplateId(templateId) {
-    //this.resetCanvas()
-    //this.setLoadingState(true);
   }
 }

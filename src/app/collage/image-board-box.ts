@@ -14,7 +14,7 @@ class Rect {
   }
 }
 
-class ImageBox {
+class ImageBoardBox {
   url: string
   canvas: fabric.Canvas
   image: fabric.Image
@@ -30,6 +30,8 @@ class ImageBox {
   controlBoxPos: fabric.Point
   cropRect: Rect = null
   tag: string
+  boardWidth: number = 0
+  boardHeight: number = 0
   strokeColor: string = 'rgb(136, 0, 26)'
   strokeWidth: number = 0
 
@@ -54,6 +56,13 @@ class ImageBox {
 
   setScale(scale) {
     this.scale = scale
+    return this
+  }
+
+  setBoard(boardWidth, boardHeight) {
+    this.boardWidth = boardWidth
+    this.boardHeight = boardHeight
+    this.createBoard()
     return this
   }
 
@@ -213,6 +222,26 @@ class ImageBox {
     }
   }
 
+  private createBoard() {
+    this.boardRect = new fabric.Rect({
+      type: this.tag,
+      originX: 'left',
+      originY: 'top',
+      left: this.offsetX,
+      top: this.offsetY,
+      width: this.boardWidth,
+      height: this.boardHeight,
+      fill: 'rgb(215,215,215)',
+      absolutePositioned: true,
+      selectable: false,
+      stroke: this.strokeColor,
+      strokeWidth: this.strokeWidth,
+      padding: 0,
+    })
+
+    this.canvas.add(this.boardRect)
+  }
+
   private createControlBox() {
     this.controlBox = new fabric.Rect({
       type: this.tag,
@@ -313,4 +342,4 @@ class ImageBox {
 
 }
 
-export default ImageBox
+export default ImageBoardBox
