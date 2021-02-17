@@ -2,9 +2,6 @@ import { Injectable } from "@angular/core";
 import perfectLayout from "perfect-layout";
 import { Setting } from "./setting"
 
-@Injectable({
-  providedIn: "root",
-})
 export class CanvasLayout {
   private setting: Setting;
   private containerWidth: number = 0;
