@@ -79,17 +79,56 @@ export class ApiService {
         return false;
     }
 
-    async saveTemplate(data) {
+    createCollageImageData(userId, dataUrl, width, height) {
+        return {
+            userId: userId,
+            title: 'Online Collage Image',
+            image: dataUrl,
+            width: width,
+            height: height,
+            basePrice: 0,
+            short_description: userId,
+            description: 'Online Collage Image',
+            categories: {
+                title: 'Online Collage Image'
+            },
+            visible: 'Yes',
+        }
+    }
+
+    async saveCollageImage(userId, dataUrl, width, height) {
         try {
-            const url = environment.apiUrl + "/collage/templates/save";
-            const result = await this.http.post(url, data).toPromise();
-            if (result == 1) {
-                return true;
-            }
+            const url = environment.apiUrl + "/collage/image/save";
+            const data = this.createCollageImageData(userId, dataUrl, width, height)
+            return await this.http.post(url, data).toPromise();
         } catch (e) {
             console.log(e);
         }
         return false;
+    }
+
+    async updateCollageImage(collageId, userId, dataUrl, width, height) {
+        try {
+            const url = environment.apiUrl + "/collage/image/update/" + collageId;
+            const data = this.createCollageImageData(userId, dataUrl, width, height)
+            return await this.http.post(url, { data: data }).toPromise();
+        } catch (e) {
+            console.log(e);
+        }
+        return false;
+    }
+
+    async saveTemplate(data) {
+        try {
+            const url = environment.apiUrl + "/collage/templates/save";
+            const response = await this.http.post(url, data).toPromise();
+            if (response['success'] == true) {
+                return response['data']
+            }
+        } catch (e) {
+            console.log(e);
+        }
+        return null;
     }
 
     async deleteTemplate(templateId) {

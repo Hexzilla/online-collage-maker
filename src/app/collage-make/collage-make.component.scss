@@ -27,16 +27,6 @@
     }
 }
 
-// .spinner-container {
-//     position: absolute;
-//     top: 50%;
-//     left: 50%;
-//     margin-top: -50px;
-//     margin-left: -50px;
-//     width: 100px;
-//     height: 100px;
-// }
-
 .spinner-container {
     position: fixed;
     z-index: 999;
@@ -51,7 +41,7 @@
   }
   
   /* Transparent Overlay */
-  .spinner-container:before {
+.spinner-container:before {
     content: '';
     display: block;
     position: fixed;

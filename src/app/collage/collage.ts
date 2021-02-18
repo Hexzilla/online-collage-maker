@@ -70,6 +70,7 @@ export class Collage {
   private contextMenu: CanvasContextMenu
   private images: any = {}
   private selectedTag: any
+  private savedCollage: any
   
   onLoadingStateChanged: Function;
   openDialog: Function;
@@ -118,6 +119,7 @@ export class Collage {
       const ccw = this.getCanvasContainerWidth()
       this.layout = new CanvasLayout(setting, ccw)
 
+      this.savedCollage = null
       this.removeCanvasElement()
       this.setLoadingState(true);
 
@@ -289,6 +291,7 @@ export class Collage {
       const ccw = this.getCanvasContainerWidth()
       this.layout = new CanvasLayout(setting, ccw)
 
+      this.savedCollage = null
       this.removeCanvasElement()
       this.setLoadingState(true);
 
@@ -317,19 +320,56 @@ export class Collage {
     }
   }
 
+  async saveImage(userId) {
+    if (!this.canvas) {
+      return
+    }
+
+    this.setLoadingState(true)
+    const dataUrl = this.canvas.toDataURL({
+      format: 'jpeg',
+      quality: 0.5
+    });
+
+    let response = null
+    if (this.savedCollage) {
+      response = await this.api.updateCollageImage(this.savedCollage._id, 
+        userId, dataUrl, this.canvas.width, this.canvas.height)
+    }
+    else {
+      response = await this.api.saveCollageImage(userId, 
+        dataUrl, this.canvas.width, this.canvas.height)
+    }
+    this.setLoadingState(false)
+
+    console.log('response', response)
+    if (!response || !response['success']) {
+      return null
+    }
+
+    const data = response['data']
+    this.savedCollage = data
+    return data['slug']
+  }
+
   getCollageInfo() {
+    let index = 1
     const collages = []
     for (const tag in this.images) {
       const img: ImageBox = this.images[tag]
-      collages.push(img.getImageInfo());
+      const info = Object.assign({ index: index++ }, img.getImageInfo())
+      collages.push(info);
     }
     return collages
   }
 
   async saveTemplate() {
+    this.setLoadingState(true)
     const setting = this.layout.getSetting()
     const data = {setting: setting, images: this.getCollageInfo()};
     console.log("Save Template:", data);
-    await this.api.saveTemplate(data)
+    const template = await this.api.saveTemplate(data)
+    console.log('template', template)
+    this.setLoadingState(false)
   }
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from "@angular/core";
+import { PrintMenu } from "../print-menu/print-menu.component"
 import { Collage } from "../collage/collage";
-import { Setting } from "../collage/setting";
+import { AuthService } from "../auth.service";
+import { environment } from './../../environments/environment';
 
 @Component({
   selector: "control-panel",
@@ -18,7 +20,10 @@ export class ControlPanelComponent implements OnInit {
 
   @Input() collageTemplate: boolean;
 
-  constructor(private collage: Collage) {}
+  constructor(
+    private authSvc: AuthService,
+    private collage: Collage
+  ) {}
 
   ngOnInit() {
     // Remove mouse click on page
@@ -37,10 +42,32 @@ export class ControlPanelComponent implements OnInit {
 
   async selectTemplate() {
     console.log('selectTemplate')
-    await this.collage.createCollageByTemplateId(1)
+    //await this.collage.createCollageByTemplateId(1)
   }
 
-  saveTemplate() {
-    this.collage.saveTemplate();
+  async saveTemplate() {
+    await this.collage.saveTemplate();
+  }
+
+  async printCollage(way) {
+    const userId = this.authSvc.getUserId()
+    const slug = await this.collage.saveImage(userId);
+    if (!slug) {
+      return
+    }
+
+    let url = environment.apiUrl
+    if (way == 0) {
+      url += '/canvas-prints/order/gallary/'
+    }
+    else if (way == 1) {
+      url += '/poster-prints/order/gallary/'
+    }
+    else {
+      url += '/photo-prints/order/gallary/'
+    }
+    url += slug
+    
+    window.open(url, "_blank");
   }
 }

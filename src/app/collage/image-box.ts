@@ -64,15 +64,12 @@ class ImageBox {
   }
 
   getImageInfo() {
+    const rect = this.controlBox
     return {
-      url: '', //this.url,
-      offsetX: this.offsetX,
-      offsetY: this.offsetY,
-      initialScale: this.initialScale,
-      scale: this.scale,
-      zoom: this.zoom,
-      brightness: this.brightness,
-      cropRect: this.cropRect
+      left: rect.left,
+      top: rect.top,
+      width: rect.width * rect.scaleX,
+      height: rect.height * rect.scaleY
     }
   }
 

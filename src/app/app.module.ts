@@ -26,8 +26,10 @@ import { CrudComponent } from './crud/crud.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from "@angular/material/select";
 import { MatSliderModule } from "@angular/material/slider";
+import { MatBottomSheetModule } from "@angular/material/bottom-sheet"
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS } from "@angular/material/dialog";
 import { NgxDropzoneModule } from "ngx-dropzone";
@@ -44,6 +46,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //import { NgMasonryGridModule } from 'ng-masonry-grid';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { ToastrModule } from "ngx-toastr";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 const appRoutes: Routes = [
@@ -83,8 +86,10 @@ const appRoutes: Routes = [
     MatMenuModule,
     MatSelectModule,
     MatSliderModule,
+    MatBottomSheetModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    MatListModule,
     MatCheckboxModule,
     NgxDropzoneModule,
     ColorPickerModule,
@@ -98,11 +103,14 @@ const appRoutes: Routes = [
     ServiceWorkerModule.register("ngsw-worker.js", {
       enabled: environment.production,
     }),
+    NgbModule,
   ],
   exports: [
     MatSliderModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    MatBottomSheetModule,
+    MatListModule,
     ImageEditorComponent,
   ],
   providers: [

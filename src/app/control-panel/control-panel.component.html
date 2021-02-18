@@ -49,11 +49,25 @@
           </div>
         </div>
         <div *ngIf="!collageTemplate">
-          <div class="col-md-12 text-center">
-            <button type="button" class="btn btn-primary btn-sm shadow collage-btn" (click)="createCollage()">Create Collage</button>
+          <div class="row pl-1 m-1 text-center">
+            <div class="col-md-12 text-center">
+              <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="createCollage()">Create Collage</button>
+            </div>
           </div>
-          <div class="col-md-12 text-center">
-            <button type="button" class="btn btn-primary btn-sm shadow collage-btn" (click)="selectTemplate()">Select Template</button>
+          <div class="row pl-1 m-1 text-center">
+            <div class="col-md-12 text-center">
+              <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="selectTemplate()">Select Template</button>
+            </div>
+          </div>
+          <div class="row pl-1 m-1 text-center">
+            <div ngbDropdown class="col-md-12 text-center">
+              <button mat-raised-button class="btn btn-sm btn-block btn-primary" id="dropdownBasic1" ngbDropdownToggle>Print Collage Image</button>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <button ngbDropdownItem (click)="printCollage(0)">Canvas Print - Single Frame</button>
+                <button ngbDropdownItem (click)="printCollage(1)">Poster Print - With Sticker</button>
+                <button ngbDropdownItem (click)="printCollage(2)">Poster Print - Without Sticker</button>
+              </div>
+            </div>
           </div>
         </div>
         <div *ngIf="collageTemplate" class="clearfx">
