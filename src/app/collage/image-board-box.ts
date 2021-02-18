@@ -32,6 +32,7 @@ class ImageBoardBox {
   tag: string
   strokeColor: string = 'rgb(136, 0, 26)'
   strokeWidth: number = 0
+  onImageLoadCompleted: Function
 
   constructor(canvas) {
     this.canvas = canvas
@@ -126,6 +127,8 @@ class ImageBoardBox {
     this.controlBoxPoint = new fabric.Point(this.controlBox.left, this.controlBox.top)
 
     this.updateClipPath()
+
+    this.onImageLoadCompleted && this.onImageLoadCompleted()
   }
 
   setBrightness(value) {

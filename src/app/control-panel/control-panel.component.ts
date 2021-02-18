@@ -36,6 +36,7 @@ export class ControlPanelComponent implements OnInit {
   }
 
   async selectTemplate() {
+    console.log('selectTemplate')
     await this.collage.createCollageByTemplateId(1)
   }
 

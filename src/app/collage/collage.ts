@@ -256,12 +256,13 @@ export class Collage {
 
   onHandleDrop(offsetX, offsetY) {
     if (this.dragImageUrl) {
-      const image = this.getImage(offsetX, offsetY)
+      const image: ImageBoardBox = this.getImage(offsetX, offsetY)
       if (!image) {
         return
       }
 
-      console.log(image)
+      this.setLoadingState(true)
+      image.onImageLoadCompleted = () => this.setLoadingState(false)
       image.setImageUrl(this.dragImageUrl)
       this.dragImageUrl = null
     }
