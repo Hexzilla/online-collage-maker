@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-
-// import { AngularFirestore } from '@angular/fire/firestore';
-
 import { User } from 'src/datamodel/user';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';

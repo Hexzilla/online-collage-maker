@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-// import { AngularFirestore } from '@angular/fire/firestore';
 import { Product } from 'src/datamodel/product';
 
 @Component({

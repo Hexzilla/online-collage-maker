@@ -1,5 +1,3 @@
-// import { AngularFireAuth } from '@angular/fire/auth';
-
 import { UserService } from './user.service';
 import { User } from '../datamodel/user';
 import { Observable } from 'rxjs/internal/Observable';

@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-// import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
 import { Order } from "src/datamodel/order";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { AuthService } from "./auth.service";

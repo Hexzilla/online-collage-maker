@@ -3,14 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// firebase imports
-// import { AngularFireModule } from '@angular/fire';
-// import { AngularFirestoreModule } from '@angular/fire/firestore';
-
-// import { AngularFireAuthModule } from '@angular/fire/auth';
-
 import { MaterialModule } from './material/material.module';
-
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { CollagePreviewComponent } from "./collage-preview/collage-preview.component";
 import { CollageMakeComponent } from "./collage-make/collage-make.component";
@@ -37,7 +30,6 @@ import { NgxDropzoneModule } from "ngx-dropzone";
 import { ColorPickerModule } from "ngx-color-picker";
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { PreviewDialog, DialogLoginComponent } from './order/preview/preview.component';
-import { MatCarouselModule } from '@ngbmodule/material-carousel';
 import { OrderSuccessComponent } from './order-success/order-success.component';
 import { TokenInterceptor } from './services/token-interceptor';
 import { TokenService } from './services/token.service';
@@ -98,7 +90,6 @@ const appRoutes: Routes = [
     ColorPickerModule,
     FormsModule,
     ReactiveFormsModule,
-    MatCarouselModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     RouterModule.forRoot(appRoutes, { useHash: false }),

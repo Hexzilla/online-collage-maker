@@ -5,7 +5,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
-import { AngularFireStorageModule } from '@angular/fire/storage';
 import { OrderSelectorComponent } from './order-selector/order-selector.component';
 import { CanvasComponent } from './canvas/canvas.component';
 
@@ -31,7 +30,6 @@ const routes: Routes = [
     ReactiveFormsModule,
     MaterialModule,
     FlexLayoutModule,
-    AngularFireStorageModule,
     RouterModule.forChild(routes),
     NgxTTitanColorPickerModule
 

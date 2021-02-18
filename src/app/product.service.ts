@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 //import { Subject } from 'rxjs'; 
 
-// import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 // import { Observable } from 'rxjs';
 // import { User } from 'src/datamodel/user';
 
