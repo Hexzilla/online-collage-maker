@@ -90,6 +90,7 @@ export class ApiService {
             short_description: userId,
             description: 'Online Collage Image',
             categories: {
+                userId: userId,
                 title: 'Online Collage Image'
             },
             visible: 'Yes',
@@ -112,6 +113,16 @@ export class ApiService {
             const url = environment.apiUrl + "/collage/image/update/" + collageId;
             const data = this.createCollageImageData(userId, dataUrl, width, height)
             return await this.http.post(url, { data: data }).toPromise();
+        } catch (e) {
+            console.log(e);
+        }
+        return false;
+    }
+
+    async getCollageImages(userId) {
+        try {
+            const url = environment.apiUrl + "/collage/image/preview/" + userId;
+            return await this.http.post(url, null).toPromise();
         } catch (e) {
             console.log(e);
         }

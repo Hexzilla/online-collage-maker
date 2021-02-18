@@ -27,7 +27,7 @@ class ImageBox {
   maskRect: fabric.Rect
   boardRect: fabric.Rect
   controlBox: fabric.Rect
-  controlBoxPos: fabric.Point
+  controlBoxPoint: fabric.Point
   cropRect: Rect = null
   tag: string
   strokeColor: string = 'rgb(136, 0, 26)'
@@ -53,7 +53,7 @@ class ImageBox {
   }
 
   setScale(scale) {
-    this.scale = scale
+    this.initialScale = this.scale = scale
     return this
   }
 
@@ -87,12 +87,14 @@ class ImageBox {
 
   private onImageLoaded(img) {
     this.image = img
-    this.updateClipPath(this.offsetX, this.offsetY)
     this.updateImage()
     this.canvas.add(this.image)
 
     this.createControlBox()
-    this.controlBoxPos = new fabric.Point(this.controlBox.left, this.controlBox.top)
+    this.controlBoxPoint = new fabric.Point(this.controlBox.left, this.controlBox.top)
+
+    this.updateClipPath()
+
   }
 
   setBrightness(value) {
@@ -134,8 +136,8 @@ class ImageBox {
   }
 
   update() {
-    this.updateClipPath(this.offsetX, this.offsetY)
     this.updateImage()
+    this.updateClipPath()
     this.setBrightness(this.brightness)
     this.canvas.renderAll()
   }
@@ -145,8 +147,6 @@ class ImageBox {
     const ih = this.image.height
     const bw = this.scale * iw
     const bh = this.scale * ih
-    const cx = this.offsetX + bw / 2
-    const cy = this.offsetY + bh / 2
 
     let offsetX, offsetY, scaleX, scaleY;
     if (this.cropRect) {
@@ -159,6 +159,9 @@ class ImageBox {
       offsetY = this.offsetY - scaleY * rect.top
     }
     else {
+      const cx = this.offsetX + bw / 2
+      const cy = this.offsetY + bh / 2
+
       scaleX = this.scale * this.zoom
       scaleY = this.scale * this.zoom
 
@@ -183,9 +186,11 @@ class ImageBox {
     })
   }
 
-  private updateClipPath(left, top) {
-    const width = this.image.width * this.scale
-    const height = this.image.height * this.scale
+  private updateClipPath() {
+    let left = this.controlBox.left
+    let top = this.controlBox.top
+    let width = this.controlBox.width * this.controlBox.scaleX
+    let height = this.controlBox.height * this.controlBox.scaleY
 
     if (!this.image.clipPath) {
       let maskRect = new fabric.Rect({
@@ -252,15 +257,15 @@ class ImageBox {
 
   onObjectMoving(e) {
     if (e.target.type == this.tag) {
-      const dx = e.target.left - this.controlBoxPos.x
-      const dy = e.target.top - this.controlBoxPos.y
+      const dx = e.target.left - this.controlBoxPoint.x
+      const dy = e.target.top - this.controlBoxPoint.y
       this.image.left += dx
       this.image.top  += dy
       this.offsetX += dx
       this.offsetY += dy
 
-      this.controlBoxPos = new fabric.Point(e.target.left, e.target.top)
-      this.updateClipPath(this.controlBoxPos.x, this.controlBoxPos.y)
+      this.controlBoxPoint = new fabric.Point(e.target.left, e.target.top)
+      this.updateClipPath()
     }
   }
 
@@ -285,13 +290,14 @@ class ImageBox {
 
   onObjectScaling(e) {
     if (e.target.type == this.tag) {
+      console.log(this.initialScale, this.scale, e.target.scaleX)
       this.scale = this.initialScale * e.target.scaleX
       this.offsetX = e.target.left
       this.offsetY = e.target.top
       this.updateImage()
 
-      this.controlBoxPos = new fabric.Point(e.target.left, e.target.top)
-      this.updateClipPath(e.target.left, e.target.top)
+      this.controlBoxPoint = new fabric.Point(e.target.left, e.target.top)
+      this.updateClipPath()
     }
   }
 

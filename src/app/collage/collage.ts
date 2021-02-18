@@ -325,6 +325,10 @@ export class Collage {
       return
     }
 
+    // const _r = await this.api.getCollageImages(userId)
+    // console.log(_r)
+    // return
+
     this.setLoadingState(true)
     const dataUrl = this.canvas.toDataURL({
       format: 'jpeg',

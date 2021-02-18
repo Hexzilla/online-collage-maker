@@ -54,7 +54,7 @@ class ImageBoardBox {
   }
 
   setScale(scale) {
-    this.scale = scale
+    this.initialScale = this.scale = scale
     return this
   }
 
