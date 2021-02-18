@@ -5,6 +5,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { AuthService } from "../auth.service";
 import { ApiService } from "../api/api";
 import { environment } from "./../../environments/environment";
+import { loadImage } from "../collage/util";
 
 @Component({
   selector: "collage-preview",
@@ -32,17 +33,26 @@ export class CollagePreviewComponent implements OnInit {
     this.loading = true;
     const userId = this.authSvc.getUserId();
     const response = await this.api.getCollageImages(userId);
-    console.log(response);
     if (response && response["success"]) {
       const data = response["data"];
       const url = environment.apiUrl + "/file/downloadGallary/";
-      this.images = data.map((it) => {
+      const images = data.map((it) => {
         return {
           src: url + it.image,
           slug: it.slug,
+          loaded: false
         };
       });
-      console.log(this.images);
+
+      const count = Math.min(4, images.length)
+      const preloadImages = images.slice(0, count);
+      await Promise.all(
+        preloadImages.map(async (item) => {
+          return await loadImage(item.src);
+        })
+      );
+
+      this.images = images
     }
     this.loading = false;
   }
