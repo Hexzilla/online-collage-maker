@@ -207,6 +207,16 @@ export class Collage {
     return this.images[this.selectedTag]
   }
 
+  private getImage(offsetX, offsetY) {
+    for (var tag in this.images) {
+      const it = this.images[tag]
+      if (it.containsPoint(offsetX, offsetY)) {
+        return it
+      }
+    }
+    return null
+  }
+
   private onMenuItemClicked(e) {
     const elementId = e.target['id'];
     if (elementId == 'edit') {
@@ -237,6 +247,24 @@ export class Collage {
 
   private onEditImage(url) {
     this.openDialog && this.openDialog(url)
+  }
+
+  dragImageUrl: string
+  onDragStart(url) {
+    this.dragImageUrl = url
+  }
+
+  onHandleDrop(offsetX, offsetY) {
+    if (this.dragImageUrl) {
+      const image = this.getImage(offsetX, offsetY)
+      if (!image) {
+        return
+      }
+
+      console.log(image)
+      image.setImageUrl(this.dragImageUrl)
+      this.dragImageUrl = null
+    }
   }
 
   //////////////////////////////////////////////////////

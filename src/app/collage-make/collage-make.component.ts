@@ -46,4 +46,20 @@ export class CollageMakeComponent implements OnInit {
       },
     });
   }
+
+  handleDrop(e) {
+    console.log(e, e.offsetX, e.offsetY)
+    this.collage.onHandleDrop(e.offsetX, e.offsetY)
+    return false;
+  }
 }
+
+/*
+window.addEventListener('resize', resizeCanvas, false);
+
+function resizeCanvas() {
+    canvas.setHeight(window.innerHeight);
+    canvas.setWidth(window.innerWidth);
+    canvas.renderAll();
+}
+*/

@@ -189,7 +189,7 @@ export class ImageEditorComponent implements OnInit {
       const top = (rect.top - this.image.top) / scale;
       const width = rect.width / scale;
       const height = rect.height / scale;
-      console.log(left, top, width, height);
+      console.log('CrectRect', left, top, width, height);
       this.collage.onImageCropped(left, top, width, height);
 
       this.canvas.remove(this.selectionRect);

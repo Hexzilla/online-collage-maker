@@ -139,7 +139,6 @@ class ImageBox {
   update() {
     this.updateClipPath(this.offsetX, this.offsetY)
     this.updateImage()
-    this.updateControlBox()
     this.setBrightness(this.brightness)
     this.canvas.renderAll()
   }
@@ -218,10 +217,10 @@ class ImageBox {
       type: this.tag,
       originX: 'left',
       originY: 'top',
-      left: 0,
-      top: 0,
-      width: 1,
-      height: 1,
+      left: this.offsetX,
+      top: this.offsetY,
+      width: this.image.width * this.scale,
+      height: this.image.height * this.scale,
       opacity: 1.0,
       fill: 'rgba(255,255,255, 0)',
       absolutePositioned: true,
@@ -243,19 +242,7 @@ class ImageBox {
     })
 
     this.controlBox.setControlsVisibility({mb: false, ml: false, mr: false, mt: false, mtr: false})
-    this.updateControlBox()
     this.canvas.add(this.controlBox)
-  }
-
-  private updateControlBox() {
-    const width = this.image.width * this.scale
-    const height = this.image.height * this.scale
-    this.controlBox.set({
-      left: this.offsetX,
-      top: this.offsetY,
-      width: width,
-      height: height,
-    })
   }
 
   onMouseDown(e) {

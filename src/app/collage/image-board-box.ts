@@ -27,11 +27,9 @@ class ImageBoardBox {
   maskRect: fabric.Rect
   boardRect: fabric.Rect
   controlBox: fabric.Rect
-  controlBoxPos: fabric.Point
+  controlBoxPoint: fabric.Point
   cropRect: Rect = null
   tag: string
-  boardWidth: number = 0
-  boardHeight: number = 0
   strokeColor: string = 'rgb(136, 0, 26)'
   strokeWidth: number = 0
 
@@ -59,11 +57,30 @@ class ImageBoardBox {
     return this
   }
 
-  setBoard(boardWidth, boardHeight) {
-    this.boardWidth = boardWidth
-    this.boardHeight = boardHeight
-    this.createBoard()
+  setBoard(width, height) {
+    this.boardRect = new fabric.Rect({
+      type: this.tag,
+      originX: 'left',
+      originY: 'top',
+      left: this.offsetX,
+      top: this.offsetY,
+      width: width,
+      height: height,
+      fill: 'rgba(215,215,215,1)',
+      absolutePositioned: true,
+      selectable: false,
+      stroke: this.strokeColor,
+      strokeWidth: this.strokeWidth,
+      padding: 0,
+    })
+    this.canvas.add(this.boardRect)
     return this
+  }
+
+  getBoard(): Rect {
+    const bw = this.boardRect.width * this.boardRect.scaleX
+    const bh = this.boardRect.height * this.boardRect.scaleY
+    return new Rect(this.boardRect.left, this.boardRect.top, bw, bh)
   }
 
   setBorder(borderWidth, borderColor) {
@@ -98,13 +115,17 @@ class ImageBoardBox {
   }
 
   private onImageLoaded(img) {
+    if (this.image) {
+      this.deleteImage()
+    }
     this.image = img
-    this.updateClipPath(this.offsetX, this.offsetY)
     this.updateImage()
     this.canvas.add(this.image)
 
     this.createControlBox()
-    this.controlBoxPos = new fabric.Point(this.controlBox.left, this.controlBox.top)
+    this.controlBoxPoint = new fabric.Point(this.controlBox.left, this.controlBox.top)
+
+    this.updateClipPath()
   }
 
   setBrightness(value) {
@@ -120,6 +141,10 @@ class ImageBoardBox {
   setZoomScale(zoom) {
     this.zoom = zoom
     this.update()
+  }
+
+  containsPoint(px, py) {
+    return this.boardRect.containsPoint(new fabric.Point(px, py))
   }
 
   deleteImage() {
@@ -146,9 +171,8 @@ class ImageBoardBox {
   }
 
   update() {
-    this.updateClipPath(this.offsetX, this.offsetY)
     this.updateImage()
-    this.updateControlBox()
+    this.updateClipPath()
     this.setBrightness(this.brightness)
     this.canvas.renderAll()
   }
@@ -158,8 +182,6 @@ class ImageBoardBox {
     const ih = this.image.height
     const bw = this.scale * iw
     const bh = this.scale * ih
-    const cx = this.offsetX + bw / 2
-    const cy = this.offsetY + bh / 2
 
     let offsetX, offsetY, scaleX, scaleY;
     if (this.cropRect) {
@@ -172,6 +194,9 @@ class ImageBoardBox {
       offsetY = this.offsetY - scaleY * rect.top
     }
     else {
+      const cx = this.offsetX + bw / 2
+      const cy = this.offsetY + bh / 2
+
       scaleX = this.scale * this.zoom
       scaleY = this.scale * this.zoom
 
@@ -180,6 +205,8 @@ class ImageBoardBox {
       offsetX = cx - dw / 2
       offsetY = cy - dh / 2
     }
+
+    console.log('update-image', offsetX, offsetY, scaleX, scaleY)
 
     this.image.set({
       type: this.tag,
@@ -196,9 +223,30 @@ class ImageBoardBox {
     })
   }
 
-  private updateClipPath(left, top) {
-    const width = this.image.width * this.scale
-    const height = this.image.height * this.scale
+  private updateClipPath() {
+    let left = this.controlBox.left
+    let top = this.controlBox.top
+    let width = this.controlBox.width * this.controlBox.scaleX
+    let height = this.controlBox.height * this.controlBox.scaleY
+
+    const board = this.getBoard()
+    const bx = board.left + this.strokeWidth
+    const by = board.top + this.strokeWidth
+    if (left < bx) {
+      width -= bx - left
+      left = bx
+    }
+    if (top < by) {
+      height -= by - top
+      top = by
+    }
+
+    if ((left + width) > bx + board.width) {
+      width = board.left + board.width - left
+    }
+    if ((top + height) > by + board.height) {
+      height = board.top + board.height - top
+    }
 
     if (!this.image.clipPath) {
       let maskRect = new fabric.Rect({
@@ -222,48 +270,24 @@ class ImageBoardBox {
     }
   }
 
-  private createBoard() {
-    this.boardRect = new fabric.Rect({
-      type: this.tag,
-      originX: 'left',
-      originY: 'top',
-      left: this.offsetX,
-      top: this.offsetY,
-      width: this.boardWidth,
-      height: this.boardHeight,
-      fill: 'rgb(215,215,215)',
-      absolutePositioned: true,
-      selectable: false,
-      stroke: this.strokeColor,
-      strokeWidth: this.strokeWidth,
-      padding: 0,
-    })
-
-    this.canvas.add(this.boardRect)
-  }
-
   private createControlBox() {
     this.controlBox = new fabric.Rect({
       type: this.tag,
       originX: 'left',
       originY: 'top',
-      left: 0,
-      top: 0,
-      width: 1,
-      height: 1,
+      left: this.offsetX,
+      top: this.offsetY,
+      width: this.image.width * this.scale,
+      height: this.image.height * this.scale,
       opacity: 1.0,
       fill: 'rgba(255,255,255, 0)',
       absolutePositioned: true,
-      //lockMovementX: true,  // Moveable
-      //lockMovementY: true,
       lockScalingFlip: true,
       selectable: true,
       transparentCorners: false,
       cornerColor: 'white',
       cornerStrokeColor: 'black',
       borderColor: 'black',
-      stroke: this.strokeColor,
-      strokeWidth: this.strokeWidth,
       cornerSize: 12,
       padding: 0,
       cornerStyle: 'circle',
@@ -272,19 +296,7 @@ class ImageBoardBox {
     })
 
     this.controlBox.setControlsVisibility({mb: false, ml: false, mr: false, mt: false, mtr: false})
-    this.updateControlBox()
     this.canvas.add(this.controlBox)
-  }
-
-  private updateControlBox() {
-    const width = this.image.width * this.scale
-    const height = this.image.height * this.scale
-    this.controlBox.set({
-      left: this.offsetX,
-      top: this.offsetY,
-      width: width,
-      height: height,
-    })
   }
 
   onMouseDown(e) {
@@ -295,34 +307,43 @@ class ImageBoardBox {
     }
   }
 
+  private updateMovingPosition(e) {
+    const board = this.getBoard()
+    if (e.target.left > board.left + board.width) {
+      e.target.left = board.left + board.width - 2
+    }
+    if (e.target.top > board.top + board.height) {
+      e.target.top = board.top + board.height - 2
+    }
+    const tw = e.target.width * e.target.scaleX
+    const th = e.target.height * e.target.scaleY
+    if (e.target.left + tw < board.left) {
+      e.target.left = board.left - tw + 2
+    }
+    if (e.target.top + th < board.top) {
+      e.target.top = board.top - th + 2
+    }
+  }
+
   onObjectMoving(e) {
     if (e.target.type == this.tag) {
-      const dx = e.target.left - this.controlBoxPos.x
-      const dy = e.target.top - this.controlBoxPos.y
+      this.updateMovingPosition(e)
+
+      const dx = e.target.left - this.controlBoxPoint.x
+      const dy = e.target.top - this.controlBoxPoint.y
       this.image.left += dx
       this.image.top  += dy
       this.offsetX += dx
       this.offsetY += dy
 
-      this.controlBoxPos = new fabric.Point(e.target.left, e.target.top)
-      this.updateClipPath(this.controlBoxPos.x, this.controlBoxPos.y)
+      this.controlBoxPoint = new fabric.Point(e.target.left, e.target.top)
+      this.updateClipPath()
     }
   }
 
   onObjectMoved(e) {
     if (e.target.type == this.tag) {
-      if (e.target.left > this.canvas.width) {
-        e.target.left = this.canvas.width - e.target.width
-      }
-      if (e.target.top > this.canvas.height) {
-        e.target.top = this.canvas.height - e.target.height
-      }
-      if (e.target.left + e.target.width < 0) {
-        e.target.left = 0
-      }
-      if (e.target.top + e.target.height < 0) {
-        e.target.top = 0
-      }
+      this.updateMovingPosition(e)
       this.onObjectMoving(e)
       this.canvas.renderAll()
     }
@@ -335,8 +356,10 @@ class ImageBoardBox {
       this.offsetY = e.target.top
       this.updateImage()
 
-      this.controlBoxPos = new fabric.Point(e.target.left, e.target.top)
-      this.updateClipPath(e.target.left, e.target.top)
+      this.controlBoxPoint = new fabric.Point(e.target.left, e.target.top)
+      this.updateClipPath()
+
+      console.log('onObjectScaling', e.target.width, e.target.height, e.target.scaleX, this.scale)
     }
   }
 

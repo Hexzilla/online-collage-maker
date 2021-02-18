@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { ToastrService } from "ngx-toastr";
 import { ApiService } from "../api/api";
+import { Collage } from '../collage/collage'
 
 @Component({
   selector: "image-upload",
@@ -17,7 +18,8 @@ export class ImageUploadComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private toastr: ToastrService,
-    private api: ApiService
+    private api: ApiService,
+    private collage: Collage
   ) {}
 
   ngOnInit() {
@@ -74,5 +76,9 @@ export class ImageUploadComponent implements OnInit {
         this.images.splice(index, 1);
       }
     }
+  }
+
+  onDragStart(e, url) {
+    this.collage.onDragStart(url)
   }
 }

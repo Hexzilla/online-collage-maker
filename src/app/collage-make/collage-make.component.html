@@ -20,7 +20,11 @@
               <div>
                 <p class="text-center head-custom bg-primary">Online Collage Maker</p>
                 <div class="card-body">
-                  <div id="canvas-container">
+                  <div 
+                    id="canvas-container"
+                    (dragover)="false"
+                    (dragend)="false"
+                    (drop)="handleDrop($event)">
                     <!-- <canvas id="main-canvas" style="width:36in; height: 36in;"></canvas> -->
                   </div>
                 </div>
