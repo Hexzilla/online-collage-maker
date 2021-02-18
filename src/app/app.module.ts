@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 
 import { SidenavComponent } from './sidenav/sidenav.component';
+import { CollagePreviewComponent } from "./collage-preview/collage-preview.component";
 import { CollageMakeComponent } from "./collage-make/collage-make.component";
 import { CollageTemplateComponent } from "./collage-template/collage-template.component";
 import { ControlPanelComponent } from "./control-panel/control-panel.component";
@@ -50,7 +51,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 const appRoutes: Routes = [
-  { path: '', component: CollageMakeComponent },
+  { path: '', component: CollagePreviewComponent },
+  { path: 'collage', component: CollageMakeComponent },
   { path: 'home', pathMatch: 'full', redirectTo: '' },
   { path: 'login', loadChildren: './login/login.module#LoginModule' },
   { path: 'register', loadChildren: './register/register.module#RegisterModule' },
@@ -67,6 +69,7 @@ const appRoutes: Routes = [
     AppComponent,
     SidenavComponent,
     FooterComponent,
+    CollagePreviewComponent,
     CollageMakeComponent,
     CollageTemplateComponent,
     CartComponent,

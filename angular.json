@@ -39,6 +39,7 @@
             "allowedCommonJsDependencies" : [
               "rxjs/add/operator/filter",
               "rxjs/Subject",
+              "rxjs/index",
               "jquery",
               "hammerjs",
               "fabric",
