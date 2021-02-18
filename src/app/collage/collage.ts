@@ -271,15 +271,18 @@ export class Collage {
   //Create Collage by Template ID
   //////////////////////////////////////////////////////
   async createCollageByTemplateId(templateId) {
+    console.log('createCollageByTemplateId')
     const template = admin_templates.find(it => it.id == templateId)
     if (!template) {
       return
     }
 
+    console.log('createCollageByTemplateId-2')
     if (this.loading) {
       return
     }
 
+    console.log('createCollageByTemplateId-1')
     try {
       const setting = template.setting
       const ccw = this.getCanvasContainerWidth()
