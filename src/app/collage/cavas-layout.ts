@@ -111,7 +111,7 @@ export class CanvasLayout {
       let left = 0;
       const updatedItems = items.map((item, rowIndex) => {
         const img = images.find((it) => it.data == item.data);
-        const scale = item.height / img.image.height;
+        const scale = Math.ceil(item.height / img.image.height);
 
         const curLeft = left;
         left += img.image.width * scale;

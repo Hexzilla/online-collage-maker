@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatDialog } from "@angular/material/dialog";
+import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../auth.service";
 import { ApiService } from "../api/api";
 import { environment } from "./../../environments/environment";
@@ -18,6 +19,7 @@ export class CollagePreviewComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
+    private toastr: ToastrService,
     private dialog: MatDialog,
     private api: ApiService,
     private authSvc: AuthService,
@@ -97,6 +99,10 @@ export class CollagePreviewComponent implements OnInit {
     if (response && response['success']) {
       const index = this.images.findIndex(it => it['id'] == image['id'])
       this.images.splice(index, 1)
+      this.toastr.success("Success");
+    }
+    else {
+      this.toastr.error("Failed to delete image");
     }
     this.loading = false
   }
