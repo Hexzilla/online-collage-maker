@@ -27,24 +27,6 @@
     }
 }
 
-.spinner-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -50px;
-    margin-left: -50px;
-    width: 100px;
-    height: 100px;
-}
-
-.vertical-center {
-    margin: auto;
-    position: absolute;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-}
-
 mat-checkbox {
     color: white;
 }

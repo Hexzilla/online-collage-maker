@@ -38,6 +38,7 @@ export class CollagePreviewComponent implements OnInit {
       const url = environment.apiUrl + "/file/downloadGallary/";
       const images = data.map((it) => {
         return {
+          id: it._id,
           src: url + it.image,
           slug: it.slug,
           loaded: false
@@ -87,5 +88,16 @@ export class CollagePreviewComponent implements OnInit {
     url += image.slug;
 
     window.open(url, "_blank");
+  }
+
+  async deletePhoto(image) {
+    this.loading = true
+    const response = await this.api.deleteCollageImage(image['id'])
+    console.log(response)
+    if (response && response['success']) {
+      const index = this.images.findIndex(it => it['id'] == image['id'])
+      this.images.splice(index, 1)
+    }
+    this.loading = false
   }
 }

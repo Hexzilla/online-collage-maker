@@ -119,6 +119,19 @@ export class ApiService {
         return false;
     }
 
+    async deleteCollageImage(collageId) {
+        try {
+            const url = environment.apiUrl + "/collage/image/delete";
+            const data = {
+                collageId: collageId
+            }
+            return await this.http.post(url, data).toPromise();
+        } catch (e) {
+            console.log(e);
+        }
+        return false;
+    }
+
     async getCollageImages(userId) {
         try {
             const url = environment.apiUrl + "/collage/image/preview/" + userId;
