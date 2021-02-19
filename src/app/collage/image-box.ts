@@ -77,6 +77,10 @@ class ImageBox {
     return this.url
   }
 
+  setImage(image) {
+    this.onImageLoaded(image)
+  }
+
   setImageUrl(url) {
     this.url = url
     if (this.url) {

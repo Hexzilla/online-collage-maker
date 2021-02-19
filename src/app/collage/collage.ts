@@ -322,30 +322,81 @@ export class Collage {
     }
   }
 
+  removeVirtualCanvas() {
+    const container = document.getElementById("virtual-canvas-container");
+    if (container.childNodes.length > 0) {
+      container.removeChild(container.childNodes[0]);
+    }
+  }
+
+  createVirtualCanvas() {
+    const setting = this.layout.getSetting()
+    console.log(setting)
+
+    const dpi = document.getElementById("dpi").clientWidth
+    const width = dpi * setting.widthInch
+    const height = width * (this.canvas.height / this.canvas.width)
+    const scale = width / this.canvas.width
+
+    this.removeVirtualCanvas()
+
+    const container = document.getElementById("virtual-canvas-container");
+    var element = document.createElement("canvas");
+    element.id = "virtual-canvas";
+    element.width = width;
+    element.height = height;
+    element.style.position = "absolute";
+    element.style.border = "0px";
+    container.appendChild(element);
+
+    const virtualCanvas = new fabric.Canvas("virtual-canvas", {
+      fireRightClick: true,
+      stopContextMenu: true,
+      selection: false,
+      width: width,
+      height: height,
+      backgroundColor: '#444',
+    })
+
+    for (var tag in this.images) {
+      const it = this.images[tag]
+
+      const box = new ImageBox(virtualCanvas)
+        .setImageOffset(it.offsetX * scale, it.offsetY * scale)
+        .setScale(it.scale * scale)
+        .setTag(it.tag)
+        .setBorder(it.strokeWidth * scale, it.strokeColor)
+        .setImage(it.image)
+    }
+
+    return virtualCanvas
+  }
+
   async saveImage(userId) {
     if (!this.canvas) {
       return
     }
 
-    // const _r = await this.api.getCollageImages(userId)
-    // console.log(_r)
-    // return
-
     this.setLoadingState(true)
-    const dataUrl = this.canvas.toDataURL({
+    const virtualCanvas = this.createVirtualCanvas()
+    const dataUrl = virtualCanvas.toDataURL({
       format: 'jpeg',
-      quality: 0.5
+      quality: 1.0
     });
+
+    const width = virtualCanvas.width
+    const height = virtualCanvas.height
+    console.log(width, height)
 
     let response = null
     if (this.savedCollage) {
-      response = await this.api.updateCollageImage(this.savedCollage._id, 
-        userId, dataUrl, this.canvas.width, this.canvas.height)
+      const collageId = this.savedCollage._id
+      response = await this.api.updateCollageImage(collageId, userId, dataUrl, width, height)
     }
     else {
-      response = await this.api.saveCollageImage(userId, 
-        dataUrl, this.canvas.width, this.canvas.height)
+      response = await this.api.saveCollageImage(userId, dataUrl, width, height)
     }
+    this.removeVirtualCanvas()
     this.setLoadingState(false)
 
     console.log('response', response)

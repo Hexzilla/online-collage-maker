@@ -17,16 +17,25 @@
         </div>
         <div class="col-md-10">
             <div class="grey-box">
-              <div>
-                <p class="text-center head-custom bg-primary">Online Collage Maker</p>
-                <div class="card-body">
-                  <div 
-                    id="canvas-container"
-                    (dragover)="false"
-                    (dragend)="false"
-                    (drop)="handleDrop($event)">
-                    <!-- <canvas id="main-canvas" style="width:36in; height: 36in;"></canvas> -->
+              <div class="row">
+                <div ngbDropdown class="col-md-2 col-sm-6 top-print-menu">
+                  <button mat-raised-button class="btn btn-sm btn-block btn-primary" id="dropdownBasic1" ngbDropdownToggle>Print Collage</button>
+                  <div ngbDropdownMenu aria-labelledby="drop_down_menu">
+                    <button ngbDropdownItem (click)="printCollage(0)">Canvas Print - Single Frame</button>
+                    <button ngbDropdownItem (click)="printCollage(1)">Poster Print - With Sticker</button>
+                    <button ngbDropdownItem (click)="printCollage(2)">Poster Print - Without Sticker</button>
                   </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div 
+                  id="canvas-container"
+                  (dragover)="false"
+                  (dragend)="false"
+                  (drop)="handleDrop($event)">
+                  <!-- <canvas id="main-canvas" style="width:36in; height: 36in;"></canvas> -->
+                </div>
+                <div id="virtual-canvas-container" hidden="true">
                 </div>
               </div>
             </div>
