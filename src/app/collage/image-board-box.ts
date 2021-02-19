@@ -15,6 +15,7 @@ class Rect {
 }
 
 class ImageBoardBox {
+  name: string = 'ImageBoardBox'
   url: string
   canvas: fabric.Canvas
   image: fabric.Image
@@ -100,6 +101,10 @@ class ImageBoardBox {
     }
   }
 
+  setImage(image) {
+    this.onImageLoaded(image)
+  }
+
   getImageUrl() {
     return this.url
   }
@@ -179,6 +184,10 @@ class ImageBoardBox {
   }
 
   private updateImage() {
+    if (!this.image) {
+      return
+    }
+
     const iw = this.image.width
     const ih = this.image.height
     const bw = this.scale * iw
@@ -210,7 +219,6 @@ class ImageBoardBox {
     console.log('update-image', offsetX, offsetY, scaleX, scaleY)
 
     this.image.set({
-      type: this.tag,
       left: offsetX,
       top:  offsetY,
       scaleX: scaleX,

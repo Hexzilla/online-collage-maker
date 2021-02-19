@@ -9,58 +9,6 @@ import ImageBox from "./image-box"
 import ImageBoardBox from "./image-board-box"
 import CanvasContextMenu from "./contextmenu"
 
-
-const admin_templates = [
-  {
-    id: 1,
-    setting: {
-      widthInch: 16,
-      heightInch: 12,
-      landscape: false,
-      borderWidth: 10,
-      borderColor: "rgb(0, 0, 255)"
-    },
-    images: [
-      {
-        index: 1,
-        left: 0,
-        top: 0,
-        width: 300,
-        height: 400,
-      },
-      {
-        index: 2,
-        left: 400,
-        top: 0,
-        width: 300,
-        height: 400,
-      },
-      {
-        index: 3,
-        left: 800,
-        top: 0,
-        width: 300,
-        height: 400,
-      },
-      {
-        index: 4,
-        left: 0,
-        top: 450,
-        width: 600,
-        height: 400,
-      },
-      {
-        index: 5,
-        left: 650,
-        top: 450,
-        width: 400,
-        height: 400,
-      }
-    ]
-  }
-]
-
-
 @Injectable({
   providedIn: "root",
 })
@@ -276,26 +224,23 @@ export class Collage {
   //Create Collage by Template ID
   //////////////////////////////////////////////////////
   async createCollageByTemplateId(templateId) {
-    console.log('createCollageByTemplateId')
-    const template = admin_templates.find(it => it.id == templateId)
-    if (!template) {
-      return
-    }
-
-    console.log('createCollageByTemplateId-2')
-    if (this.loading) {
-      return
-    }
-
-    console.log('createCollageByTemplateId-1')
+    console.log('createCollageByTemplateId', templateId)
+    
     try {
+      this.setLoadingState(true);
+
+      const template = await this.api.getTemplateById(templateId)
+      console.log(template)
+      if (!template) {
+        return
+      }
+
       const setting = template.setting
       const ccw = this.getCanvasContainerWidth()
       this.layout = new CanvasLayout(setting, ccw)
 
       this.savedCollage = null
       this.removeCanvasElement()
-      this.setLoadingState(true);
 
       const canvasWidth = this.layout.calculateWidth()
       const canvasHeight = this.layout.calculateHeight()
@@ -313,6 +258,7 @@ export class Collage {
           .setBorder(setting.borderWidth, setting.borderColor)
           .setBoard(it.width, it.height)
       })
+      console.log(this.images)
     }
     catch (err) {
       console.log(err)
@@ -322,7 +268,8 @@ export class Collage {
     }
   }
 
-  removeVirtualCanvas() {
+  removeVirtualCanvas(virtualCanvas) {
+    virtualCanvas.dispose()
     const container = document.getElementById("virtual-canvas-container");
     if (container.childNodes.length > 0) {
       container.removeChild(container.childNodes[0]);
@@ -330,8 +277,6 @@ export class Collage {
   }
 
   createVirtualCanvas(width, height) {
-    this.removeVirtualCanvas()
-
     const container = document.getElementById("virtual-canvas-container");
     var element = document.createElement("canvas");
     element.id = "virtual-canvas";
@@ -341,6 +286,7 @@ export class Collage {
     element.style.border = "0px";
     container.appendChild(element);
 
+    const scale = width / this.canvas.width
     const virtualCanvas = new fabric.Canvas("virtual-canvas", {
       fireRightClick: true,
       stopContextMenu: true,
@@ -350,19 +296,37 @@ export class Collage {
       backgroundColor: '#444',
     })
 
-    const scale = width / this.canvas.width
-    for (var tag in this.images) {
-      const it = this.images[tag]
+    return new Promise<fabric.Canvas>(resolve => {
+      const objects = this.canvas.getObjects()
+      const promises = objects.map(obj => {
+        return new Promise(_resolve => {
+          obj.clone(cloned => {
+            cloned.left *= scale
+            cloned.top *= scale
+            cloned.scaleX *= scale
+            cloned.scaleY *= scale
 
-      const box = new ImageBox(virtualCanvas)
-        .setImageOffset(it.offsetX * scale, it.offsetY * scale)
-        .setScale(it.scale * scale)
-        .setTag(it.tag)
-        .setBorder(it.strokeWidth * scale, it.strokeColor)
-        .setImage(it.image)
-    }
+            if (cloned.type == 'image') {
+              const image: fabric.Image = cloned
+              image.clipPath.set({
+                left: image.clipPath.left * scale,
+                top: image.clipPath.top * scale,
+                width: image.clipPath.width * scale,
+                height: image.clipPath.height * scale
+              })
+            }
+            
+            virtualCanvas.add(cloned)
+            _resolve()
+          })
+        })
+      })
 
-    return virtualCanvas
+      Promise.all(promises).then(_ => {
+        virtualCanvas.renderAll()
+        resolve(virtualCanvas)
+      })
+    })
   }
 
   async saveImage(userId) {
@@ -377,7 +341,7 @@ export class Collage {
     const width = dpi * setting.widthInch
     const height = width * (this.canvas.height / this.canvas.width)
 
-    const virtualCanvas = this.createVirtualCanvas(width, height)
+    const virtualCanvas = await this.createVirtualCanvas(width, height)
     const dataUrl = virtualCanvas.toDataURL({
       format: 'jpeg',
       quality: 1.0
@@ -391,7 +355,7 @@ export class Collage {
     else {
       response = await this.api.saveCollageImage(userId, dataUrl, width, height)
     }
-    this.removeVirtualCanvas()
+    this.removeVirtualCanvas(virtualCanvas)
     this.setLoadingState(false)
 
     console.log('response', response)
@@ -421,7 +385,7 @@ export class Collage {
     const width = 200
     const height = width * (this.canvas.height / this.canvas.width)
 
-    const virtualCanvas = this.createVirtualCanvas(width, height)
+    const virtualCanvas = await this.createVirtualCanvas(width, height)
     const dataUrl = virtualCanvas.toDataURL({
       format: 'jpeg',
       quality: 0.8
@@ -437,7 +401,7 @@ export class Collage {
     const template = await this.api.saveTemplate(data)
     console.log('template', template)
     
-    this.removeVirtualCanvas()
+    this.removeVirtualCanvas(virtualCanvas)
     this.setLoadingState(false)
     return template
   }

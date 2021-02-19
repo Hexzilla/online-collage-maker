@@ -15,7 +15,7 @@ import { loadImage } from "../collage/util";
 })
 export class TemplatePreviewComponent implements OnInit {
   public loading: boolean = false;
-  images: Array<string> = [];
+  images: Array<object> = [];
 
   constructor(
     private http: HttpClient,
@@ -36,7 +36,7 @@ export class TemplatePreviewComponent implements OnInit {
     const data = await this.api.getTemplateList();
     console.log(data)
     if (data) {
-      const url = environment.apiUrl + "/collage/template/image/";
+      const url = environment.apiUrl + "/collage/templates/image/";
       const images = data.map((it) => {
         return {
           id: it._id,

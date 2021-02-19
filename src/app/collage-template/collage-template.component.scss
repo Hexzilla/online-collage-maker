@@ -31,21 +31,3 @@ mat-checkbox {
     color: white;
 }
 
-.grey-box .card-body {
-    margin-top: 44px;
-}
-
-.top-print-menu {
-    position: absolute; 
-    right: 42px;
-}
-
-@media screen and (max-width: 800px) {
-    .grey-box .card-body {
-        margin-top: 6px;
-    }
-
-    .top-print-menu {
-        position: inherit; 
-    }
-}

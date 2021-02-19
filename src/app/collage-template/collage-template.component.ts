@@ -38,6 +38,10 @@ export class CollageTemplateComponent implements OnInit {
     return this.authSvc.loggedIn();
   }
 
+  showTemplates() {
+    this.router.navigate(["/template/preview"]);
+  }
+
   openDialog(imageUrl) {
     console.log("OpenDialog", this.dialog)
     this.dialog.open(ImageEditorComponent, {

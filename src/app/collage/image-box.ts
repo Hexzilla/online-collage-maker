@@ -15,6 +15,7 @@ class Rect {
 }
 
 class ImageBox {
+  name: string = 'ImageBox'
   url: string
   canvas: fabric.Canvas
   image: fabric.Image
@@ -73,12 +74,15 @@ class ImageBox {
     }
   }
 
-  getImageUrl() {
-    return this.url
+  setImage(image) {
+    image.clone((cloned) => {
+      console.log('cloned', cloned)
+      this.onImageLoaded(cloned)
+    })    
   }
 
-  setImage(image) {
-    this.onImageLoaded(image)
+  getImageUrl() {
+    return this.url
   }
 
   setImageUrl(url) {
@@ -178,7 +182,6 @@ class ImageBox {
     }
 
     this.image.set({
-      type: this.tag,
       left: offsetX,
       top:  offsetY,
       scaleX: scaleX,

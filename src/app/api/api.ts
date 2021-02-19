@@ -142,6 +142,19 @@ export class ApiService {
         return false;
     }
 
+    async getTemplateById(templateId) {
+        try {
+            const url = environment.apiUrl + "/collage/templates/template/" + templateId;
+            const response = await this.http.get(url).toPromise();
+            if (response['success'] == true) {
+                return response['data']
+            }
+        } catch (e) {
+            console.log(e);
+        }
+        return null;
+    }
+
     async getTemplateList() {
         try {
             const url = environment.apiUrl + "/collage/templates/list";

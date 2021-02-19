@@ -1,8 +1,10 @@
 import { Component, OnInit, Input } from "@angular/core";
+import { MatDialog, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { PrintMenu } from "../print-menu/print-menu.component"
 import { ToastrService } from "ngx-toastr";
 import { Collage } from "../collage/collage";
 import { AuthService } from "../auth.service";
+import { SelectTemplateComponent } from "./select-template.component";
 
 @Component({
   selector: "control-panel",
@@ -21,6 +23,7 @@ export class ControlPanelComponent implements OnInit {
   @Input() collageTemplate: boolean;
 
   constructor(
+    private dialog: MatDialog,
     private toastr: ToastrService,
     private authSvc: AuthService,
     private collage: Collage
@@ -44,7 +47,9 @@ export class ControlPanelComponent implements OnInit {
 
   async selectTemplate() {
     console.log('selectTemplate')
-    //await this.collage.createCollageByTemplateId(1)
+    this.dialog.open(SelectTemplateComponent, {
+      data: {},
+    });
   }
 
   savedTemplate: any = null
