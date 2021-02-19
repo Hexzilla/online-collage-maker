@@ -24,6 +24,11 @@ export class MainNavComponent implements OnInit {
       url: "https://m.printposters.in/canvas-prints",
     },
     {
+      name: "Collage Maker",
+      icon: "ac_unit",
+      url: "https://m.printposters.in/online-collage-maker",
+    },
+    {
       name: "Photo Prints",
       icon: "card_giftcard",
       url: "https://m.printposters.in/photo-prints",

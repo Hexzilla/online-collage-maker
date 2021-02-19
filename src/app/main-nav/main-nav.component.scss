@@ -48,6 +48,9 @@ footer ul {
   padding: 5px;
 }
 
+.nav-link {
+  padding: .25rem .5rem!important;
+}
       
 .parent-div{
   border-top: 1px solid white;
@@ -62,10 +65,6 @@ footer ul {
 }
 .nav-wrap{
   width: 100%;
- // margin: 10px 0;
-  .btn{
-    font-size: 16px;
-  }
 }
 .max-width-100{
   max-width: 100% !important;

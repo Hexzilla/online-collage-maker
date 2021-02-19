@@ -1,0 +1,60 @@
+.head-custom {
+  padding: 10px !important;
+  font-weight: 900;
+  margin-top: 8px;
+  color: white;
+  background: #673ab6;
+  border-radius: 5px;
+  box-shadow: 0px 2px 5px #6739b677;
+  line-height: 10px;
+}
+.center-align {
+  align-self: center;
+  text-align: -webkit-center;
+}
+.banner {
+  position: relative;
+}
+.banner-callout {
+  width: 70%;
+  height: 100%;
+  font-size: 18px;
+  top: 0%;
+  color: black;
+  border: 0;
+  box-shadow: 0px 0px 0px transparent !important;
+  background-color: transparent;
+}
+
+@media screen and (max-width: 800px) {
+  .banner-callout {
+    position: initial;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+}
+
+h5 {
+  color: rgb(217, 116, 62);
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.content {
+  font-family: "Nunito", sans-serif;
+}
+
+p.banner-text {
+  font-size: 16px;
+  font-weight: 10;
+}
+
+.homepage-section {
+  margin-top: 120px;
+}
+
+.ng-star-inserted {
+  padding: 10px;
+}
