@@ -59,6 +59,11 @@ export class CollageTemplateComponent implements OnInit {
 
   async printCollage(way) {
     const userId = this.authSvc.getUserId()
-    await this.collage.printCollageImage(userId, way)
+    const url = await this.collage.printCollageImage(userId, way)    
+    if (url) {
+      const element = document.getElementById('print-button')
+      element.setAttribute("href", url)
+      element.click()
+    }
   }
 }

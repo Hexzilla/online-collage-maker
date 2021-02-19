@@ -425,7 +425,12 @@ export class Collage {
         url += '/photo-prints/order/gallary/'
       }
       url += slug
-      window.open(url, "_blank");
+      console.log(url)
+      return url
+    }
+    else {
+      console.log('failed to save image')
+      return null
     }
   }
 }
