@@ -50,24 +50,6 @@ export class ControlPanelComponent implements OnInit {
   }
 
   async printCollage(way) {
-    const userId = this.authSvc.getUserId()
-    const slug = await this.collage.saveImage(userId);
-    if (!slug) {
-      return
-    }
-
-    let url = environment.apiUrl
-    if (way == 0) {
-      url += '/canvas-prints/order/gallary/'
-    }
-    else if (way == 1) {
-      url += '/poster-prints/order/gallary/'
-    }
-    else {
-      url += '/photo-prints/order/gallary/'
-    }
-    url += slug
-    
-    window.open(url, "_blank");
+    await this.collage.printCollageImage(way)
   }
 }

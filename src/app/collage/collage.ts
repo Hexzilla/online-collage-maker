@@ -429,4 +429,22 @@ export class Collage {
     console.log('template', template)
     this.setLoadingState(false)
   }
+
+  await printCollageImage(way) {
+    const slug = await this.saveImage(userId);
+    if (slug) {
+      let url = environment.apiUrl
+      if (way == 0) {
+        url += '/canvas-prints/order/gallary/'
+      }
+      else if (way == 1) {
+        url += '/poster-prints/order/gallary/'
+      }
+      else {
+        url += '/photo-prints/order/gallary/'
+      }
+      url += slug
+      window.open(url, "_blank");
+    }
+  }
 }

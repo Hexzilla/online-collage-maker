@@ -52,6 +52,10 @@ export class CollageMakeComponent implements OnInit {
     this.collage.onHandleDrop(e.offsetX, e.offsetY)
     return false;
   }
+
+  async printCollage(way) {
+    await this.collage.printCollageImage(way)
+  }
 }
 
 /*
