@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row p-3 m-3">
       <div class="col-12 col-md-2 col-sm-6">
-        <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="linkCollageMaker()">Create Collage</button>
+        <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="createTemplate()">Create Template</button>
       </div>
     </div>
     <div class="row text-center text-lg-left p-3 m-0">
@@ -10,12 +10,8 @@
         <img class="img-fluid img-thumbnail preview-image" width="100%" src="{{image.src}}" alt="">
         <div class="preview-middle">
           <div class="example-button-container">
-            <button mat-raised-button class="btn btn-sm btn-block btn-warning m-2" (click)="printPhoto(image, 0)">Canvas Print</button>
-            <button mat-raised-button class="btn btn-sm btn-block btn-primary m-2" (click)="printPhoto(image, 1)">Poster Print</button>
-          </div>
-          <div class="example-button-container">
-            <button mat-raised-button class="btn btn-sm btn-block btn-primary m-2" (click)="printPhoto(image, 2)">Photo Print</button>
-            <button mat-raised-button class="btn btn-sm btn-block btn-danger m-2" (click)="deletePhoto(image)">Delete Photo</button>
+            <!-- <button mat-raised-button class="btn btn-sm btn-block btn-warning m-2" (click)="editTemplate(image)">Edit</button> -->
+            <button mat-raised-button class="btn btn-sm btn-block btn-danger m-2" (click)="deletePhoto(image)">Delete</button>
           </div>
         </div>
       </div>

@@ -16,7 +16,7 @@ export class CollageTemplateComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private authSvc: AuthService,
     private router: Router,
     private collage: Collage
@@ -39,10 +39,22 @@ export class CollageTemplateComponent implements OnInit {
   }
 
   openDialog(imageUrl) {
+    console.log("OpenDialog", this.dialog)
     this.dialog.open(ImageEditorComponent, {
       data: {
         imageUrl: imageUrl,
       },
     });
+  }
+
+  handleDrop(e) {
+    console.log(e, e.offsetX, e.offsetY)
+    this.collage.onHandleDrop(e.offsetX, e.offsetY)
+    return false;
+  }
+
+  async printCollage(way) {
+    const userId = this.authSvc.getUserId()
+    await this.collage.printCollageImage(userId, way)
   }
 }

@@ -231,8 +231,7 @@ export class Collage {
     else if (elementId == 'delete') {
       const image: ImageBox = this.getSelectedImage()
       image.deleteImage()
-      const index = this.images.indexOf(image)
-      this.images.splice(index, 1)
+      delete this.images[image.tag]
     }
     else if (elementId == 'restore') {
       const image: ImageBox = this.getSelectedImage()
@@ -330,15 +329,7 @@ export class Collage {
     }
   }
 
-  createVirtualCanvas() {
-    const setting = this.layout.getSetting()
-    console.log(setting)
-
-    const dpi = document.getElementById("dpi").clientWidth
-    const width = dpi * setting.widthInch
-    const height = width * (this.canvas.height / this.canvas.width)
-    const scale = width / this.canvas.width
-
+  createVirtualCanvas(width, height) {
     this.removeVirtualCanvas()
 
     const container = document.getElementById("virtual-canvas-container");
@@ -359,6 +350,7 @@ export class Collage {
       backgroundColor: '#444',
     })
 
+    const scale = width / this.canvas.width
     for (var tag in this.images) {
       const it = this.images[tag]
 
@@ -379,15 +371,17 @@ export class Collage {
     }
 
     this.setLoadingState(true)
-    const virtualCanvas = this.createVirtualCanvas()
+
+    const setting = this.layout.getSetting()
+    const dpi = document.getElementById("dpi").clientWidth
+    const width = dpi * setting.widthInch
+    const height = width * (this.canvas.height / this.canvas.width)
+
+    const virtualCanvas = this.createVirtualCanvas(width, height)
     const dataUrl = virtualCanvas.toDataURL({
       format: 'jpeg',
       quality: 1.0
     });
-
-    const width = virtualCanvas.width
-    const height = virtualCanvas.height
-    console.log(width, height)
 
     let response = null
     if (this.savedCollage) {
@@ -421,14 +415,31 @@ export class Collage {
     return collages
   }
 
-  async saveTemplate() {
+  async saveTemplate(id) {
     this.setLoadingState(true)
+
+    const width = 200
+    const height = width * (this.canvas.height / this.canvas.width)
+
+    const virtualCanvas = this.createVirtualCanvas(width, height)
+    const dataUrl = virtualCanvas.toDataURL({
+      format: 'jpeg',
+      quality: 0.8
+    });
+    
     const setting = this.layout.getSetting()
-    const data = {setting: setting, images: this.getCollageInfo()};
+    const data = {setting: setting, images: this.getCollageInfo(), image: dataUrl};
+    if (id) {
+      data['id'] = id
+    }
     console.log("Save Template:", data);
+
     const template = await this.api.saveTemplate(data)
     console.log('template', template)
+    
+    this.removeVirtualCanvas()
     this.setLoadingState(false)
+    return template
   }
 
   async printCollageImage(userId, way) {

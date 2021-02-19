@@ -117,8 +117,10 @@ class ImageBox {
   }
 
   deleteImage() {
+    console.log('deleteImage')
     this.canvas.remove(this.image)
     this.canvas.remove(this.controlBox)
+    this.canvas.renderAll()
   }
 
   restoreImage() {

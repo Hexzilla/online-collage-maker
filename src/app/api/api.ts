@@ -142,6 +142,19 @@ export class ApiService {
         return false;
     }
 
+    async getTemplateList() {
+        try {
+            const url = environment.apiUrl + "/collage/templates/list";
+            const response = await this.http.post(url, {}).toPromise();
+            if (response['success'] == true) {
+                return response['data']
+            }
+        } catch (e) {
+            console.log(e);
+        }
+        return null;
+    }
+
     async saveTemplate(data) {
         try {
             const url = environment.apiUrl + "/collage/templates/save";
@@ -158,8 +171,8 @@ export class ApiService {
     async deleteTemplate(templateId) {
         try {
             const url = environment.apiUrl + "/collage/templates/delete/" + templateId;
-            const result = await this.http.delete(url).toPromise();
-            if (result == 1) {
+            const response = await this.http.delete(url).toPromise();
+            if (response['success'] == true) {
                 return true;
             }
         } catch (e) {

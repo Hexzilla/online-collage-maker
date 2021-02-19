@@ -9,6 +9,7 @@ import { LandingComponent } from './landing/landing.component';
 import { CollagePreviewComponent } from "./collage-preview/collage-preview.component";
 import { CollageMakeComponent } from "./collage-make/collage-make.component";
 import { CollageTemplateComponent } from "./collage-template/collage-template.component";
+import { TemplatePreviewComponent } from "./collage-template/template-preview.component";
 import { ControlPanelComponent } from "./control-panel/control-panel.component";
 import { ImageEditorComponent } from "./image-editor/image-editor.component";
 import { ImageUploadComponent } from "./image-upload/image-upload.component";
@@ -47,6 +48,8 @@ const appRoutes: Routes = [
   { path: '', component: LandingComponent },
   { path: 'preview', component: CollagePreviewComponent },
   { path: 'collage', component: CollageMakeComponent },
+  { path: 'template', component: CollageTemplateComponent },
+  { path: 'template/preview', component: TemplatePreviewComponent },
   { path: 'home', pathMatch: 'full', redirectTo: '' },
   { path: 'login', loadChildren: './login/login.module#LoginModule' },
   { path: 'register', loadChildren: './register/register.module#RegisterModule' },
@@ -67,6 +70,7 @@ const appRoutes: Routes = [
     CollagePreviewComponent,
     CollageMakeComponent,
     CollageTemplateComponent,
+    TemplatePreviewComponent,
     CartComponent,
     CrudComponent,
     ControlPanelComponent,
