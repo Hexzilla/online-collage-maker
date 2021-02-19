@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from "@angular/core";
 import { PrintMenu } from "../print-menu/print-menu.component"
 import { Collage } from "../collage/collage";
 import { AuthService } from "../auth.service";
-import { environment } from './../../environments/environment';
 
 @Component({
   selector: "control-panel",
@@ -50,6 +49,7 @@ export class ControlPanelComponent implements OnInit {
   }
 
   async printCollage(way) {
-    await this.collage.printCollageImage(way)
+    const userId = this.authSvc.getUserId()
+    await this.collage.printCollageImage(userId, way)
   }
 }

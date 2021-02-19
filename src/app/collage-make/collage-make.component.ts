@@ -54,7 +54,8 @@ export class CollageMakeComponent implements OnInit {
   }
 
   async printCollage(way) {
-    await this.collage.printCollageImage(way)
+    const userId = this.authSvc.getUserId()
+    await this.collage.printCollageImage(userId, way)
   }
 }
 

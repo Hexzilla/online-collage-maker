@@ -4,6 +4,7 @@ import { ApiService } from "../api/api";
 import { CanvasLayout } from "./cavas-layout";
 import { Setting } from "./setting";
 import { loadImage, shuffle } from "./util";
+import { environment } from './../../environments/environment';
 import ImageBox from "./image-box"
 import ImageBoardBox from "./image-board-box"
 import CanvasContextMenu from "./contextmenu"
@@ -430,7 +431,7 @@ export class Collage {
     this.setLoadingState(false)
   }
 
-  await printCollageImage(way) {
+  async printCollageImage(userId, way) {
     const slug = await this.saveImage(userId);
     if (slug) {
       let url = environment.apiUrl
