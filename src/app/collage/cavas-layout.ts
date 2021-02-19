@@ -98,7 +98,7 @@ export class CanvasLayout {
     }, 0);
   }
 
-  getLayoutItems(images, perfectRows) {
+  getLayoutItems(images, perfectRows, canvasWidth, borderWidth) {
     let top = 0;
     const layoutItems = perfectRows.reduce((accumulator, items, colIndex) => {
       const curTop = top;
@@ -108,13 +108,35 @@ export class CanvasLayout {
         top += items.height;
       }
 
+      let delta = 0.0
+      while (true) {
+        const calcWidth = items.reduce((accum, item) => {
+          const img = images.find((it) => it.data == item.data);
+          item.height += delta
+          const scale = item.height / img.image.height;
+          return accum + img.image.width * scale;
+        }, 0);
+
+        //console.log('Width', calcWidth, canvasWidth)
+        if (calcWidth >= canvasWidth) {
+          break
+        }
+        delta = 0.001
+      }
+
       let left = 0;
       const updatedItems = items.map((item, rowIndex) => {
         const img = images.find((it) => it.data == item.data);
-        const scale = Math.ceil(item.height / img.image.height);
+        const scale = item.height / img.image.height;
 
-        const curLeft = left;
-        left += img.image.width * scale;
+        let curLeft = left;
+        let realWidth = img.image.width * scale
+        left += realWidth;
+
+        let offset = curLeft + realWidth + borderWidth - canvasWidth
+        if (offset > 0) {
+          curLeft -= offset
+        }
 
         return Object.assign(
           {
@@ -133,5 +155,10 @@ export class CanvasLayout {
     }, []);
 
     return layoutItems;
+  }
+
+  ceilPrecised(number, precision) {
+    var power = Math.pow(10, precision);
+    return Math.ceil(number * power) / power;
   }
 }

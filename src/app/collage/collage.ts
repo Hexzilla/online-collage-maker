@@ -92,7 +92,7 @@ export class Collage {
     element.width = width;
     element.height = height;
     element.style.position = "absolute";
-    element.style.border = "1px solid";
+    element.style.border = "0px";
     container.appendChild(element);
   }
 
@@ -141,15 +141,15 @@ export class Collage {
       console.log("LoadImage, Completed")
 
       // Get perfect layouts
+      const canvasWidth = this.layout.calculateWidth();
       const perfectRows = this.layout.getCanvasLayout(images);
-      const layoutItems = this.layout.getLayoutItems(images, perfectRows);
+      const layoutItems = this.layout.getLayoutItems(images, perfectRows, canvasWidth, setting.borderWidth);
       const sumOfHeight = layoutItems.reduce((accumulator, item) => {
         return Math.max(accumulator, item.top + item.height);
       }, 0);
 
       // Create canvas and fabric
       const canvasHeight = setting.borderWidth + sumOfHeight
-      const canvasWidth = this.layout.calculateWidth();
       this.createCanvasElement(canvasWidth, canvasHeight)
       this.createFabricCanvas(canvasWidth, canvasHeight)
 
@@ -192,15 +192,17 @@ export class Collage {
         this.contextMenu.hideMenu()
       }
       else if (event.button === 3) {
-        this.selectedTag = event.target.type
+        if (event.target) {
+          this.selectedTag = event.target.type
 
-        var pointer = this.canvas.getPointer(event.e);
-        const el = document.getElementById('main-canvas')
-        var viewportOffset = el.getBoundingClientRect();
+          var pointer = this.canvas.getPointer(event.e);
+          const el = document.getElementById('main-canvas')
+          var viewportOffset = el.getBoundingClientRect();
 
-        var px = viewportOffset.x + pointer.x;
-        var py = viewportOffset.y + pointer.y;
-        this.contextMenu.createMenu(px, py)
+          var px = viewportOffset.x + pointer.x;
+          var py = viewportOffset.y + pointer.y;
+          this.contextMenu.createMenu(px, py)
+        }
       }
     })
   }

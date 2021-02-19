@@ -16,7 +16,7 @@ export class CollageMakeComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private authSvc: AuthService,
     private router: Router,
     private collage: Collage
