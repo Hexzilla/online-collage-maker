@@ -53,6 +53,10 @@ export class CollageMakeComponent implements OnInit {
     return false;
   }
 
+  showCollages() {
+    this.router.navigate(["/preview"]);
+  }
+
   async printCollage(way) {
     const userId = this.authSvc.getUserId()
     await this.collage.printCollageImage(userId, way)

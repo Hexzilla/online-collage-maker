@@ -101,13 +101,6 @@ export class CanvasLayout {
   getLayoutItems(images, perfectRows, canvasWidth, borderWidth) {
     let top = 0;
     const layoutItems = perfectRows.reduce((accumulator, items, colIndex) => {
-      const curTop = top;
-      if (Array.isArray(items) && items.length > 0) {
-        top += items[0].height;
-      } else {
-        top += items.height;
-      }
-
       let delta = 0.0
       while (true) {
         const calcWidth = items.reduce((accum, item) => {
@@ -122,6 +115,13 @@ export class CanvasLayout {
           break
         }
         delta = 0.001
+      }
+
+      const curTop = top;
+      if (Array.isArray(items) && items.length > 0) {
+        top += items[0].height;
+      } else {
+        top += items.height;
       }
 
       let left = 0;

@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Select Collage Template</h1>
 <div mat-dialog-content>
     <div class="row text-center text-lg-left p-3 m-0">
-      <div *ngFor="let image of images" class="col-lg-2 col-md-2 col-sm-6" id="preview-images">
+      <div *ngFor="let image of images" class="col-12 col-lg-2 col-md-2 col-sm-6 preview-image-box" id="preview-images">
         <img class="img-fluid img-thumbnail preview-image" width="100%" src="{{image.src}}" alt="">
         <div class="preview-middle">
           <div class="example-button-container">

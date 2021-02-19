@@ -243,7 +243,8 @@ export class Collage {
       this.removeCanvasElement()
 
       const canvasWidth = this.layout.calculateWidth()
-      const canvasHeight = this.layout.calculateHeight()
+      const canvasHeight = setting.canvasHeight * canvasWidth / setting.canvasWidth
+      const scale = canvasWidth / setting.canvasWidth
       this.createCanvasElement(canvasWidth, canvasHeight)
       this.createFabricCanvas(canvasWidth, canvasHeight)
 
@@ -252,11 +253,11 @@ export class Collage {
       template.images.forEach(it => {
         const tag = `img_${it.index}`
         this.images[tag] = new ImageBoardBox(this.canvas)
-          .setImageOffset(it.left, it.top)
+          .setImageOffset(it.left * scale, it.top * scale)
           .setScale(1.0)
           .setTag(tag)
           .setBorder(setting.borderWidth, setting.borderColor)
-          .setBoard(it.width, it.height)
+          .setBoard(it.width * scale, it.height * scale)
       })
       console.log(this.images)
     }
@@ -382,16 +383,20 @@ export class Collage {
   async saveTemplate(id) {
     this.setLoadingState(true)
 
-    const width = 200
-    const height = width * (this.canvas.height / this.canvas.width)
+    const twidth = 200
+    const theight = twidth * (this.canvas.height / this.canvas.width)
 
-    const virtualCanvas = await this.createVirtualCanvas(width, height)
+    const virtualCanvas = await this.createVirtualCanvas(twidth, theight)
     const dataUrl = virtualCanvas.toDataURL({
       format: 'jpeg',
       quality: 0.8
     });
-    
-    const setting = this.layout.getSetting()
+
+    const setting = Object.assign({
+      canvasWidth: this.canvas.width,
+      canvasHeight: this.canvas.height
+    }, this.layout.getSetting())
+
     const data = {setting: setting, images: this.getCollageInfo(), image: dataUrl};
     if (id) {
       data['id'] = id
