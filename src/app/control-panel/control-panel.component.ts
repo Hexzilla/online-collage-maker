@@ -32,6 +32,7 @@ export class ControlPanelComponent implements OnInit {
   ngOnInit() {
     // Remove mouse click on page
     document.addEventListener("contextmenu", (event) => event.preventDefault());
+    this.collage.onTemplateSelected = (setting) => this.onTemplateSelected(setting)
   }
 
   async createCollage() {
@@ -43,6 +44,11 @@ export class ControlPanelComponent implements OnInit {
       borderWidth: this.borderWidth,
       borderColor: this.borderColor
     });
+  }
+
+  onTemplateSelected(setting) {
+    this.width = setting.widthInch
+    this.height = setting.heightInch
   }
 
   async selectTemplate() {

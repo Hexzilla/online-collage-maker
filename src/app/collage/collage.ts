@@ -28,6 +28,7 @@ export class Collage {
   onLoadingStateChanged: Function;
   openImageEditor: Function;
   openImageCropper: Function;
+  onTemplateSelected: Function;
 
   constructor(private api: ApiService) {
     this.contextMenu = new CanvasContextMenu()
@@ -129,6 +130,7 @@ export class Collage {
   }
 
   createTemplate(setting: Setting) {
+    console.log(setting)
     if (this.loading) {
       return
     }
@@ -141,7 +143,8 @@ export class Collage {
       this.removeCanvasElement()
 
       const canvasWidth = this.layout.calculateWidth();
-      const canvasHeight = this.layout.calculateHeight();
+      const canvasHeight = canvasWidth * setting.heightInch / setting.widthInch;
+      console.log(canvasWidth, canvasHeight)
       this.createCanvasElement(canvasWidth, canvasHeight)
       this.createFabricCanvas(canvasWidth, canvasHeight)
     }
@@ -305,12 +308,13 @@ export class Collage {
 
       const template = await this.api.getTemplateById(templateId)
       this.selectedTemplate = template
-      console.log(template)
       if (!template) {
         return
       }
 
       const setting = template.setting
+      this.onTemplateSelected && this.onTemplateSelected(setting)
+
       const ccw = this.getCanvasContainerWidth()
       this.layout = new CanvasLayout(setting, ccw)
 
