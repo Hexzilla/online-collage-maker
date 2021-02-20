@@ -221,6 +221,13 @@ export class Collage {
       image.deleteImage()
       delete this.images[image.tag]
     }
+    else if (elementId == 'deleteImage') {
+      const image = this.getSelectedImage()
+      console.log(image.name)
+      if (image.name == 'ImageBoardBox') {
+        image.reset()
+      }
+    }
     else if (elementId == 'restore') {
       const image: ImageBox = this.getSelectedImage()
       image.restoreImage()

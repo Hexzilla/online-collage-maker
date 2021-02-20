@@ -96,6 +96,8 @@ class ImageBoardBox {
     this.initialScale = this.scale = 1.0
     this.zoom = 1.0
     this.brightness = 0.01
+    this.image && this.canvas.remove(this.image)
+    this.controlBox && this.canvas.remove(this.controlBox)
   }
 
   setImage(image) {
@@ -303,6 +305,8 @@ class ImageBoardBox {
       absolutePositioned: true,
       lockScalingFlip: true,
       lockRotation: true,
+      lockMovementX: true,
+      lockMovementY: true,
       selectable: true,
       transparentCorners: false,
       cornerColor: 'white',
