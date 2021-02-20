@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MatDialog, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { AuthService } from "../auth.service";
 import { ImageEditorComponent } from "../image-editor/image-editor.component";
+import { ImageCropperComponent } from "../image-editor/image-cropper.component";
 import { Collage } from '../collage/collage'
 
 @Component({
@@ -24,7 +25,8 @@ export class CollageMakeComponent implements OnInit {
 
   async ngOnInit() {
     this.collage.onLoadingStateChanged = (state) => (this.loading = state);
-    this.collage.openDialog = (url) => this.openDialog(url);
+    this.collage.openImageEditor = (url) => this.openImageEditor(url);
+    this.collage.openImageCropper = (url, width, height) => this.openImageCropper(url, width, height);
 
     document.addEventListener("contextmenu", (event) => event.preventDefault());
 
@@ -38,11 +40,21 @@ export class CollageMakeComponent implements OnInit {
     return this.authSvc.loggedIn();
   }
 
-  openDialog(imageUrl) {
-    console.log("OpenDialog", this.dialog)
+  openImageEditor(imageUrl) {
     this.dialog.open(ImageEditorComponent, {
       data: {
+        imageUrl: imageUrl
+      },
+    });
+  }
+
+  openImageCropper(imageUrl, width, height) {
+    this.dialog.open(ImageCropperComponent, {
+      data: {
         imageUrl: imageUrl,
+        ratio: width / height,
+        width: width,
+        height: height,
       },
     });
   }
@@ -58,13 +70,17 @@ export class CollageMakeComponent implements OnInit {
   }
 
   async printCollage(way) {
-    const userId = this.authSvc.getUserId()
+    /*const userId = this.authSvc.getUserId()
     const url = await this.collage.printCollageImage(userId, way)    
     if (url) {
       const element = document.getElementById('print-button')
       element.setAttribute("href", url)
       element.click()
-    }
+    }*/
+    //TODO
+
+    const url = "https://m.printposters.in/collage/images/602946fea205eb3ba8206f1c/11837ae0-f1de-451b-bef1-7c8e6832751d.jpg"
+    this.openImageCropper(url, 400, 600)
   }
 }
 

@@ -29,7 +29,6 @@ class ImageBoardBox {
   boardRect: fabric.Rect
   controlBox: fabric.Rect
   controlBoxPoint: fabric.Point
-  cropRect: Rect = null
   tag: string
   strokeColor: string = 'rgb(136, 0, 26)'
   strokeWidth: number = 0
@@ -57,6 +56,14 @@ class ImageBoardBox {
   setScale(scale) {
     this.initialScale = this.scale = scale
     return this
+  }
+
+  getBoardWidth() { //TODO
+    return this.boardRect.width
+  }
+
+  getBoardHeight() {
+    return this.boardRect.height
   }
 
   setBoard(width, height) {
@@ -149,20 +156,44 @@ class ImageBoardBox {
   }
 
   restoreImage() {
-    this.cropRect = null
+    this.offsetX = this.boardRect.left
+    this.offsetY = this.boardRect.top
+    this.scale = 1.0
+    this.zoom = 1.0
+    this.brightness = 0.01
+
+    const options = {
+      left: this.boardRect.left,
+      top: this.boardRect.top,
+      width: this.image.width,
+      height: this.image.height,
+    }
+    this.controlBox.set(options)
+    this.image.clipPath.set(options)
+    this.controlBoxPoint = new fabric.Point(this.controlBox.left, this.controlBox.top)
+
+    this.image.filters = [];
+    this.image.applyFilters();
+
     this.update()
   }
 
-  onImageChanged(zoom, brightness) {
-    console.log('onImageChanged', zoom, brightness)
-    this.zoom = zoom
-    this.brightness = brightness
-    this.update()
-  }
+  onImageChanged(left, top, scale, brightness) {
+    this.offsetX = this.boardRect.left + left
+    this.offsetY = this.boardRect.top + top
+    this.scale = scale
+    this.zoom = 1.0
+    brightness && (this.brightness = brightness)
 
-  onImageCropped(left, top, width, height) {
-    console.log('ImageCropped', left, top, width, height)
-    this.cropRect = new Rect(left, top, width, height)
+    const options = {
+      left: this.boardRect.left,
+      top: this.boardRect.top,
+      width: this.boardRect.width,
+      height: this.boardRect.height,
+    }
+    this.controlBox.set(options)
+    this.image.clipPath.set(options)
+    this.controlBoxPoint = new fabric.Point(this.controlBox.left, this.controlBox.top)
     this.update()
   }
 
@@ -183,30 +214,16 @@ class ImageBoardBox {
     const bw = this.scale * iw
     const bh = this.scale * ih
 
-    let offsetX, offsetY, scaleX, scaleY;
-    if (this.cropRect) {
-      const rect = this.cropRect
+    const cx = this.offsetX + bw / 2
+    const cy = this.offsetY + bh / 2
 
-      scaleX = bw / rect.width
-      scaleY = bh / rect.height
+    const scaleX = this.scale * this.zoom
+    const scaleY = this.scale * this.zoom
 
-      offsetX = this.offsetX - scaleX * rect.left
-      offsetY = this.offsetY - scaleY * rect.top
-    }
-    else {
-      const cx = this.offsetX + bw / 2
-      const cy = this.offsetY + bh / 2
-
-      scaleX = this.scale * this.zoom
-      scaleY = this.scale * this.zoom
-
-      const dw = iw * scaleX
-      const dh = ih * scaleY
-      offsetX = cx - dw / 2
-      offsetY = cy - dh / 2
-    }
-
-    console.log('update-image', offsetX, offsetY, scaleX, scaleY)
+    const dw = iw * scaleX
+    const dh = ih * scaleY
+    const offsetX = cx - dw / 2
+    const offsetY = cy - dh / 2
 
     this.image.set({
       left: offsetX,

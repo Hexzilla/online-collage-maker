@@ -8,7 +8,6 @@ import { AuthService } from 'src/app/auth.service';
 import { Size } from '../test/test.component';
 import { Order } from 'src/datamodel/order';
 import { Router } from '@angular/router';
-import { CanvasComponent } from '../canvas/canvas.component';
 import { ColorPickerComponent } from '../color-picker/color-picker.component';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
@@ -266,25 +265,6 @@ export class PreviewComponent implements OnInit {
 
 
   showEdit() {
-    // console.log('show edit clicked');
-    this.sharedSvc.img = this.imgsrc
-    const dialogRef = this.dialog.open(CanvasComponent, {
-      data: { image: this.imgsrc },
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-      height: '100%',
-      width: '100%',
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed', result);
-      if (result) {
-        let img = {
-          src: result
-        }
-        this.imgsrc = img;
-      }
-    });
   }
 
   // makePayment1() {

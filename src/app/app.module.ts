@@ -14,6 +14,7 @@ import { ControlPanelComponent } from "./control-panel/control-panel.component";
 import { ControlTemplateComponent } from "./control-panel/control-template.component";
 import { SelectTemplateComponent } from "./control-panel/select-template.component";
 import { ImageEditorComponent } from "./image-editor/image-editor.component";
+import { ImageCropperComponent } from "./image-editor/image-cropper.component";
 import { ImageUploadComponent } from "./image-upload/image-upload.component";
 import { FooterComponent } from './footer/footer.component';
 import { AppComponent } from './app.component';
@@ -29,7 +30,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import { MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS } from "@angular/material/dialog";
+import { MatDialogRef, MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS } from "@angular/material/dialog";
 import { NgxDropzoneModule } from "ngx-dropzone";
 import { ColorPickerModule } from "ngx-color-picker";
 import { MainNavComponent } from './main-nav/main-nav.component';
@@ -41,7 +42,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //import { NgMasonryGridModule } from 'ng-masonry-grid';
-import { NgxImageCompressService } from 'ngx-image-compress';
 import { ToastrModule } from "ngx-toastr";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -79,6 +79,7 @@ const appRoutes: Routes = [
     ControlTemplateComponent,
     SelectTemplateComponent,
     ImageEditorComponent,
+    ImageCropperComponent,
     ImageUploadComponent,
     MainNavComponent,
     PreviewDialog,
@@ -117,15 +118,11 @@ const appRoutes: Routes = [
     MatBottomSheetModule,
     MatListModule,
     ImageEditorComponent,
+    ImageCropperComponent,
   ],
   providers: [
     TokenService,
-    NgxImageCompressService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true,
-    },
+    { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
   ],

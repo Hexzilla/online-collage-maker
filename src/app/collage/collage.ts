@@ -9,6 +9,7 @@ import ImageBox from "./image-box"
 import ImageCell from "./image-cell"
 import ImageBoardBox from "./image-board-box"
 import CanvasContextMenu from "./contextmenu"
+import { ImageCrop } from './../image-editor/image-cropper.component';
 
 @Injectable({
   providedIn: "root",
@@ -22,9 +23,11 @@ export class Collage {
   private selectedTag: any
   private savedCollage: any
   private menuPoint: any
+  private selectedTemplate: any
   
   onLoadingStateChanged: Function;
-  openDialog: Function;
+  openImageEditor: Function;
+  openImageCropper: Function;
 
   constructor(private api: ApiService) {
     this.contextMenu = new CanvasContextMenu()
@@ -70,6 +73,7 @@ export class Collage {
       const ccw = this.getCanvasContainerWidth()
       this.layout = new CanvasLayout(setting, ccw)
 
+      this.selectedTemplate = null
       this.savedCollage = null
       this.removeCanvasElement()
       this.setLoadingState(true);
@@ -207,7 +211,7 @@ export class Collage {
     const elementId = e.target['id'];
     if (elementId == 'edit') {
       const image: ImageBox = this.getSelectedImage()
-      this.onEditImage(image.getImageUrl())
+      this.onEditImage(image)
     }
     else if (elementId == 'delete') {
       const image: ImageBox = this.getSelectedImage()
@@ -250,8 +254,26 @@ export class Collage {
     image.onImageCropped(left, top, width, height)
   }
 
-  private onEditImage(url) {
-    this.openDialog && this.openDialog(url)
+  onSmartImageCropped(crop: ImageCrop) {
+    console.log(crop)
+    const image: ImageBoardBox = this.getSelectedImage()
+    image.onImageChanged(crop.left, crop.top, crop.scale, crop.brightness)
+  }
+
+  private onEditImage(image) {
+    const url = image.getImageUrl()
+    if (!url) {
+      return
+    }
+    
+    if (!this.selectedTemplate) {
+      this.openImageEditor && this.openImageEditor(url)
+    }
+    else {
+      const bw = image.getBoardWidth()
+      const bh = image.getBoardHeight()
+      this.openImageCropper && this.openImageCropper(url, bw, bh)
+    }
   }
 
   dragImageUrl: string
@@ -283,6 +305,7 @@ export class Collage {
       this.setLoadingState(true);
 
       const template = await this.api.getTemplateById(templateId)
+      this.selectedTemplate = template
       console.log(template)
       if (!template) {
         return

@@ -9,7 +9,6 @@ import {
   EventEmitter,
 } from "@angular/core";
 import * as _ from "lodash";
-import { CanvasComponent } from "../canvas/canvas.component";
 import { SharedService } from "src/app/shared.service";
 import { MatDialog } from "@angular/material/dialog";
 import { NeworderService } from "src/app/services/neworder.service";
@@ -97,27 +96,7 @@ export class TestComponent implements OnInit {
   }
 
   openDialog() {
-    this.sharedSvc.ratioHeight = this.selectedCustomHeight;
-    this.sharedSvc.ratioWidth = this.selectedCustomWidth;
-    this.sharedSvc.maintainAspectRatio = true;
-    this.sharedSvc.img = this.nos.Img_HTML_edited;
-    const dialogRef = this.dialog.open(CanvasComponent, {
-      data: { image: this.nos.Img_HTML_edited },
-      maxWidth: "100vw",
-      maxHeight: "100vh",
-      height: "100%",
-      width: "100%",
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        const img = {
-          src: result,
-        };
-        this.imgsrc = img;
-        this.nos.Img_HTML_edited.src = img.src;
-      }
-    });
+    
   }
 
   show(a: any, b: any) {

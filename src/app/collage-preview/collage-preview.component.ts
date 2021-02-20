@@ -65,11 +65,7 @@ export class CollagePreviewComponent implements OnInit {
   }
 
   openDialog(imageUrl) {
-    // this.dialog.open(ImageEditorComponent, {
-    //   data: {
-    //     imageUrl: imageUrl,
-    //   },
-    // });
+
   }
 
   linkCollageMaker() {

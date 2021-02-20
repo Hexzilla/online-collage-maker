@@ -24,12 +24,9 @@ export class ImageEditorComponent implements OnInit {
     public dialogRef: MatDialogRef<ImageEditorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private collage: Collage
-  ) {
-    console.log('ImageEditor.Constructor')    
-  }
+  ) { }
 
   ngOnInit() {
-    console.log("dialog-init", this.data);
     this.createCanvas();
     if (this.data.imageUrl) {
       this.image && this.canvas.remove(this.image);
@@ -39,6 +36,7 @@ export class ImageEditorComponent implements OnInit {
   }
 
   createCanvas() {
+    console.log('createCanvas-editor')
     if (this.canvas) {
       this.canvas.dispose();
     }

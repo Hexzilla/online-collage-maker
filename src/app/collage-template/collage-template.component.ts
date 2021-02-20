@@ -24,7 +24,7 @@ export class CollageTemplateComponent implements OnInit {
 
   async ngOnInit() {
     this.collage.onLoadingStateChanged = (state) => (this.loading = state);
-    this.collage.openDialog = (url) => this.openDialog(url);
+    this.collage.openImageEditor = (url, ratio) => this.openImageEditor(url);
 
     document.addEventListener("contextmenu", (event) => event.preventDefault());
 
@@ -50,7 +50,7 @@ export class CollageTemplateComponent implements OnInit {
     this.router.navigate(["/template/preview"]);
   }
 
-  openDialog(imageUrl) {
+  openImageEditor(imageUrl) {
     console.log("OpenDialog", this.dialog)
     this.dialog.open(ImageEditorComponent, {
       data: {
