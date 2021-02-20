@@ -150,7 +150,6 @@ class ImageBoardBox {
   }
 
   deleteImage() {
-    console.log('deleteImage')
     this.canvas.remove(this.image)
     this.canvas.remove(this.controlBox)
   }
@@ -158,7 +157,7 @@ class ImageBoardBox {
   restoreImage() {
     this.offsetX = this.boardRect.left
     this.offsetY = this.boardRect.top
-    this.scale = 1.0
+    this.initialScale = this.scale = 1.0
     this.zoom = 1.0
     this.brightness = 0.01
 
@@ -181,7 +180,6 @@ class ImageBoardBox {
   }
 
   onImageChanged(left, top, scale, brightness) {
-    console.log('onImageChanged', left, top, scale)
     this.offsetX = this.boardRect.left + left
     this.offsetY = this.boardRect.top + top
     this.scale = scale
@@ -304,6 +302,7 @@ class ImageBoardBox {
       fill: 'rgba(255,255,255, 0)',
       absolutePositioned: true,
       lockScalingFlip: true,
+      lockRotation: true,
       selectable: true,
       transparentCorners: false,
       cornerColor: 'white',
@@ -316,7 +315,10 @@ class ImageBoardBox {
       borderScaleFactor: 1.3
     })
 
-    this.controlBox.setControlsVisibility({mb: false, ml: false, mr: false, mt: false, mtr: false})
+    this.controlBox.setControlsVisibility({
+      bl: false, br: false, tl: false, tr: false, 
+      mb: false, ml: false, mr: false, mt: false, mtr: false
+    })
     this.canvas.add(this.controlBox)
   }
 
@@ -381,8 +383,6 @@ class ImageBoardBox {
 
       this.controlBoxPoint = new fabric.Point(e.target.left, e.target.top)
       this.updateClipPath()
-
-      console.log('onObjectScaling', e.target.width, e.target.height, e.target.scaleX, this.scale)
     }
   }
 

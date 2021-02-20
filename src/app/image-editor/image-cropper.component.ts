@@ -226,10 +226,15 @@ export class ImageCropperComponent implements OnInit {
 
   onApply() {
     if (this.crop.changed) {
+      //console.log("CROP", this.crop)
+      //console.log("Image", this.image.left, this.image.top, this.image.width, this.image.height, this.image.scaleX, this.image.scaleY)
+      //console.log("Canvas", this.canvas.width, this.canvas.height)
+      
+      const ratio = this.data.width / this.canvas.width
       const imageScale = this.image.scaleX
-      const scale = imageScale * this.data.width / this.canvas.width
-      this.crop.left = this.image.left - this.image.width * (scale - imageScale) / 2,
-      this.crop.top = this.image.top - this.image.height * (scale - imageScale) / 2,
+      const scale = imageScale * ratio
+      this.crop.left = this.image.left * ratio
+      this.crop.top = this.image.top * ratio
       this.crop.scale = scale
       this.collage.onSmartImageCropped(this.crop);
     }

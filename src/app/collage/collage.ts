@@ -258,7 +258,6 @@ export class Collage {
   }
 
   onSmartImageCropped(crop: ImageCrop) {
-    console.log(crop)
     const image: ImageBoardBox = this.getSelectedImage()
     image.onImageChanged(crop.left, crop.top, crop.scale, crop.brightness)
   }
