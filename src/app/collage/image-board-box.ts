@@ -167,6 +167,8 @@ class ImageBoardBox {
       top: this.boardRect.top,
       width: this.image.width,
       height: this.image.height,
+      scaleX: 1.0,
+      scaleY: 1.0
     }
     this.controlBox.set(options)
     this.image.clipPath.set(options)
@@ -179,6 +181,7 @@ class ImageBoardBox {
   }
 
   onImageChanged(left, top, scale, brightness) {
+    console.log('onImageChanged', left, top, scale)
     this.offsetX = this.boardRect.left + left
     this.offsetY = this.boardRect.top + top
     this.scale = scale
@@ -190,6 +193,8 @@ class ImageBoardBox {
       top: this.boardRect.top,
       width: this.boardRect.width,
       height: this.boardRect.height,
+      scaleX: 1.0,
+      scaleY: 1.0
     }
     this.controlBox.set(options)
     this.image.clipPath.set(options)
