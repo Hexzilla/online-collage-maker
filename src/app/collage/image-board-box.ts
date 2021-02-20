@@ -90,6 +90,14 @@ class ImageBoardBox {
     return this
   }
 
+  reset() {
+    this.offsetX = this.boardRect.left
+    this.offsetY = this.boardRect.top
+    this.initialScale = this.scale = 1.0
+    this.zoom = 1.0
+    this.brightness = 0.01
+  }
+
   setImage(image) {
     this.onImageLoaded(image)
   }

@@ -292,6 +292,8 @@ export class Collage {
 
       this.setLoadingState(true)
       image.onImageLoadCompleted = () => this.setLoadingState(false)
+
+      image.reset()
       image.setImageUrl(this.dragImageUrl)
       this.dragImageUrl = null
     }
