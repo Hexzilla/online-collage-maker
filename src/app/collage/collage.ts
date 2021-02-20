@@ -270,9 +270,8 @@ export class Collage {
       this.openImageEditor && this.openImageEditor(url)
     }
     else {
-      const bw = image.getBoardWidth()
-      const bh = image.getBoardHeight()
-      this.openImageCropper && this.openImageCropper(url, bw, bh)
+      const board = image.getBoard()
+      this.openImageCropper && this.openImageCropper(url, board.width, board.height)
     }
   }
 
@@ -459,13 +458,13 @@ export class Collage {
   async saveTemplate(id) {
     this.setLoadingState(true)
 
-    const twidth = 200
+    const twidth = 160
     const theight = twidth * (this.canvas.height / this.canvas.width)
 
     const virtualCanvas = await this.createVirtualCanvas(twidth, theight)
     const dataUrl = virtualCanvas.toDataURL({
       format: 'jpeg',
-      quality: 0.8
+      quality: 0.5
     });
 
     const setting = Object.assign({

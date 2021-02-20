@@ -58,14 +58,6 @@ class ImageBoardBox {
     return this
   }
 
-  getBoardWidth() { //TODO
-    return this.boardRect.width
-  }
-
-  getBoardHeight() {
-    return this.boardRect.height
-  }
-
   setBoard(width, height) {
     this.boardRect = new fabric.Rect({
       type: this.tag,
@@ -317,9 +309,11 @@ class ImageBoardBox {
 
   onMouseDown(e) {
     if (e.target && e.target.type == this.tag) {
-      this.canvas.bringToFront(this.image)
-      this.canvas.bringToFront(this.controlBox)
-      this.canvas.setActiveObject(this.controlBox)
+      if (this.image) {
+        this.canvas.bringToFront(this.image)
+        this.canvas.bringToFront(this.controlBox)
+        this.canvas.setActiveObject(this.controlBox)
+      }
     }
   }
 

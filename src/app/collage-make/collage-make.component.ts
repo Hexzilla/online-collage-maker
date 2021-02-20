@@ -70,17 +70,13 @@ export class CollageMakeComponent implements OnInit {
   }
 
   async printCollage(way) {
-    /*const userId = this.authSvc.getUserId()
+    const userId = this.authSvc.getUserId()
     const url = await this.collage.printCollageImage(userId, way)    
     if (url) {
       const element = document.getElementById('print-button')
       element.setAttribute("href", url)
       element.click()
-    }*/
-    //TODO
-
-    const url = "https://m.printposters.in/collage/images/602946fea205eb3ba8206f1c/11837ae0-f1de-451b-bef1-7c8e6832751d.jpg"
-    this.openImageCropper(url, 400, 600)
+    }
   }
 }
 
