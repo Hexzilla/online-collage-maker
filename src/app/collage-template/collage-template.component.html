@@ -2,19 +2,20 @@
 <div class="collage-content">
   <div class="container-fluid">
     <div class="row">
-      <div class="menu">
+      <div id="menu-image-edit" class="menu">
         <ul class="menu-options">
-          <li id="edit" class="menu-option">Edit Image</li>
-          <li id="delete" class="menu-option">Delete Image</li>
-          <li id="restore" class="menu-option">Restore</li>                  
+          <li id="deleteCell" class="menu-option">Delete Cell</li>
+        </ul>
+      </div>
+      <div id="menu-template" class="menu">
+        <ul class="menu-options">
+          <li id="addCell" class="menu-option">Add Cell</li>
         </ul>
       </div>
     </div>
       <div class="row">
         <div class="col-md-2">
-          <control-panel [collageTemplate]="true"></control-panel>
-          <hr class="mt-2 mb-2">
-          <image-upload></image-upload>
+          <control-template></control-template>
         </div>
         <div class="col-md-10">
             <div class="grey-box">

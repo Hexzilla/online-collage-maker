@@ -2,27 +2,22 @@ class CanvasContextMenu {
     menu: any
     menuOptions: any
     menuVisible: Boolean = false;
-    addEventListener: Boolean = true;
     onMenuItemClicked: Function
 
     constructor(){
-
+      window.addEventListener("click", e => this.hideMenu());
     }
 
-    createMenu(x: any, y: any) {
-      this.menu = document.querySelector(".menu");
-      this.menuOptions = document.querySelectorAll(".menu-option");
-
-      if (this.addEventListener) {
-        this.addEventListener = false
-
-        window.addEventListener("click", e => this.hideMenu());
-
+    createMenu(selector, x: any, y: any) {
+      if (!this.menuOptions) {
+        this.menuOptions = document.querySelectorAll(".menu-option");
         this.menuOptions.forEach(opt => {
           opt.addEventListener("click", e => this.onMenuOptionClickEvent(e))
         })
       }
-
+      
+      this.hideMenu();
+      this.menu = document.querySelector(selector);
       this.setPosition(x, y);
     }
 

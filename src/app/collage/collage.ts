@@ -6,6 +6,7 @@ import { Setting } from "./setting";
 import { loadImage, shuffle } from "./util";
 import { environment } from './../../environments/environment';
 import ImageBox from "./image-box"
+import ImageCell from "./image-cell"
 import ImageBoardBox from "./image-board-box"
 import CanvasContextMenu from "./contextmenu"
 
@@ -20,6 +21,7 @@ export class Collage {
   private images: any = {}
   private selectedTag: any
   private savedCollage: any
+  private menuPoint: any
   
   onLoadingStateChanged: Function;
   openDialog: Function;
@@ -122,6 +124,28 @@ export class Collage {
     }
   }
 
+  createTemplate(setting: Setting) {
+    if (this.loading) {
+      return
+    }
+
+    try {
+      const ccw = this.getCanvasContainerWidth()
+      this.layout = new CanvasLayout(setting, ccw)
+
+      this.savedCollage = null
+      this.removeCanvasElement()
+
+      const canvasWidth = this.layout.calculateWidth();
+      const canvasHeight = this.layout.calculateHeight();
+      this.createCanvasElement(canvasWidth, canvasHeight)
+      this.createFabricCanvas(canvasWidth, canvasHeight)
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+
   private createFabricCanvas(width, height) {
     if (this.canvas) {
       this.canvas.dispose()
@@ -136,21 +160,29 @@ export class Collage {
       backgroundColor: '#444',
     })
 
-    this.canvas.on('mouse:up', (event) => {
+    this.canvas.on('mouse:down', (event) => {
       if (event.button === 1) {
         this.contextMenu.hideMenu()
       }
-      else if (event.button === 3) {
+    })
+
+    this.canvas.on('mouse:up', (event) => {
+      if (event.button === 3) {
+        var pointer = this.canvas.getPointer(event.e);
+        this.menuPoint = pointer
+
+        const el = document.getElementById('main-canvas')
+        var viewportOffset = el.getBoundingClientRect();
+
+        var px = viewportOffset.x + pointer.x;
+        var py = viewportOffset.y + pointer.y;
+
         if (event.target) {
-          this.selectedTag = event.target.type
-
-          var pointer = this.canvas.getPointer(event.e);
-          const el = document.getElementById('main-canvas')
-          var viewportOffset = el.getBoundingClientRect();
-
-          var px = viewportOffset.x + pointer.x;
-          var py = viewportOffset.y + pointer.y;
-          this.contextMenu.createMenu(px, py)
+          this.selectedTag = event.target.type          
+          this.contextMenu.createMenu("#menu-image-edit", px, py)
+        }
+        else {
+          this.contextMenu.createMenu("#menu-template", px, py)
         }
       }
     })
@@ -170,6 +202,7 @@ export class Collage {
     return null
   }
 
+  private cellIndex: number = 0
   private onMenuItemClicked(e) {
     const elementId = e.target['id'];
     if (elementId == 'edit') {
@@ -185,6 +218,26 @@ export class Collage {
       const image: ImageBox = this.getSelectedImage()
       image.restoreImage()
     }
+    else if (elementId == 'addCell') {
+      this.addCell()
+    }
+    else if (elementId == 'deleteCell') {
+      this.deleteCell()
+    }
+  }
+
+  addCell() {
+    console.log(this.menuPoint)
+    this.cellIndex++
+    const tag = "cell_" + this.cellIndex
+    const cell = new ImageCell(this.canvas, this.menuPoint, tag)
+    this.images[tag] = cell
+  }
+
+  deleteCell() {
+    const cell: ImageCell = this.getSelectedImage()
+    cell.delete()
+    delete this.images[cell.tag]
   }
 
   onImageChanged(scale, brightness) {
@@ -369,12 +422,12 @@ export class Collage {
     return data['slug']
   }
 
-  getCollageInfo() {
+  private getTemplateInfo() {
     let index = 1
     const collages = []
     for (const tag in this.images) {
-      const img: ImageBox = this.images[tag]
-      const info = Object.assign({ index: index++ }, img.getImageInfo())
+      const img: ImageCell = this.images[tag]
+      const info = Object.assign({ index: index++ }, img.getCellInfo())
       collages.push(info);
     }
     return collages
@@ -397,7 +450,7 @@ export class Collage {
       canvasHeight: this.canvas.height
     }, this.layout.getSetting())
 
-    const data = {setting: setting, images: this.getCollageInfo(), image: dataUrl};
+    const data = {setting: setting, images: this.getTemplateInfo(), image: dataUrl};
     if (id) {
       data['id'] = id
     }

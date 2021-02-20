@@ -91,16 +91,6 @@ class ImageBoardBox {
     return this
   }
 
-  getImageInfo() {
-    const rect = this.controlBox
-    return {
-      left: rect.left,
-      top: rect.top,
-      width: rect.width * rect.scaleX,
-      height: rect.height * rect.scaleY
-    }
-  }
-
   setImage(image) {
     this.onImageLoaded(image)
   }

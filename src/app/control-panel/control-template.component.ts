@@ -1,17 +1,15 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { MatDialog, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { PrintMenu } from "../print-menu/print-menu.component"
 import { ToastrService } from "ngx-toastr";
 import { Collage } from "../collage/collage";
 import { AuthService } from "../auth.service";
-import { SelectTemplateComponent } from "./select-template.component";
 
 @Component({
-  selector: "control-panel",
-  templateUrl: "./control-panel.component.html",
+  selector: "control-template",
+  templateUrl: "./control-template.component.html",
   styleUrls: ["./control-panel.component.scss"],
 })
-export class ControlPanelComponent implements OnInit {
+export class ControlTemplateComponent implements OnInit {
   public landscape: boolean = false;
   public width: number = 16;
   public height: number = 12;
@@ -20,10 +18,7 @@ export class ControlPanelComponent implements OnInit {
   public collageWidth = [8, 10, 12, 16, 20, 24, 30, 36, 40, 48, 54, 60];
   public collageHeight = [8, 10, 12, 16, 20, 24, 30, 36, 40, 48, 54, 60];
 
-  @Input() collageTemplate: boolean;
-
   constructor(
-    private dialog: MatDialog,
     private toastr: ToastrService,
     private authSvc: AuthService,
     private collage: Collage
@@ -34,21 +29,14 @@ export class ControlPanelComponent implements OnInit {
     document.addEventListener("contextmenu", (event) => event.preventDefault());
   }
 
-  async createCollage() {
+  createTemplate() {
     this.savedTemplate = null
-    await this.collage.createSmartCollage({
+    this.collage.createTemplate({
       widthInch: this.width,
       heightInch: this.height,
       landscape: this.landscape,
       borderWidth: this.borderWidth,
       borderColor: this.borderColor
-    });
-  }
-
-  async selectTemplate() {
-    console.log('selectTemplate')
-    this.dialog.open(SelectTemplateComponent, {
-      data: {},
     });
   }
 

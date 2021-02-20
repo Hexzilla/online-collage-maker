@@ -11,6 +11,7 @@ import { CollageMakeComponent } from "./collage-make/collage-make.component";
 import { CollageTemplateComponent } from "./collage-template/collage-template.component";
 import { TemplatePreviewComponent } from "./collage-template/template-preview.component";
 import { ControlPanelComponent } from "./control-panel/control-panel.component";
+import { ControlTemplateComponent } from "./control-panel/control-template.component";
 import { SelectTemplateComponent } from "./control-panel/select-template.component";
 import { ImageEditorComponent } from "./image-editor/image-editor.component";
 import { ImageUploadComponent } from "./image-upload/image-upload.component";
@@ -75,6 +76,7 @@ const appRoutes: Routes = [
     CartComponent,
     CrudComponent,
     ControlPanelComponent,
+    ControlTemplateComponent,
     SelectTemplateComponent,
     ImageEditorComponent,
     ImageUploadComponent,
