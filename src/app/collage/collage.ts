@@ -28,6 +28,7 @@ export class Collage {
   constructor(private api: ApiService, private setting: Setting) {
     this.contextMenu = new CanvasContextMenu()
     this.contextMenu.onMenuItemClicked = (e) => this.onMenuItemClicked(e)
+    window.addEventListener('resize', () => this.resizeCanvas(), false);
   }
 
   private setLoadingState(state) {
@@ -146,6 +147,7 @@ export class Collage {
       const ccw = this.getCanvasContainerWidth()
       this.layout = new CanvasLayout(this.setting, ccw)
 
+      this.images = []
       this.savedCollage = null
       this.removeCanvasElement()
 
@@ -186,7 +188,7 @@ export class Collage {
         this.createContextMenu(event)
       }
       else if (event.e.type == "touchend") {
-        if (event.e.timeStamp - touchTimestamp >= 400) {
+        if (event.e.timeStamp - touchTimestamp >= 300) {
           touchTimestamp = 0
           this.createContextMenu(event)
         }
@@ -484,5 +486,9 @@ export class Collage {
       console.log('failed to save image')
       return null
     }
+  }
+
+  private resizeCanvas() {
+    console.log("resizeCanvas")
   }
 }

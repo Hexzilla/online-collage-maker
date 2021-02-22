@@ -45,6 +45,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from "ngx-toastr";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 
 const appRoutes: Routes = [
@@ -102,6 +103,7 @@ const appRoutes: Routes = [
     NgxDropzoneModule,
     ColorPickerModule,
     ImageCropperModule,
+    MatExpansionModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,

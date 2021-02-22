@@ -81,8 +81,7 @@ class ImageBox {
       fill: 'rgba(0,0,0,0)',
       absolutePositioned: true,
       selectable: false,
-      stroke: this.strokeColor,
-      strokeWidth: this.strokeWidth,
+      strokeWidth: 0,
       padding: 0,
     })
     this.canvas.add(this.boardRect)

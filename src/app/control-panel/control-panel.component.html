@@ -1,65 +1,68 @@
-<!-- Page Content -->
-<div class="image-upload">
-    <div class="card">
-      <div class="card-body">
-        <div class="collage-setting-row">
-          <label class="pl-2">Collage Size</label>
-        </div>
-        <div class="row collage-setting-row">
-          <div class="col-12 col-md-6">
-            <mat-form-field appearance="fill">
-              <mat-label>Width</mat-label>
-              <mat-select [(value)]="setting.widthInch" (selectionChange)="onWidthChanged($event)">
-                <mat-option *ngFor="let size of collageWidth" [value]="size">
-                  {{size}} inch
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="col-12 col-md-6">
-            <mat-form-field appearance="fill">
-              <mat-label>Height</mat-label>
-              <mat-select [(value)]="setting.heightInch" (selectionChange)="onHeightChanged($event)">
-                <mat-option *ngFor="let size of collageHeight" [value]="size">
-                  {{size}} inch
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="collage-setting-row">
-          <mat-checkbox class="pl-2" [(ngModel)]="setting.landscape">Landscape</mat-checkbox>
-        </div>
-        <div class="collage-setting-row">
-          <div class="col-md-6">
-            <input class="color-picker" 
-              value="Color"
-              [style.background]="setting.borderColor"
-              [cpAlphaChannel]="'always'"
-              [cpOutputFormat]="'rgba'"
-              [cpPresetColors]="['#fff', '#2889e9']"
-              [cpAddColorButton]="true"
-              [(colorPicker)]="setting.borderColor"/>
-          </div> 
-          <div class="col-md-6">
-            <mat-form-field class="collage-border">
-              <mat-label>Border</mat-label>
-              <input matInput maxlength="2" type="number" class="text-center" [(ngModel)]="setting.borderWidth">
-            </mat-form-field>
-          </div>
-        </div>
-        <div>
-          <div class="row pl-1 m-1 text-center">
-            <div class="col-md-12 text-center">
-              <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="createCollage()">Create Collage</button>
+<mat-expansion-panel class="p-0" [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Collage Size
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <div class="image-upload">
+      <div class="card">
+        <div class="card-body">
+          <div class="row collage-setting-row">
+            <div class="col-12 col-md-6">
+              <mat-form-field appearance="fill">
+                <mat-label>Width</mat-label>
+                <mat-select [(value)]="setting.widthInch" (selectionChange)="onWidthChanged($event)">
+                  <mat-option *ngFor="let size of collageWidth" [value]="size">
+                    {{size}} inch
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6">
+              <mat-form-field appearance="fill">
+                <mat-label>Height</mat-label>
+                <mat-select [(value)]="setting.heightInch" (selectionChange)="onHeightChanged($event)">
+                  <mat-option *ngFor="let size of collageHeight" [value]="size">
+                    {{size}} inch
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
           </div>
-          <div class="row pl-1 m-1 text-center">
-            <div class="col-md-12 text-center">
-              <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="selectTemplate()">Select Template</button>
+          <div class="collage-setting-row">
+            <mat-checkbox class="pl-2" [(ngModel)]="setting.landscape">Landscape</mat-checkbox>
+          </div>
+          <div class="collage-setting-row">
+            <div class="col-md-6">
+              <input class="color-picker" 
+                value="Color"
+                [style.background]="setting.borderColor"
+                [cpAlphaChannel]="'always'"
+                [cpOutputFormat]="'rgba'"
+                [cpPresetColors]="['#fff', '#2889e9']"
+                [cpAddColorButton]="true"
+                [(colorPicker)]="setting.borderColor"/>
+            </div> 
+            <div class="col-md-6">
+              <mat-form-field class="collage-border">
+                <mat-label>Border</mat-label>
+                <input matInput maxlength="2" type="number" class="text-center" [(ngModel)]="setting.borderWidth">
+              </mat-form-field>
+            </div>
+          </div>
+          <div>
+            <div class="row pl-1 m-1 text-center">
+              <div class="col-md-12 text-center">
+                <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="createCollage()">Create Collage</button>
+              </div>
+            </div>
+            <div class="row pl-1 m-1 text-center">
+              <div class="col-md-12 text-center">
+                <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="selectTemplate()">Select Template</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-</div>
+  </div>
+</mat-expansion-panel>
