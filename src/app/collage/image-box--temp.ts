@@ -122,13 +122,6 @@ class ImageBox {
     this.update()
   }
 
-  onImageChanged(zoom, brightness) {
-    console.log('onImageChanged', zoom, brightness)
-    this.zoom = zoom
-    this.brightness = brightness
-    this.update()
-  }
-
   onImageCropped(left, top, width, height) {
     console.log('ImageCropped', left, top, width, height)
     this.cropRect = new Rect(left, top, width, height)

@@ -19,12 +19,13 @@ class ImageBox {
   url: string
   canvas: fabric.Canvas
   image: fabric.Image
-  initialScale: number = 1.0
+  initialScale: number = 1.0  //TODO-remove this
   scale: number = 1.0
   zoom: number = 1.0
   brightness: number = 0.01
   boardRect: fabric.Rect
-  controlBoxPoint: fabric.Point
+  boardRectPos: fabric.Point
+  lockBoardRect: Boolean
   tag: string
   strokeColor: string = 'rgb(136, 0, 26)'
   strokeWidth: number = 0
@@ -49,6 +50,7 @@ class ImageBox {
   }
 
   addLockedBoard(left, top, width, height) {
+    this.lockBoardRect = true
     this.boardRect = new fabric.Rect({
       type: this.tag,
       originX: 'left',
@@ -69,6 +71,7 @@ class ImageBox {
   }
 
   addMovableBoard(left, top, width, height) {
+    this.lockBoardRect = false
     this.boardRect = new fabric.Rect({
       type: this.tag,
       originX: 'left',
@@ -96,7 +99,7 @@ class ImageBox {
     })
     this.boardRect.setControlsVisibility({mb: false, ml: false, mr: false, mt: false, mtr: false})
     this.canvas.add(this.boardRect)
-    this.controlBoxPoint = new fabric.Point(this.boardRect.left, this.boardRect.top)
+    this.boardRectPos = new fabric.Point(this.boardRect.left, this.boardRect.top)
     return this
   }
 
@@ -116,7 +119,7 @@ class ImageBox {
     this.initialScale = this.scale = 1.0
     this.zoom = 1.0
     this.brightness = 0.01
-    this.image && this.canvas.remove(this.image)
+    this.loadImage(this.url)
   }
 
   getImageUrl() {
@@ -137,7 +140,7 @@ class ImageBox {
 
   private onImageLoaded(img) {
     if (this.image) {
-      this.deleteImage()
+      this.removeImage()
     }
     this.image = img
     this.updateImage()
@@ -167,8 +170,12 @@ class ImageBox {
     return this.boardRect.containsPoint(new fabric.Point(px, py))
   }
 
-  deleteImage() {
+  removeImage() {
     this.canvas.remove(this.image)
+  }
+
+  removeBoard() {
+    this.canvas.remove(this.boardRect)
   }
 
   restoreImage() {
@@ -194,7 +201,7 @@ class ImageBox {
     const bh = this.boardRect.height * this.boardRect.scaleY
     const scaleX = bw / this.image.width
     const scaleY = bh / this.image.height
-    const scale = Math.max(scaleX, scaleY)
+    const scale = this.zoom * Math.max(scaleX, scaleY)
     const offsetX = (this.image.width * scale - bw) / 2
     const offsetY = (this.image.height * scale - bh) / 2
 
@@ -227,21 +234,23 @@ class ImageBox {
   }
 
   onMouseDown(e) {
-    if (e.target && e.target.type == this.tag) {
-      this.canvas.bringToFront(this.image)
-      this.canvas.bringToFront(this.boardRect)
-      this.canvas.setActiveObject(this.boardRect)
+    if (!this.lockBoardRect) {
+      if (e.target && e.target.type == this.tag) {
+        this.canvas.bringToFront(this.image)
+        this.canvas.bringToFront(this.boardRect)
+        this.canvas.setActiveObject(this.boardRect)
+      }
     }
   }
 
   onObjectMoving(e) {
     if (e.target.type == this.tag) {
-      const dx = e.target.left - this.controlBoxPoint.x
-      const dy = e.target.top - this.controlBoxPoint.y
+      const dx = e.target.left - this.boardRectPos.x
+      const dy = e.target.top - this.boardRectPos.y
       this.image.left += dx
       this.image.top  += dy
 
-      this.controlBoxPoint = new fabric.Point(e.target.left, e.target.top)
+      this.boardRectPos = new fabric.Point(e.target.left, e.target.top)
       this.addImageClipPath()
     }
   }
@@ -268,7 +277,7 @@ class ImageBox {
   onObjectScaling(e) {
     if (e.target.type == this.tag) {
       this.scale = this.initialScale * e.target.scaleX
-      this.controlBoxPoint = new fabric.Point(e.target.left, e.target.top)
+      this.boardRectPos = new fabric.Point(e.target.left, e.target.top)
       this.updateImage()
       this.addImageClipPath()
       this.canvas.renderAll()

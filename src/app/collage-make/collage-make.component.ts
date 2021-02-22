@@ -28,7 +28,6 @@ export class CollageMakeComponent implements OnInit {
 
   async ngOnInit() {
     this.collage.onLoadingStateChanged = (state) => (this.loading = state);
-    this.collage.openImageEditor = (url) => this.openImageEditor(url);
     this.collage.onMenuItemClicked = (e) => this.onMenuItemClicked(e)
 
     document.addEventListener("contextmenu", (event) => event.preventDefault());
@@ -46,32 +45,40 @@ export class CollageMakeComponent implements OnInit {
   async onMenuItemClicked(e) {
     switch (e.target['id']) {
       case 'edit':
+        await this.openImageEditWindow()
         break
 
       case 'crop':
-        const box: ImageBox = this.collage.getSelectedImage()
-        await this.openImageCropWindow(box)
+        await this.openImageCropWindow()
         break
 
       case 'delete':
+        this.collage.deleteSelectedImage()
         break
 
-      case 'restore':
+      case 'reset':
+        const box: ImageBox = this.collage.getSelectedImage()
+        box.reset()
         break
     }
   }
 
-  openImageEditor(imageUrl) {
+  async openImageEditWindow() {
+    const box: ImageBox = this.collage.getSelectedImage()
     this.dialog.open(ImageEditorComponent, {
       data: {
-        imageUrl: imageUrl
+        imageBox: box
       },
+      position: {
+        left: "0px"
+      }
     });
   }
 
-  async openImageCropWindow(selectedImageBox: ImageBox) {
-    const imageBase64 = selectedImageBox.getImageUrl()
-    const board = selectedImageBox.getBoard()
+  async openImageCropWindow() {
+    const box: ImageBox = this.collage.getSelectedImage()
+    const imageBase64 = box.getImageUrl()
+    const board = box.getBoard()
     this.dialog.open(ImageCropperComponent, {
       data: {
         imageBase64: imageBase64,
@@ -81,7 +88,6 @@ export class CollageMakeComponent implements OnInit {
   }
 
   handleDrop(e) {
-    console.log(e, e.offsetX, e.offsetY)
     this.collage.onHandleDrop(e.offsetX, e.offsetY)
     return false;
   }

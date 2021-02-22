@@ -24,7 +24,7 @@ export class CollageTemplateComponent implements OnInit {
 
   async ngOnInit() {
     this.collage.onLoadingStateChanged = (state) => (this.loading = state);
-    this.collage.openImageEditor = (url, ratio) => this.openImageEditor(url);
+    //this.collage.openImageEditor = (url, ratio) => this.openImageEditor(url);//TODO
 
     document.addEventListener("contextmenu", (event) => event.preventDefault());
 

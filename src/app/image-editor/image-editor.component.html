@@ -1,24 +1,19 @@
 <h1 mat-dialog-title>Edit Image</h1>
-<div mat-dialog-content>
-    <div class="crop-container">
-        <canvas id="crop-canvas" width="720" height="420"></canvas>
-    </div>
+<mat-dialog-content>
     <div class="row">
-        <div class="col-sm-12 col-md-6">
+        <div class="col-sm-12 col-md-12">
             <p class="m-0">Size:&nbsp;<span id="image-size-value">100%</span></p>
             <mat-slider id="image-size-slider" min="100" max="500" step="1" value="100"
                 (input)="onImageSizeChanged($event)"></mat-slider>
         </div>
-        <div class="col-sm-12 col-md-6">
+        <div class="col-sm-12 col-md-12">
             <p class="m-0">Brightness:&nbsp;<span id="image-brightness-value">1</span></p>
             <mat-slider id="image-size-slider" min="1" max="100" step="1" value="1"
                 (input)="onBrightnessChanged($event)">
             </mat-slider>
         </div>
     </div>
-</div>
+</mat-dialog-content>
 <div mat-dialog-actions align="end">
     <button mat-raised-button (click)="onClose()">Close</button>
-    <button mat-raised-button color="primary" (click)="onCropImage()">Crop Image</button>
-    <button mat-raised-button color="accent" (click)="onApply()">Apply</button>
 </div>

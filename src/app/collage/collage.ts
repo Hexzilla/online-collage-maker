@@ -21,11 +21,10 @@ export class Collage {
   private selectedTag: any
   private savedCollage: any
   private menuPoint: any
-  private selectedTemplate: any
+  private selectedTemplate: any   //TODO--removeable?
+  private dropImageUrl: string
   
   onLoadingStateChanged: Function;
-  openImageEditor: Function;
-  openImageCropper: Function;
   onTemplateSelected: Function;
   onMenuItemClicked: Function;
 
@@ -210,6 +209,13 @@ export class Collage {
     return null
   }
 
+  deleteSelectedImage() {
+    const box: ImageBox = this.getSelectedImage()
+    box.removeImage()
+    !box.lockBoardRect && box.removeBoard()
+    delete this.images[box.tag]
+  }
+
   /*private onMenuItemClicked(e) {
     const elementId = e.target['id'];
     if (elementId == 'edit') {
@@ -258,36 +264,12 @@ export class Collage {
     delete this.images[cell.tag]
   }
 
-  onImageChanged(scale, brightness) {
+  onImageCropped(imageBase64) {
     const image: ImageBox = this.getSelectedImage()
-    //image.onImageChanged(scale, brightness)
+    image.setZoomScale(1.0) //TODO
+    image.loadImage(imageBase64)
   }
 
-  onImageCropped(left, top, width, height) {
-    const image: ImageBox = this.getSelectedImage()
-    //image.onImageCropped(left, top, width, height)
-  }
-
-  /*onSmartImageCropped(croppedImage) { //TODO
-    const box: ImageBoardBox = this.getSelectedImage()
-    box.loadImage(croppedImage)
-  }*/
-
-  /*TODO
-  private onEditImage(image) {
-    const url = image.getImageUrl()
-    if (url) {
-      if (!this.selectedTemplate) {
-        this.openImageEditor && this.openImageEditor(url)
-      }
-      else {
-        const board = image.getBoard()
-        this.openImageCropper && this.openImageCropper(url, board.width, board.height)
-      }
-    }
-  }*/
-
-  dropImageUrl: string
   onDragStart(url) {
     this.dropImageUrl = url
   }
@@ -299,7 +281,7 @@ export class Collage {
         this.setLoadingState(true)
         const imageUrl = await toDataURL("GET", this.dropImageUrl)
         box.onImageLoadCompleted = () => this.setLoadingState(false)
-        box.reset()
+        box.removeImage()
         box.setImageUrl(imageUrl).loadImage(imageUrl)
         this.dropImageUrl = null
       }
