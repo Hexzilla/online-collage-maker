@@ -27,7 +27,7 @@ export class CollageMakeComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.collage.onLoadingStateChanged = (state) => (this.loading = state);
+    this.collage.onLoadingStateChanged = (state) => (this.loading = state)
     this.collage.onMenuItemClicked = (e) => this.onMenuItemClicked(e)
 
     document.addEventListener("contextmenu", (event) => event.preventDefault());

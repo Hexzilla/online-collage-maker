@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { MatDialog, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { AuthService } from "../auth.service";
-import { ImageEditorComponent } from "../image-editor/image-editor.component";
 import { Collage } from '../collage/collage'
 
 @Component({
@@ -15,8 +12,6 @@ export class CollageTemplateComponent implements OnInit {
   public loading: boolean = false;
 
   constructor(
-    private http: HttpClient,
-    private dialog: MatDialog,
     private authSvc: AuthService,
     private router: Router,
     private collage: Collage
@@ -24,7 +19,7 @@ export class CollageTemplateComponent implements OnInit {
 
   async ngOnInit() {
     this.collage.onLoadingStateChanged = (state) => (this.loading = state);
-    //this.collage.openImageEditor = (url, ratio) => this.openImageEditor(url);//TODO
+    this.collage.onMenuItemClicked = (e) => this.onMenuItemClicked(e)
 
     document.addEventListener("contextmenu", (event) => event.preventDefault());
 
@@ -46,17 +41,20 @@ export class CollageTemplateComponent implements OnInit {
     return this.authSvc.loggedIn();
   }
 
-  showTemplates() {
-    this.router.navigate(["/template/preview"]);
+  async onMenuItemClicked(e) {
+    switch (e.target['id']) {
+      case 'add_cell':
+        this.collage.addCell()
+        break
+
+      case 'delete_cell':
+        this.collage.deleteCell()
+        break
+    }
   }
 
-  openImageEditor(imageUrl) {
-    console.log("OpenDialog", this.dialog)
-    this.dialog.open(ImageEditorComponent, {
-      data: {
-        imageUrl: imageUrl,
-      },
-    });
+  showTemplates() {
+    this.router.navigate(["/template/preview"]);
   }
 
   handleDrop(e) {

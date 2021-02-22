@@ -216,42 +216,8 @@ export class Collage {
     delete this.images[box.tag]
   }
 
-  /*private onMenuItemClicked(e) {
-    const elementId = e.target['id'];
-    if (elementId == 'edit') {
-      const image: ImageBox = this.getSelectedImage()
-      this.onEditImage(image)
-    }
-    if (elementId == 'crop') {
-      const image: ImageBox = this.getSelectedImage()
-      this.onEditImage(image)
-    }
-    else if (elementId == 'delete') {
-      const image: ImageBox = this.getSelectedImage()
-      image.deleteImage()
-      delete this.images[image.tag]
-    }
-    else if (elementId == 'deleteImage') {
-      const image = this.getSelectedImage()
-      if (image.name == 'ImageBoardBox') {
-        image.reset()
-      }
-    }
-    else if (elementId == 'restore') {
-      const image: ImageBox = this.getSelectedImage()
-      image.restoreImage()
-    }
-    else if (elementId == 'addCell') {
-      this.addCell()
-    }
-    else if (elementId == 'deleteCell') {
-      this.deleteCell()
-    }
-  }*/
-
   private cellIndex: number = 0
   addCell() {
-    console.log(this.menuPoint)
     this.cellIndex++
     const tag = "cell_" + this.cellIndex
     const cell = new ImageCell(this.canvas, this.menuPoint, tag)
@@ -386,7 +352,7 @@ export class Collage {
             }
             
             virtualCanvas.add(cloned)
-            _resolve()
+            _resolve(true)
           })
         })
       })
