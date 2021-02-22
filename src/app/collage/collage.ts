@@ -3,13 +3,13 @@ import { fabric } from 'fabric'
 import { ApiService } from "../api/api";
 import { CanvasLayout } from "./cavas-layout";
 import { Setting } from "./setting";
-import { loadImage, shuffle } from "./util";
+import { loadImage, shuffle, toDataURL } from "./util";
 import { environment } from './../../environments/environment';
 import ImageBox from "./image-box"
 import ImageCell from "./image-cell"
 import ImageBoardBox from "./image-board-box"
 import CanvasContextMenu from "./contextmenu"
-import { ImageCrop } from './../image-editor/image-cropper.component';
+import { util } from "fabric/fabric-impl";
 
 @Injectable({
   providedIn: "root",
@@ -263,46 +263,40 @@ export class Collage {
     image.onImageCropped(left, top, width, height)
   }
 
-  onSmartImageCropped(crop: ImageCrop) {
-    const image: ImageBoardBox = this.getSelectedImage()
-    image.onImageChanged(crop.left, crop.top, crop.scale, crop.brightness)
+  onSmartImageCropped(croppedImage) {
+    const box: ImageBoardBox = this.getSelectedImage()
+    box.loadImage(croppedImage)
   }
 
   private onEditImage(image) {
     const url = image.getImageUrl()
-    if (!url) {
-      return
-    }
-    
-    if (!this.selectedTemplate) {
-      this.openImageEditor && this.openImageEditor(url)
-    }
-    else {
-      const board = image.getBoard()
-      console.log('onEditImage', board.width, board.height)
-      this.openImageCropper && this.openImageCropper(url, board.width, board.height)
-    }
-  }
-
-  dragImageUrl: string
-  onDragStart(url) {
-    this.dragImageUrl = url
-  }
-
-  onHandleDrop(offsetX, offsetY) {
-    if (this.dragImageUrl) {
-      const image: ImageBoardBox = this.getImage(offsetX, offsetY)
-      if (!image) {
-        return
+    if (url) {
+      if (!this.selectedTemplate) {
+        this.openImageEditor && this.openImageEditor(url)
       }
-      console.log(image.tag)
+      else {
+        const board = image.getBoard()
+        this.openImageCropper && this.openImageCropper(url, board.width, board.height)
+      }
+    }
+  }
 
-      this.setLoadingState(true)
-      image.onImageLoadCompleted = () => this.setLoadingState(false)
+  dropImageUrl: string
+  onDragStart(url) {
+    this.dropImageUrl = url
+  }
 
-      image.reset()
-      image.setImageUrl(this.dragImageUrl)
-      this.dragImageUrl = null
+  async onHandleDrop(offsetX, offsetY) {
+    if (this.dropImageUrl) {
+      const box: ImageBoardBox = this.getImage(offsetX, offsetY)
+      if (box) {
+        this.setLoadingState(true)
+        const imageUrl = await toDataURL("GET", this.dropImageUrl)
+        box.onImageLoadCompleted = () => this.setLoadingState(false)
+        box.reset()
+        box.setImageUrl(imageUrl).loadImage(imageUrl)
+        this.dropImageUrl = null
+      }
     }
   }
 
@@ -310,8 +304,6 @@ export class Collage {
   //Create Collage by Template ID
   //////////////////////////////////////////////////////
   async createCollageByTemplateId(templateId) {
-    console.log('createCollageByTemplateId', templateId)
-    
     try {
       this.setLoadingState(true);
 
@@ -343,13 +335,11 @@ export class Collage {
       template.images.forEach(it => {
         const tag = `img_${it.index}`
         this.images[tag] = new ImageBoardBox(this.canvas)
-          .setImageOffset(it.left * scale, it.top * scale)
           .setScale(1.0)
           .setTag(tag)
           .setBorder(setting.borderWidth, setting.borderColor)
-          .setBoard(it.width * scale, it.height * scale)
+          .setBoard(it.left * scale, it.top * scale, it.width * scale, it.height * scale)
       })
-      console.log(this.images)
     }
     catch (err) {
       console.log(err)

@@ -61,16 +61,24 @@ export function shuffle(array) {
   return array;
 }
 
-export function toDataURL(url, callback) {
-  var xhr = new XMLHttpRequest();
-  xhr.onload = function() {
-    var reader = new FileReader();
-    reader.onloadend = function() {
-      callback(reader.result);
-    }
-    reader.readAsDataURL(xhr.response);
-  };
-  xhr.open('GET', url);
-  xhr.responseType = 'blob';
-  xhr.send();
+export function toDataURL(method, url) {
+  return new Promise(function (resolve, reject) {
+    const xhr = new XMLHttpRequest();
+    xhr.open(method, url);
+    xhr.responseType = 'blob';
+    xhr.onload = function() {
+      const reader = new FileReader();
+      reader.onloadend = function() {
+        resolve(reader.result);
+      }
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.onerror = function () {
+      reject({
+        status: this.status,
+        statusText: xhr.statusText
+      });
+    };
+    xhr.send();
+  })
 }

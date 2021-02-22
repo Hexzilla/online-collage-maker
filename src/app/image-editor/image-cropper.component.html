@@ -2,7 +2,7 @@
 <mat-dialog-content>
     <div class="row">
         <image-cropper
-            [imageBase64]="imageChangedEvent"
+            [imageBase64]="data.imageBase64"
             [maintainAspectRatio]="true"
             [aspectRatio]="data.ratio"
             format="png"
