@@ -44,6 +44,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //import { NgMasonryGridModule } from 'ng-masonry-grid';
 import { ToastrModule } from "ngx-toastr";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 
 const appRoutes: Routes = [
@@ -100,6 +101,7 @@ const appRoutes: Routes = [
     MatCheckboxModule,
     NgxDropzoneModule,
     ColorPickerModule,
+    ImageCropperModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,

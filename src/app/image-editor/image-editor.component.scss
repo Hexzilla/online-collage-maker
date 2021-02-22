@@ -1,35 +1,40 @@
 .modal {
-    /*text-align: left;*/
-    text-align: center;
-  }
+  /*text-align: left;*/
+  text-align: center;
+}
   
-  @media screen and (min-width: 768px) {
-    .modal:before {
-      display: inline-block;
-      vertical-align: middle;
-      content: " ";
-      height: 100%;
-    }
-  }
-  
-  .modal-dialog {
+@media screen and (min-width: 768px) {
+  .modal:before {
     display: inline-block;
-    /* text-align: left; */
-    text-align: center;
     vertical-align: middle;
+    content: " ";
+    height: 100%;
   }
-  
-  mat-slider {
-    width: 100%;
-  }
-  
-  // .crop-container canvas{
-  //   width: 720px;
-  // }
-  
-  // @media screen and (min-width: 576px) {
-  //   .crop-container canvas {
-  //     width: 440px;
-  //   }
-  // }
+}
+
+.modal-dialog {
+  display: inline-block;
+  /* text-align: left; */
+  text-align: center;
+  vertical-align: middle;
+}
+
+mat-slider {
+  width: 100%;
+}
+
+.image-cropper-dialog {
+  min-width: 1024px;
+  min-height: 720px;
+}
+
+// .crop-container canvas{
+//   width: 720px;
+// }
+
+// @media screen and (min-width: 576px) {
+//   .crop-container canvas {
+//     width: 440px;
+//   }
+// }
   

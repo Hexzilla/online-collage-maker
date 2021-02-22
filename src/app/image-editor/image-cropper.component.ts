@@ -1,13 +1,15 @@
 import { Component, Inject, OnInit, Input } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { fabric } from "fabric";
 import { Collage } from "../collage/collage";
+import { toDataURL } from "../collage/util";
 
 export interface ImageData {
   imageUrl: string;
   ratio: number;
-  width: number;
-  height: number;
+  boardWidth: number;
+  boardHeight: number;
 }
 
 export interface ImageCrop {
@@ -20,7 +22,7 @@ export interface ImageCrop {
 }
 
 @Component({
-  selector: "image-cropper",
+  selector: "image-cropper-wrapper",
   templateUrl: "image-cropper.component.html",
   styleUrls: ["image-editor.component.scss"],
 })
@@ -30,35 +32,40 @@ export class ImageCropperComponent implements OnInit {
   crop: ImageCrop;
   selectionRect: fabric.Rect;
   startPoint: fabric.Point;
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
 
   constructor(
     public dialogRef: MatDialogRef<ImageCropperComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ImageData,
     private collage: Collage
-  ) { }
+  ) { 
+  }
 
   ngOnInit() {
-    console.log("dialog-init", this.data);
-    this.createCanvas();
-    if (this.data.imageUrl) {
+    /*if (this.data.imageUrl) {
       this.image && this.canvas.remove(this.image);
       fabric.Image.fromURL(this.data.imageUrl, (img) =>
         this.onImageLoaded(img), {crossOrigin: 'anonymous'});
-    }
+    }*/
+    this.croppedImage = this.data.imageUrl
+    
+    toDataURL(this.data.imageUrl, (dataUrl) => {
+      console.log(dataUrl)
+      this.imageChangedEvent = dataUrl
+    })
   }
 
   createCanvas() {
-    console.log('createCanvas-cropper')
     if (this.canvas) {
       this.canvas.dispose();
     }
-
-    if (this.data.ratio) {
-      const element = document.querySelector("#image-cropper-canvas");
-      const height = parseInt(element.getAttribute("height"))
-      const width = this.data.ratio * height
-      element.setAttribute("width", "" + width)
-    }
+   
+    const ratio = this.image.width / this.image.height
+    const element = document.querySelector("#image-cropper-canvas");
+    const height = parseInt(element.getAttribute("height"))
+    const width = ratio * height
+    element.setAttribute("width", "" + width)
 
     this.canvas = new fabric.Canvas("image-cropper-canvas", {
       fireRightClick: true,
@@ -66,8 +73,13 @@ export class ImageCropperComponent implements OnInit {
       backgroundColor: "grey",
     });
 
-    this.canvas.on("mouse:down", (e) => this.onMouseDown(e));
-    this.canvas.on("mouse:up", (e) => this.onMouseUp(e));
+    //this.canvas.on("mouse:down", (e) => this.onMouseDown(e));
+    //this.canvas.on("mouse:up", (e) => this.onMouseUp(e));
+
+    const container = document.querySelector(".crop-container > .canvas-container") as HTMLElement
+    container.style.textAlign = "center"
+    container.style.margin = "0px auto"
+    container.style.backgroundColor = "#111"
   }
 
   onMouseDown(e) {
@@ -93,13 +105,15 @@ export class ImageCropperComponent implements OnInit {
   }
 
   onImageLoaded(img) {
-    console.log('onImageLoaded')
     this.image = img;
-    this.canvas.add(img);
+
+    this.createCanvas()
+    this.canvas.add(img)
     
     const iw = this.image.width;
     const ih = this.image.height;
     const scale = Math.min(this.canvas.width / iw, this.canvas.height / ih)
+    console.log("sssscale=", scale)
     this.image.set({
       left: 0,
       top: 0,
@@ -110,10 +124,26 @@ export class ImageCropperComponent implements OnInit {
     this.canvas.centerObject(this.image);
     this.canvas.renderAll();
 
+    let bw = this.image.width * scale
+    let bh = this.image.height * scale
+    if (this.data.ratio > 1.0) {
+      if (this.image.width > this.image.height) bh = 1 / this.data.ratio * bw
+      else bw = this.data.ratio * bh
+    }
+    else {
+      if (this.image.width > this.image.height) bw = this.data.ratio * bh
+      else bh = 1 / this.data.ratio * bw
+    }
+
+    const offset = Math.min(this.image.width, this.image.height) / 16
+    this.addSelectionRect(offset, offset, bw - offset, bh - offset);
+    this.canvas.centerObject(this.selectionRect)
+    this.canvas.setActiveObject(this.selectionRect)
+
     this.crop = {
       changed: false,
-      left: this.image.left, 
-      top: this.image.top, 
+      left: 20, 
+      top: 20,
       scale: scale,
       brightness: 0,
       zoom: 1,
@@ -144,7 +174,7 @@ export class ImageCropperComponent implements OnInit {
       cornerColor: "white",
       cornerStrokeColor: "black",
       borderColor: "black",
-      cornerSize: 12,
+      cornerSize: 8,
       padding: 0,
       cornerStyle: "circle",
       borderDashArray: [5, 5],
@@ -192,7 +222,7 @@ export class ImageCropperComponent implements OnInit {
     this.canvas.renderAll()
   }
 
-  onCropImage() {
+  /*onCropImage() {
     if (!this.selectionRect) {
       return
     }
@@ -222,30 +252,49 @@ export class ImageCropperComponent implements OnInit {
 
     this.canvas.remove(this.selectionRect);
     this.selectionRect = null;
-  }
+  }*/
 
   onApply() {
-    if (this.crop.changed) {
-      //console.log("CROP", this.crop)
-      //console.log("Image", this.image.left, this.image.top, this.image.width, this.image.height, this.image.scaleX, this.image.scaleY)
-      //console.log("Canvas", this.canvas.width, this.canvas.height)
-      
-      const ratio = this.data.width / this.canvas.width
-      const imageScale = this.image.scaleX
-      const scale = imageScale * ratio
-      this.crop.left = this.image.left * ratio
-      this.crop.top = this.image.top * ratio
-      this.crop.scale = scale
-      this.collage.onSmartImageCropped(this.crop);
-    }
-    if (this.selectionRect) {
-      this.canvas.remove(this.selectionRect);
-      this.selectionRect = null;
-    }
+    const imageScale = this.image.scaleX
+    console.log('Image', this.image.left, this.image.top, this.image.scaleX)
+    const rect = this.selectionRect;
+    console.log('Rect', rect.left, rect.top, rect.width, rect.height, "Rect.Ratio", rect.width / rect.height)
+
+    const left = (rect.left - this.image.left) / imageScale;
+    const top = (rect.top - this.image.top) / imageScale;
+    console.log(left, top)
+
+    const ir = Math.max(this.image.height * imageScale / rect.height, this.image.width * imageScale / rect.width)
+    const ratio = this.data.boardWidth / rect.width
+    console.log("boardWidth", this.data.boardWidth, ratio, "Ratio", this.data.ratio)
+    const scale = imageScale * ratio * ir
+    console.log("scale", scale)
+    this.crop.left = -1 * left * scale
+    this.crop.top = -1 * top * scale
+    this.crop.scale = scale
+    this.collage.onSmartImageCropped(this.crop);
+
+    this.canvas.remove(this.selectionRect);
+    this.selectionRect = null;
     this.onClose()
   }
 
   onClose() {
     this.dialogRef.close();
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+      this.croppedImage = event.base64;
+  }
+  imageLoaded(image: HTMLImageElement) {
+      // show cropper
+  }
+  cropperReady() {
+      // cropper ready
+      console.log("cropperReady")
+  }
+  loadImageFailed() {
+      // show message
+      console.log("loadImageFailed")
   }
 }

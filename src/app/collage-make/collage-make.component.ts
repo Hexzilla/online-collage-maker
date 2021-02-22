@@ -48,13 +48,13 @@ export class CollageMakeComponent implements OnInit {
     });
   }
 
-  openImageCropper(imageUrl, width, height) {
+  openImageCropper(imageUrl, boardWidth, boardHeight) {
     this.dialog.open(ImageCropperComponent, {
       data: {
         imageUrl: imageUrl,
-        ratio: width / height,
-        width: width,
-        height: height,
+        ratio: boardWidth / boardHeight,
+        boardWidth: boardWidth,
+        boardHeight: boardHeight,
       },
     });
   }

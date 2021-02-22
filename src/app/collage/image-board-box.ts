@@ -71,7 +71,7 @@ class ImageBoardBox {
       absolutePositioned: true,
       selectable: false,
       stroke: this.strokeColor,
-      strokeWidth: this.strokeWidth,
+      strokeWidth: 1,
       padding: 0,
     })
     this.canvas.add(this.boardRect)
@@ -148,6 +148,7 @@ class ImageBoardBox {
   }
 
   containsPoint(px, py) {
+    console.log(this.boardRect.width, this.boardRect.height)
     return this.boardRect.containsPoint(new fabric.Point(px, py))
   }
 
@@ -182,6 +183,7 @@ class ImageBoardBox {
   }
 
   onImageChanged(left, top, scale, brightness) {
+    console.log('onImageChanged', left, top, scale, brightness)
     this.offsetX = this.boardRect.left + left
     this.offsetY = this.boardRect.top + top
     this.scale = scale
@@ -197,7 +199,7 @@ class ImageBoardBox {
       scaleY: 1.0
     }
     this.controlBox.set(options)
-    this.image.clipPath.set(options)
+    //this.image.clipPath.set(options)
     this.controlBoxPoint = new fabric.Point(this.controlBox.left, this.controlBox.top)
     this.update()
   }
@@ -245,7 +247,7 @@ class ImageBoardBox {
   }
 
   private updateClipPath() {
-    let left = this.controlBox.left
+    /*let left = this.controlBox.left
     let top = this.controlBox.top
     let width = this.controlBox.width * this.controlBox.scaleX
     let height = this.controlBox.height * this.controlBox.scaleY
@@ -288,7 +290,7 @@ class ImageBoardBox {
         width: width,
         height: height,
       })
-    }
+    }*/
   }
 
   private createControlBox() {

@@ -223,7 +223,6 @@ export class Collage {
     }
     else if (elementId == 'deleteImage') {
       const image = this.getSelectedImage()
-      console.log(image.name)
       if (image.name == 'ImageBoardBox') {
         image.reset()
       }
@@ -280,6 +279,7 @@ export class Collage {
     }
     else {
       const board = image.getBoard()
+      console.log('onEditImage', board.width, board.height)
       this.openImageCropper && this.openImageCropper(url, board.width, board.height)
     }
   }
@@ -295,6 +295,7 @@ export class Collage {
       if (!image) {
         return
       }
+      console.log(image.tag)
 
       this.setLoadingState(true)
       image.onImageLoadCompleted = () => this.setLoadingState(false)
@@ -315,6 +316,7 @@ export class Collage {
       this.setLoadingState(true);
 
       const template = await this.api.getTemplateById(templateId)
+      console.log('template', template)
       this.selectedTemplate = template
       if (!template) {
         return
@@ -334,6 +336,7 @@ export class Collage {
       const scale = canvasWidth / setting.canvasWidth
       this.createCanvasElement(canvasWidth, canvasHeight)
       this.createFabricCanvas(canvasWidth, canvasHeight)
+      console.log('scale', canvasWidth, setting.canvasWidth, scale);
 
       // Add images to canvas.
       this.images = []
