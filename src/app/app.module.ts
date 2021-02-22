@@ -51,7 +51,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 const appRoutes: Routes = [
   { path: '', component: LandingComponent },
   { path: 'preview', component: CollagePreviewComponent },
-  { path: 'collage', component: CollageMakeComponent },
+  { path: 'collage/:mode', component: CollageMakeComponent },
   { path: 'template', component: CollageTemplateComponent },
   { path: 'template/preview', component: TemplatePreviewComponent },
   { path: 'home', pathMatch: 'full', redirectTo: '' },

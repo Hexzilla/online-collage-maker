@@ -23,6 +23,7 @@ class ImageBox {
   scale: number = 1.0
   zoom: number = 1.0
   brightness: number = 0.01
+  cellSizeText: fabric.Text
   boardRect: fabric.Rect
   backBoard: fabric.Rect
   boardRectPos: fabric.Point
@@ -152,6 +153,31 @@ class ImageBox {
     this.boardRect.setControlsVisibility({mtr: false})
     this.boardRectPos = new fabric.Point(this.boardRect.left, this.boardRect.top)
     this.canvas.add(this.boardRect)
+
+    /*this.cellSizeText = new fabric.Text('20" x 20"', { 
+      left: this.boardRect.left, //Take the block's position
+      top: this.boardRect.top, 
+      fontSize: 16,
+      fill: 'rgb(60,60,60)'
+    })
+    this.canvas.add(this.cellSizeText)
+
+    var g = new fabric.Group([this.boardRect, this.cellSizeText],{
+      absolutePositioned: true,
+      lockScalingFlip: true,
+      selectable: true,
+      transparentCorners: false,
+      cornerColor: 'white',
+      cornerStrokeColor: 'black',
+      borderColor: 'black',
+      cornerSize: 12,
+      padding: 0,
+      cornerStyle: 'circle',
+      borderDashArray: [5, 5],
+      borderScaleFactor: 1.3
+    });
+    this.canvas.add(g)*/
+
     return this
   }
 

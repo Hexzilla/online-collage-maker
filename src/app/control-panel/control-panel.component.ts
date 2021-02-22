@@ -24,6 +24,7 @@ export class ControlPanelComponent implements OnInit {
   ngOnInit() {
     // Remove mouse click on page
     document.addEventListener("contextmenu", (event) => event.preventDefault());
+    console.log('~~~', this.setting)
   }
 
   onWidthChanged(e) {

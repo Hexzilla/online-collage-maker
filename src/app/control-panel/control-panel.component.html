@@ -26,9 +26,9 @@
             </mat-form-field>
           </div>
         </div>
-        <div class="collage-setting-row">
+        <!-- <div class="collage-setting-row">
           <mat-checkbox class="pl-2" [(ngModel)]="setting.landscape">Landscape</mat-checkbox>
-        </div>
+        </div> -->
         <div class="collage-setting-row">
           <div class="col-md-6">
             <input class="color-picker" 
@@ -48,12 +48,12 @@
           </div>
         </div>
         <div>
-          <div class="row pl-1 m-1 text-center">
+          <div *ngIf="setting.mode=='auto'" class="row pl-1 m-1 text-center">
             <div class="col-md-12 text-center">
               <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="createCollage()">Create Collage</button>
             </div>
           </div>
-          <div class="row pl-1 m-1 text-center">
+          <div *ngIf="setting.mode=='select'" class="row pl-1 m-1 text-center">
             <div class="col-md-12 text-center">
               <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="selectTemplate()">Select Template</button>
             </div>

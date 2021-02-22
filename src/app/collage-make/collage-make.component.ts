@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { AuthService } from "../auth.service";
 import { ImageEditorComponent } from "../image-editor/image-editor.component";
 import { ImageCropperComponent } from "../image-editor/image-cropper.component";
 import { Collage } from '../collage/collage'
-import { toDataURL } from "../collage/util"
 import ImageBox from "../collage/image-box"
+import { Setting } from '../collage/setting';
 
 
 @Component({
@@ -19,14 +19,19 @@ export class CollageMakeComponent implements OnInit {
   public loading: boolean = false;
 
   constructor(
-    private http: HttpClient,
     private dialog: MatDialog,
     private authSvc: AuthService,
     private router: Router,
-    private collage: Collage
+    private route: ActivatedRoute,
+    private collage: Collage,
+    private setting: Setting
   ) {}
 
   async ngOnInit() {
+    const routeParams = this.route.snapshot.paramMap;
+    this.setting.mode = routeParams.get('mode');
+    console.log(this.setting.mode)
+
     this.collage.onLoadingStateChanged = (state) => (this.loading = state)
     this.collage.onMenuItemClicked = (e) => this.onMenuItemClicked(e)
 

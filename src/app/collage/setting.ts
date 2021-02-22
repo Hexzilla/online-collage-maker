@@ -9,4 +9,5 @@ export class Setting {
     landscape: boolean = false;
     borderWidth: number = 0;
     borderColor: string = "rgb(90,160,70)";
+    mode: string = "auto";
 }
