@@ -31,9 +31,11 @@ class CanvasContextMenu {
     };
 
     setPosition(left, top) {
-      this.menu['style'].left = `${left}px`;
-      this.menu['style'].top = `${top}px`;
-      this.toggleMenu("show");
+      if (this.menu) {
+        this.menu['style'].left = `${left}px`;
+        this.menu['style'].top = `${top}px`;
+        this.toggleMenu("show");
+      }
     };
 
     onMenuOptionClickEvent(e) {

@@ -173,32 +173,44 @@ export class Collage {
       backgroundColor: '#444',
     })
 
+    let touchTimestamp = 0
     this.canvas.on('mouse:down', (event) => {
       if (event.button === 1) {
         this.contextMenu.hideMenu()
       }
+      touchTimestamp = event.e.timeStamp
     })
 
     this.canvas.on('mouse:up', (event) => {
       if (event.button === 3) {
-        var pointer = this.canvas.getPointer(event.e);
-        this.menuPoint = pointer
-
-        const el = document.getElementById('main-canvas')
-        var viewportOffset = el.getBoundingClientRect();
-
-        var px = viewportOffset.x + pointer.x;
-        var py = viewportOffset.y + pointer.y;
-
-        if (event.target) {
-          this.selectedTag = event.target.type          
-          this.contextMenu.createMenu("#menu-image-edit", px, py)
-        }
-        else {
-          this.contextMenu.createMenu("#menu-template", px, py)
+        this.createContextMenu(event)
+      }
+      else if (event.e.type == "touchend") {
+        if (event.e.timeStamp - touchTimestamp >= 400) {
+          touchTimestamp = 0
+          this.createContextMenu(event)
         }
       }
     })
+  }
+
+  private createContextMenu(event) {
+    var pointer = this.canvas.getPointer(event.e);
+    this.menuPoint = pointer
+
+    const el = document.getElementById('main-canvas')
+    var viewportOffset = el.getBoundingClientRect();
+
+    var px = viewportOffset.x + pointer.x;
+    var py = viewportOffset.y + pointer.y;
+
+    if (event.target) {
+      this.selectedTag = event.target.type          
+      this.contextMenu.createMenu("#menu-image-edit", px, py)
+    }
+    else {
+      this.contextMenu.createMenu("#menu-template", px, py)
+    }
   }
 
   getSelectedImage() {
