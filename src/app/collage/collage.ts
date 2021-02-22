@@ -253,10 +253,8 @@ export class Collage {
 
   async onHandleDrop(offsetX, offsetY) {
     if (this.dropImageUrl) {
-      console.log('onHandleDrop-1')
       const box: ImageBox = this.getImage(offsetX, offsetY)
       if (box) {
-        console.log('onHandleDrop-2')
         this.setLoadingState(true)
         const imageUrl = await toDataURL("GET", this.dropImageUrl)
         box.onImageLoadCompleted = () => this.setLoadingState(false)

@@ -14,7 +14,7 @@ export class ControlTemplateComponent implements OnInit {
 
   constructor(
     private toastr: ToastrService,
-    private setting: Setting,
+    public setting: Setting,
     private collage: Collage
   ) {}
 

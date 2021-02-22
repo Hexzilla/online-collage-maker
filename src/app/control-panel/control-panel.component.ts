@@ -17,7 +17,7 @@ export class ControlPanelComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
-    private setting: Setting,
+    public setting: Setting,
     private collage: Collage
   ) {}
 
