@@ -5,11 +5,9 @@ import { CanvasLayout } from "./cavas-layout";
 import { Setting } from "./setting";
 import { loadImage, shuffle, toDataURL } from "./util";
 import { environment } from './../../environments/environment';
-import ImageBox from "./image-box"
 import ImageCell from "./image-cell"
-import ImageBoardBox from "./image-board-box"
+import ImageBox from "./image-box"
 import CanvasContextMenu from "./contextmenu"
-import { util } from "fabric/fabric-impl";
 
 @Injectable({
   providedIn: "root",
@@ -29,6 +27,7 @@ export class Collage {
   openImageEditor: Function;
   openImageCropper: Function;
   onTemplateSelected: Function;
+  onMenuItemClicked: Function;
 
   constructor(private api: ApiService) {
     this.contextMenu = new CanvasContextMenu()
@@ -63,9 +62,9 @@ export class Collage {
   }
 
   //////////////////////////////////////////////////////
-  //Smart Collage
+  //Create Auto Collage
   //////////////////////////////////////////////////////
-  async createSmartCollage(setting: Setting) {
+  async createAutoCollage(setting: Setting) {
     if (this.loading) {
       return
     }
@@ -87,7 +86,6 @@ export class Collage {
       const shuffledImages = shuffle(res.images);
       const images = await Promise.all(shuffledImages.map(async (item) => {
           const image = await loadImage(item.src);
-          console.log("LoadImage", image['width'], image['height'])
           return Object.assign(item, {
             image: image,
             ratio: image['width'] / image['height'],
@@ -114,11 +112,12 @@ export class Collage {
       layoutItems.forEach(data => {
         const tag = `img_${data.col}_${data.row}`
         this.images[tag] = new ImageBox(this.canvas)
-          .setImageOffset(data.left, data.top)
-          .setScale(data.scale)
+          //.setScale(data.scale)
           .setTag(tag)
           .setBorder(setting.borderWidth, setting.borderColor)
-          .setImageUrl(data.src)
+          .addMovableBoard(data.left, data.top, data.width, data.height)
+          .setImageUrl(data.img.src)
+          .loadImage(data.img.src)
       })
     }
     catch (err) {
@@ -195,7 +194,9 @@ export class Collage {
     })
   }
 
-  private getSelectedImage() {
+  getSelectedImage() {
+    console.log(this.images)
+    console.log(this.selectedTag)
     return this.images[this.selectedTag]
   }
 
@@ -209,10 +210,13 @@ export class Collage {
     return null
   }
 
-  private cellIndex: number = 0
-  private onMenuItemClicked(e) {
+  /*private onMenuItemClicked(e) {
     const elementId = e.target['id'];
     if (elementId == 'edit') {
+      const image: ImageBox = this.getSelectedImage()
+      this.onEditImage(image)
+    }
+    if (elementId == 'crop') {
       const image: ImageBox = this.getSelectedImage()
       this.onEditImage(image)
     }
@@ -237,8 +241,9 @@ export class Collage {
     else if (elementId == 'deleteCell') {
       this.deleteCell()
     }
-  }
+  }*/
 
+  private cellIndex: number = 0
   addCell() {
     console.log(this.menuPoint)
     this.cellIndex++
@@ -255,19 +260,20 @@ export class Collage {
 
   onImageChanged(scale, brightness) {
     const image: ImageBox = this.getSelectedImage()
-    image.onImageChanged(scale, brightness)
+    //image.onImageChanged(scale, brightness)
   }
 
   onImageCropped(left, top, width, height) {
     const image: ImageBox = this.getSelectedImage()
-    image.onImageCropped(left, top, width, height)
+    //image.onImageCropped(left, top, width, height)
   }
 
-  onSmartImageCropped(croppedImage) {
+  /*onSmartImageCropped(croppedImage) { //TODO
     const box: ImageBoardBox = this.getSelectedImage()
     box.loadImage(croppedImage)
-  }
+  }*/
 
+  /*TODO
   private onEditImage(image) {
     const url = image.getImageUrl()
     if (url) {
@@ -279,7 +285,7 @@ export class Collage {
         this.openImageCropper && this.openImageCropper(url, board.width, board.height)
       }
     }
-  }
+  }*/
 
   dropImageUrl: string
   onDragStart(url) {
@@ -288,7 +294,7 @@ export class Collage {
 
   async onHandleDrop(offsetX, offsetY) {
     if (this.dropImageUrl) {
-      const box: ImageBoardBox = this.getImage(offsetX, offsetY)
+      const box: ImageBox = this.getImage(offsetX, offsetY)
       if (box) {
         this.setLoadingState(true)
         const imageUrl = await toDataURL("GET", this.dropImageUrl)
@@ -334,11 +340,11 @@ export class Collage {
       this.images = []
       template.images.forEach(it => {
         const tag = `img_${it.index}`
-        this.images[tag] = new ImageBoardBox(this.canvas)
+        this.images[tag] = new ImageBox(this.canvas)
           .setScale(1.0)
           .setTag(tag)
           .setBorder(setting.borderWidth, setting.borderColor)
-          .setBoard(it.left * scale, it.top * scale, it.width * scale, it.height * scale)
+          .addLockedBoard(it.left * scale, it.top * scale, it.width * scale, it.height * scale)
       })
     }
     catch (err) {

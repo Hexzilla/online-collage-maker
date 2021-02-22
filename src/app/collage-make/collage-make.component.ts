@@ -6,6 +6,9 @@ import { AuthService } from "../auth.service";
 import { ImageEditorComponent } from "../image-editor/image-editor.component";
 import { ImageCropperComponent } from "../image-editor/image-cropper.component";
 import { Collage } from '../collage/collage'
+import { toDataURL } from "../collage/util"
+import ImageBox from "../collage/image-box"
+
 
 @Component({
   selector: "collage-make",
@@ -26,7 +29,7 @@ export class CollageMakeComponent implements OnInit {
   async ngOnInit() {
     this.collage.onLoadingStateChanged = (state) => (this.loading = state);
     this.collage.openImageEditor = (url) => this.openImageEditor(url);
-    this.collage.openImageCropper = (url, width, height) => this.openImageCropper(url, width, height);
+    this.collage.onMenuItemClicked = (e) => this.onMenuItemClicked(e)
 
     document.addEventListener("contextmenu", (event) => event.preventDefault());
 
@@ -40,6 +43,24 @@ export class CollageMakeComponent implements OnInit {
     return this.authSvc.loggedIn();
   }
 
+  async onMenuItemClicked(e) {
+    switch (e.target['id']) {
+      case 'edit':
+        break
+
+      case 'crop':
+        const box: ImageBox = this.collage.getSelectedImage()
+        await this.openImageCropWindow(box)
+        break
+
+      case 'delete':
+        break
+
+      case 'restore':
+        break
+    }
+  }
+
   openImageEditor(imageUrl) {
     this.dialog.open(ImageEditorComponent, {
       data: {
@@ -48,11 +69,13 @@ export class CollageMakeComponent implements OnInit {
     });
   }
 
-  openImageCropper(imageUrl, boardWidth, boardHeight) {
+  async openImageCropWindow(selectedImageBox: ImageBox) {
+    const imageBase64 = selectedImageBox.getImageUrl()
+    const board = selectedImageBox.getBoard()
     this.dialog.open(ImageCropperComponent, {
       data: {
-        imageBase64: imageUrl,
-        ratio: boardWidth / boardHeight
+        imageBase64: imageBase64,
+        ratio: board.width / board.height
       },
     });
   }

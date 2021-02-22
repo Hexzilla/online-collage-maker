@@ -44,7 +44,8 @@ export class ImageCropperComponent implements OnInit {
   }
 
   onApply() {
-    this.collage.onSmartImageCropped(this.croppedImage)
+    //TODO
+    //this.collage.onSmartImageCropped(this.croppedImage)
     this.dialogRef.close()
   }
 

@@ -37,7 +37,7 @@ export class ControlPanelComponent implements OnInit {
 
   async createCollage() {
     this.savedTemplate = null
-    await this.collage.createSmartCollage({
+    await this.collage.createAutoCollage({
       widthInch: this.width,
       heightInch: this.height,
       landscape: this.landscape,

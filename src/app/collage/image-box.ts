@@ -19,20 +19,16 @@ class ImageBox {
   url: string
   canvas: fabric.Canvas
   image: fabric.Image
-  offsetX: number = 0
-  offsetY: number = 0
   initialScale: number = 1.0
   scale: number = 1.0
   zoom: number = 1.0
   brightness: number = 0.01
-  maskRect: fabric.Rect
   boardRect: fabric.Rect
-  controlBox: fabric.Rect
   controlBoxPoint: fabric.Point
-  cropRect: Rect = null
   tag: string
   strokeColor: string = 'rgb(136, 0, 26)'
   strokeWidth: number = 0
+  onImageLoadCompleted: Function
 
   constructor(canvas) {
     this.canvas = canvas
@@ -40,12 +36,6 @@ class ImageBox {
     this.canvas.on('object:moving', (e) => this.onObjectMoving(e))
     this.canvas.on('object:moved', (e) => this.onObjectMoved(e))
     this.canvas.on('object:scaling', (e) => this.onObjectScaling(e))
-  }
-
-  setImageOffset(offsetX, offsetY) {
-    this.offsetX = offsetX
-    this.offsetY = offsetY
-    return this
   }
 
   setTag(tag) {
@@ -58,17 +48,75 @@ class ImageBox {
     return this
   }
 
+  addLockedBoard(left, top, width, height) {
+    this.boardRect = new fabric.Rect({
+      type: this.tag,
+      originX: 'left',
+      originY: 'top',
+      left: left,
+      top: top,
+      width: width,
+      height: height,
+      fill: 'rgba(215,215,215,1)',
+      absolutePositioned: true,
+      selectable: false,
+      stroke: this.strokeColor,
+      strokeWidth: 1,
+      padding: 0,
+    })
+    this.canvas.add(this.boardRect)
+    return this
+  }
+
+  addMovableBoard(left, top, width, height) {
+    this.boardRect = new fabric.Rect({
+      type: this.tag,
+      originX: 'left',
+      originY: 'top',
+      left: left,
+      top: top,
+      width: width,
+      height: height,
+      opacity: 1.0,
+      fill: 'rgba(255,255,255, 0)',
+      absolutePositioned: true,
+      lockScalingFlip: true,
+      selectable: true,
+      transparentCorners: false,
+      cornerColor: 'white',
+      cornerStrokeColor: 'black',
+      borderColor: 'black',
+      stroke: this.strokeColor,
+      strokeWidth: this.strokeWidth,
+      cornerSize: 8,
+      padding: 0,
+      cornerStyle: 'circle',
+      borderDashArray: [5, 5],
+      borderScaleFactor: 1.0
+    })
+    this.boardRect.setControlsVisibility({mb: false, ml: false, mr: false, mt: false, mtr: false})
+    this.canvas.add(this.boardRect)
+    this.controlBoxPoint = new fabric.Point(this.boardRect.left, this.boardRect.top)
+    return this
+  }
+
+  getBoard(): Rect {
+    const bw = this.boardRect.width * this.boardRect.scaleX
+    const bh = this.boardRect.height * this.boardRect.scaleY
+    return new Rect(this.boardRect.left, this.boardRect.top, bw, bh)
+  }
+
   setBorder(borderWidth, borderColor) {
     this.strokeWidth = borderWidth
     this.strokeColor = borderColor
     return this
   }
 
-  setImage(image) {
-    image.clone((cloned) => {
-      console.log('cloned', cloned)
-      this.onImageLoaded(cloned)
-    })    
+  reset() {
+    this.initialScale = this.scale = 1.0
+    this.zoom = 1.0
+    this.brightness = 0.01
+    this.image && this.canvas.remove(this.image)
   }
 
   getImageUrl() {
@@ -77,22 +125,26 @@ class ImageBox {
 
   setImageUrl(url) {
     this.url = url
-    if (this.url) {
-      fabric.Image.fromURL(this.url, (img) => this.onImageLoaded(img), {crossOrigin: 'anonymous'})
+    return this
+  }
+
+  loadImage(url) {
+    if (url) {
+      fabric.Image.fromURL(url, (img) => this.onImageLoaded(img), {crossOrigin: 'anonymous'})
     }
     return this
   }
 
   private onImageLoaded(img) {
+    if (this.image) {
+      this.deleteImage()
+    }
     this.image = img
     this.updateImage()
     this.canvas.add(this.image)
 
-    this.createControlBox()
-    this.controlBoxPoint = new fabric.Point(this.controlBox.left, this.controlBox.top)
-
-    this.updateClipPath()
-
+    this.addImageClipPath()
+    this.onImageLoadCompleted && this.onImageLoadCompleted()
   }
 
   setBrightness(value) {
@@ -110,72 +162,47 @@ class ImageBox {
     this.update()
   }
 
+  containsPoint(px, py) {
+    console.log(this.boardRect.width, this.boardRect.height)
+    return this.boardRect.containsPoint(new fabric.Point(px, py))
+  }
+
   deleteImage() {
-    console.log('deleteImage')
     this.canvas.remove(this.image)
-    this.canvas.remove(this.controlBox)
-    this.canvas.renderAll()
   }
 
   restoreImage() {
-    this.cropRect = null
-    this.update()
-  }
-
-  onImageChanged(zoom, brightness) {
-    console.log('onImageChanged', zoom, brightness)
-    this.zoom = zoom
-    this.brightness = brightness
-    this.update()
-  }
-
-  onImageCropped(left, top, width, height) {
-    console.log('ImageCropped', left, top, width, height)
-    this.cropRect = new Rect(left, top, width, height)
-    this.update()
+    this.initialScale = this.scale = 1.0
+    this.zoom = 1.0
+    this.brightness = 0.01
+    this.loadImage(this.url)
   }
 
   update() {
     this.updateImage()
-    this.updateClipPath()
+    this.addImageClipPath()
     this.setBrightness(this.brightness)
     this.canvas.renderAll()
   }
 
   private updateImage() {
-    const iw = this.image.width
-    const ih = this.image.height
-    const bw = this.scale * iw
-    const bh = this.scale * ih
-
-    let offsetX, offsetY, scaleX, scaleY;
-    if (this.cropRect) {
-      const rect = this.cropRect
-
-      scaleX = bw / rect.width
-      scaleY = bh / rect.height
-
-      offsetX = this.offsetX - scaleX * rect.left
-      offsetY = this.offsetY - scaleY * rect.top
+    if (!this.image) {
+      return
     }
-    else {
-      const cx = this.offsetX + bw / 2
-      const cy = this.offsetY + bh / 2
 
-      scaleX = this.scale * this.zoom
-      scaleY = this.scale * this.zoom
-
-      const dw = iw * scaleX
-      const dh = ih * scaleY
-      offsetX = cx - dw / 2
-      offsetY = cy - dh / 2
-    }
+    const bw = this.boardRect.width * this.boardRect.scaleX
+    const bh = this.boardRect.height * this.boardRect.scaleY
+    const scaleX = bw / this.image.width
+    const scaleY = bh / this.image.height
+    const scale = Math.max(scaleX, scaleY)
+    const offsetX = (this.image.width * scale - bw) / 2
+    const offsetY = (this.image.height * scale - bh) / 2
 
     this.image.set({
-      left: offsetX,
-      top:  offsetY,
-      scaleX: scaleX,
-      scaleY: scaleY,
+      left: this.boardRect.left - offsetX,
+      top:  this.boardRect.top - offsetY,
+      scaleX: scale,
+      scaleY: scale,
       selectable: false,
       evented: false
     })
@@ -185,72 +212,25 @@ class ImageBox {
     })
   }
 
-  private updateClipPath() {
-    let left = this.controlBox.left
-    let top = this.controlBox.top
-    let width = this.controlBox.width * this.controlBox.scaleX
-    let height = this.controlBox.height * this.controlBox.scaleY
-
-    if (!this.image.clipPath) {
-      let maskRect = new fabric.Rect({
-        originX: 'left',
-        originY: 'top',
-        left: left,
-        top: top,
-        width: width,
-        height: height,
-        absolutePositioned: true,
-      })
-      this.image.clipPath = maskRect
-    }
-    else {
-      this.image.clipPath.set({
-        left: left,
-        top: top,
-        width: width,
-        height: height,
-      })
-    }
-  }
-
-  private createControlBox() {
-    this.controlBox = new fabric.Rect({
-      type: this.tag,
+  private addImageClipPath() {
+    this.image.clipPath = new fabric.Rect({
       originX: 'left',
       originY: 'top',
-      left: this.offsetX,
-      top: this.offsetY,
-      width: this.image.width * this.scale,
-      height: this.image.height * this.scale,
-      opacity: 1.0,
-      fill: 'rgba(255,255,255, 0)',
+      left: this.boardRect.left,
+      top: this.boardRect.top,
+      width: this.boardRect.width * this.boardRect.scaleX,
+      height: this.boardRect.height * this.boardRect.scaleY,
+      scaleX: 1.0,
+      scaleY: 1.0,
       absolutePositioned: true,
-      //lockMovementX: true,  // Moveable
-      //lockMovementY: true,
-      lockScalingFlip: true,
-      selectable: true,
-      transparentCorners: false,
-      cornerColor: 'white',
-      cornerStrokeColor: 'black',
-      borderColor: 'black',
-      stroke: this.strokeColor,
-      strokeWidth: this.strokeWidth,
-      cornerSize: 12,
-      padding: 0,
-      cornerStyle: 'circle',
-      borderDashArray: [5, 5],
-      borderScaleFactor: 1.3
     })
-
-    this.controlBox.setControlsVisibility({mb: false, ml: false, mr: false, mt: false, mtr: false})
-    this.canvas.add(this.controlBox)
   }
 
   onMouseDown(e) {
     if (e.target && e.target.type == this.tag) {
       this.canvas.bringToFront(this.image)
-      this.canvas.bringToFront(this.controlBox)
-      this.canvas.setActiveObject(this.controlBox)
+      this.canvas.bringToFront(this.boardRect)
+      this.canvas.setActiveObject(this.boardRect)
     }
   }
 
@@ -260,11 +240,9 @@ class ImageBox {
       const dy = e.target.top - this.controlBoxPoint.y
       this.image.left += dx
       this.image.top  += dy
-      this.offsetX += dx
-      this.offsetY += dy
 
       this.controlBoxPoint = new fabric.Point(e.target.left, e.target.top)
-      this.updateClipPath()
+      this.addImageClipPath()
     }
   }
 
@@ -289,17 +267,13 @@ class ImageBox {
 
   onObjectScaling(e) {
     if (e.target.type == this.tag) {
-      console.log(this.initialScale, this.scale, e.target.scaleX)
       this.scale = this.initialScale * e.target.scaleX
-      this.offsetX = e.target.left
-      this.offsetY = e.target.top
-      this.updateImage()
-
       this.controlBoxPoint = new fabric.Point(e.target.left, e.target.top)
-      this.updateClipPath()
+      this.updateImage()
+      this.addImageClipPath()
+      this.canvas.renderAll()
     }
   }
-
 }
 
 export default ImageBox
