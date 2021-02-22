@@ -28,13 +28,7 @@ export class CollageTemplateComponent implements OnInit {
       return false;
     }
 
-    this.collage.createTemplate({
-      widthInch: 16,
-      heightInch: 12,
-      landscape: false,
-      borderWidth: 0,
-      borderColor: "rgb(0,0,0)"
-    });
+    this.collage.createTemplate();
   }
 
   loggedIn() {

@@ -5,7 +5,6 @@ import { CanvasLayout } from "./cavas-layout";
 import { Setting } from "./setting";
 import { loadImage, shuffle, toDataURL } from "./util";
 import { environment } from './../../environments/environment';
-import ImageCell from "./image-cell"
 import ImageBox from "./image-box"
 import CanvasContextMenu from "./contextmenu"
 
@@ -21,14 +20,12 @@ export class Collage {
   private selectedTag: any
   private savedCollage: any
   private menuPoint: any
-  private selectedTemplate: any   //TODO--removeable?
   private dropImageUrl: string
   
   onLoadingStateChanged: Function;
-  onTemplateSelected: Function;
   onMenuItemClicked: Function;
 
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService, private setting: Setting) {
     this.contextMenu = new CanvasContextMenu()
     this.contextMenu.onMenuItemClicked = (e) => this.onMenuItemClicked(e)
   }
@@ -63,16 +60,15 @@ export class Collage {
   //////////////////////////////////////////////////////
   //Create Auto Collage
   //////////////////////////////////////////////////////
-  async createAutoCollage(setting: Setting) {
+  async createAutoCollage() {
     if (this.loading) {
       return
     }
 
     try {
       const ccw = this.getCanvasContainerWidth()
-      this.layout = new CanvasLayout(setting, ccw)
+      this.layout = new CanvasLayout(this.setting, ccw)
 
-      this.selectedTemplate = null
       this.savedCollage = null
       this.removeCanvasElement()
       this.setLoadingState(true);
@@ -96,13 +92,13 @@ export class Collage {
       // Get perfect layouts
       const canvasWidth = this.layout.calculateWidth();
       const perfectRows = this.layout.getCanvasLayout(images);
-      const layoutItems = this.layout.getLayoutItems(images, perfectRows, canvasWidth, setting.borderWidth);
+      const layoutItems = this.layout.getLayoutItems(images, perfectRows, canvasWidth, this.setting.borderWidth);
       const sumOfHeight = layoutItems.reduce((accumulator, item) => {
         return Math.max(accumulator, item.top + item.height);
       }, 0);
 
       // Create canvas and fabric
-      const canvasHeight = setting.borderWidth + sumOfHeight
+      const canvasHeight = this.setting.borderWidth + sumOfHeight
       this.createCanvasElement(canvasWidth, canvasHeight)
       this.createFabricCanvas(canvasWidth, canvasHeight)
 
@@ -112,7 +108,7 @@ export class Collage {
         const tag = `img_${data.col}_${data.row}`
         this.images[tag] = new ImageBox(this.canvas)
           .setTag(tag)
-          .setBorder(setting.borderWidth, setting.borderColor)
+          .setBorder(this.setting.borderWidth, this.setting.borderColor)
           .setImageUrl(data.img.src)
           .loadImage(data.img.src)
           .addMovableBoard(data.left, data.top, data.width, data.height)
@@ -141,21 +137,20 @@ export class Collage {
     }
   }
 
-  createTemplate(setting: Setting) {
+  createTemplate() {
     if (this.loading) {
       return
     }
 
     try {
       const ccw = this.getCanvasContainerWidth()
-      this.layout = new CanvasLayout(setting, ccw)
+      this.layout = new CanvasLayout(this.setting, ccw)
 
       this.savedCollage = null
       this.removeCanvasElement()
 
       const canvasWidth = this.layout.calculateWidth();
-      const canvasHeight = canvasWidth * setting.heightInch / setting.widthInch;
-      console.log(canvasWidth, canvasHeight)
+      const canvasHeight = canvasWidth * this.setting.heightInch / this.setting.widthInch;
       this.createCanvasElement(canvasWidth, canvasHeight)
       this.createFabricCanvas(canvasWidth, canvasHeight)
     }
@@ -207,14 +202,12 @@ export class Collage {
   }
 
   getSelectedImage() {
-    console.log(this.images)
-    console.log(this.selectedTag)
     return this.images[this.selectedTag]
   }
 
   private getImage(offsetX, offsetY) {
     for (var tag in this.images) {
-      const it = this.images[tag]
+      const it: ImageBox = this.images[tag]
       if (it.containsPoint(offsetX, offsetY)) {
         return it
       }
@@ -225,21 +218,26 @@ export class Collage {
   deleteSelectedImage() {
     const box: ImageBox = this.getSelectedImage()
     box.removeImage()
-    !box.lockBoardRect && box.removeBoard()
-    delete this.images[box.tag]
+    if (!box.lockBoardRect) {
+      box.removeBoard()
+      delete this.images[box.tag]
+    }
   }
 
   private cellIndex: number = 0
   addCell() {
     this.cellIndex++
     const tag = "cell_" + this.cellIndex
-    const cell = new ImageCell(this.canvas, this.menuPoint, tag)
+    const cell = new ImageBox(this.canvas)
+      .setTag(tag)
+      .setBorder(this.setting.borderWidth, this.setting.borderColor)
+      .addCellBoard(this.menuPoint.x, this.menuPoint.y, 320, 320)
     this.images[tag] = cell
   }
 
   deleteCell() {
-    const cell: ImageCell = this.getSelectedImage()
-    cell.delete()
+    const cell: ImageBox = this.getSelectedImage()
+    cell.removeBoard()
     delete this.images[cell.tag]
   }
 
@@ -255,8 +253,10 @@ export class Collage {
 
   async onHandleDrop(offsetX, offsetY) {
     if (this.dropImageUrl) {
+      console.log('onHandleDrop-1')
       const box: ImageBox = this.getImage(offsetX, offsetY)
       if (box) {
+        console.log('onHandleDrop-2')
         this.setLoadingState(true)
         const imageUrl = await toDataURL("GET", this.dropImageUrl)
         box.onImageLoadCompleted = () => this.setLoadingState(false)
@@ -276,14 +276,11 @@ export class Collage {
 
       const template = await this.api.getTemplateById(templateId)
       console.log('template', template)
-      this.selectedTemplate = template
       if (!template) {
         return
       }
 
       const setting = template.setting
-      this.onTemplateSelected && this.onTemplateSelected(setting)
-
       const ccw = this.getCanvasContainerWidth()
       this.layout = new CanvasLayout(setting, ccw)
 
@@ -405,7 +402,6 @@ export class Collage {
     this.removeVirtualCanvas(virtualCanvas)
     this.setLoadingState(false)
 
-    console.log('response', response)
     if (!response || !response['success']) {
       return null
     }
@@ -419,8 +415,8 @@ export class Collage {
     let index = 1
     const collages = []
     for (const tag in this.images) {
-      const img: ImageCell = this.images[tag]
-      const info = Object.assign({ index: index++ }, img.getCellInfo())
+      const box: ImageBox = this.images[tag]
+      const info = Object.assign({ index: index++ }, box.getBoard())
       collages.push(info);
     }
     return collages

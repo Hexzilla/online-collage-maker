@@ -1,9 +1,8 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { MatDialog, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { PrintMenu } from "../print-menu/print-menu.component"
+import { MatDialog } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
 import { Collage } from "../collage/collage";
-import { AuthService } from "../auth.service";
+import { Setting } from "../collage/setting";
 import { SelectTemplateComponent } from "./select-template.component";
 
 @Component({
@@ -12,43 +11,36 @@ import { SelectTemplateComponent } from "./select-template.component";
   styleUrls: ["./control-panel.component.scss"],
 })
 export class ControlPanelComponent implements OnInit {
-  public landscape: boolean = false;
-  public width: number = 16;
-  public height: number = 12;
-  public borderWidth: number = 0;
-  public borderColor: string = "rgb(90,160,70)";
   public collageWidth = [8, 10, 12, 16, 20, 24, 30, 36, 40, 48, 54, 60];
   public collageHeight = [8, 10, 12, 16, 20, 24, 30, 36, 40, 48, 54, 60];
-
-  @Input() collageTemplate: boolean;
 
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
-    private authSvc: AuthService,
+    private setting: Setting,
     private collage: Collage
   ) {}
 
   ngOnInit() {
     // Remove mouse click on page
     document.addEventListener("contextmenu", (event) => event.preventDefault());
-    this.collage.onTemplateSelected = (setting) => this.onTemplateSelected(setting)
+  }
+
+  onWidthChanged(e) {
+    this.setting.widthInch = e.value
+  }
+
+  onHeightChanged(e) {
+    this.setting.heightInch = e.value
+  }
+
+  onBorderSizeChanged(value) {
+    this.setting.borderWidth = value
   }
 
   async createCollage() {
     this.savedTemplate = null
-    await this.collage.createAutoCollage({
-      widthInch: this.width,
-      heightInch: this.height,
-      landscape: this.landscape,
-      borderWidth: this.borderWidth,
-      borderColor: this.borderColor
-    });
-  }
-
-  onTemplateSelected(setting) {
-    this.width = setting.widthInch
-    this.height = setting.heightInch
+    await this.collage.createAutoCollage();
   }
 
   async selectTemplate() {

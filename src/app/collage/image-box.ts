@@ -122,6 +122,40 @@ class ImageBox {
     return this
   }
 
+  addCellBoard(left, top, width, height) {
+    this.lockBoardRect = false
+    this.boardRect = new fabric.Rect({
+      type: this.tag,
+      originX: 'left',
+      originY: 'top',
+      left: left,
+      top: top,
+      width: width,
+      height: height,
+      opacity: 1.0,
+      fill: 'rgba(255,255,255, 1.0)',
+      absolutePositioned: true,
+      lockScalingFlip: true,
+      selectable: true,
+      transparentCorners: false,
+      cornerColor: 'white',
+      cornerStrokeColor: 'black',
+      borderColor: 'black',
+      cornerSize: 12,
+      stroke: this.strokeColor,
+      strokeWidth: this.strokeWidth,
+      padding: 0,
+      cornerStyle: 'circle',
+      borderDashArray: [5, 5],
+      borderScaleFactor: 1.3
+    })
+
+    this.boardRect.setControlsVisibility({mtr: false})
+    this.boardRectPos = new fabric.Point(this.boardRect.left, this.boardRect.top)
+    this.canvas.add(this.boardRect)
+    return this
+  }
+
   getBoard(): Rect {
     const bw = this.boardRect.width * this.boardRect.scaleX
     const bh = this.boardRect.height * this.boardRect.scaleY
@@ -241,17 +275,19 @@ class ImageBox {
   }
 
   private addImageClipPath() {
-    this.image.clipPath = new fabric.Rect({
-      originX: 'left',
-      originY: 'top',
-      left: this.boardRect.left,
-      top: this.boardRect.top,
-      width: this.boardRect.width * this.boardRect.scaleX,
-      height: this.boardRect.height * this.boardRect.scaleY,
-      scaleX: 1.0,
-      scaleY: 1.0,
-      absolutePositioned: true,
-    })
+    if (this.image) {
+      this.image.clipPath = new fabric.Rect({
+        originX: 'left',
+        originY: 'top',
+        left: this.boardRect.left,
+        top: this.boardRect.top,
+        width: this.boardRect.width * this.boardRect.scaleX,
+        height: this.boardRect.height * this.boardRect.scaleY,
+        scaleX: 1.0,
+        scaleY: 1.0,
+        absolutePositioned: true,
+      })
+    }
   }
 
   onMouseDown(e) {
@@ -268,8 +304,10 @@ class ImageBox {
     if (e.target.type == this.tag) {
       const dx = e.target.left - this.boardRectPos.x
       const dy = e.target.top - this.boardRectPos.y
-      this.image.left += dx
-      this.image.top  += dy
+      if (this.image) {
+        this.image.left += dx
+        this.image.top  += dy
+      }
 
       this.boardRectPos = new fabric.Point(e.target.left, e.target.top)
       this.addImageClipPath()
@@ -299,7 +337,6 @@ class ImageBox {
     if (e.target.type == this.tag) {
       this.scale = this.initialScale * e.target.scaleX
       this.boardRect.strokeWidth = this.strokeWidth / e.target.scaleX;
-      console.log(this.strokeWidth, this.boardRect.strokeWidth)
       this.boardRectPos = new fabric.Point(e.target.left, e.target.top)
       this.updateImage()
       this.addImageClipPath()

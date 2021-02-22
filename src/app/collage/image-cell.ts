@@ -28,6 +28,8 @@ class ImageCell {
       cornerStrokeColor: 'black',
       borderColor: 'black',
       cornerSize: 12,
+      stroke: borderColor,
+      strokeWidth: borderSize,
       padding: 0,
       cornerStyle: 'circle',
       borderDashArray: [5, 5],
