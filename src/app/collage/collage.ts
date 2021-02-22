@@ -111,13 +111,27 @@ export class Collage {
       layoutItems.forEach(data => {
         const tag = `img_${data.col}_${data.row}`
         this.images[tag] = new ImageBox(this.canvas)
-          //.setScale(data.scale)
           .setTag(tag)
           .setBorder(setting.borderWidth, setting.borderColor)
-          .addMovableBoard(data.left, data.top, data.width, data.height)
           .setImageUrl(data.img.src)
           .loadImage(data.img.src)
+          .addMovableBoard(data.left, data.top, data.width, data.height)
       })
+
+      /*let data = layoutItems[0]
+      new ImageBox(this.canvas)
+        .setTag("tag")
+        .setBorder(0, setting.borderColor)
+        .setImageUrl(data.img.src)
+        .loadImage(data.img.src)
+        .addMovableBoard(data.left, data.top, data.width, data.height)
+
+        new ImageBox(this.canvas)
+        .setTag("tag")
+        .setBorder(10, setting.borderColor)
+        .setImageUrl(data.img.src)
+        .loadImage(data.img.src)
+        .addMovableBoard(data.left, 400, data.width, data.height)*/
     }
     catch (err) {
       console.log(err)
@@ -128,7 +142,6 @@ export class Collage {
   }
 
   createTemplate(setting: Setting) {
-    console.log(setting)
     if (this.loading) {
       return
     }
@@ -282,7 +295,6 @@ export class Collage {
       const scale = canvasWidth / setting.canvasWidth
       this.createCanvasElement(canvasWidth, canvasHeight)
       this.createFabricCanvas(canvasWidth, canvasHeight)
-      console.log('scale', canvasWidth, setting.canvasWidth, scale);
 
       // Add images to canvas.
       this.images = []

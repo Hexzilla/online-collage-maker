@@ -6,7 +6,7 @@ class ImageCell {
   canvas: fabric.Canvas = null
   cellRect: fabric.Rect = null
 
-  constructor(canvas, pos, tag) {
+  constructor(canvas, pos, tag, borderSize, borderColor) {
     this.canvas = canvas
     this.tag = tag
 

@@ -98,20 +98,20 @@ export class CanvasLayout {
     }, 0);
   }
 
-  getLayoutItems(images, perfectRows, canvasWidth, borderWidth) {
+  getLayoutItems(images, perfectRows, canvasWidth, borderSize) {
     let top = 0;
     const layoutItems = perfectRows.reduce((accumulator, items, colIndex) => {
       let delta = 0.0
       while (true) {
-        const calcWidth = items.reduce((accum, item) => {
+        const calcWidth = borderSize + items.reduce((accum, item) => {
           const img = images.find((it) => it.data == item.data);
           item.height += delta
           const scale = item.height / img.image.height;
           return accum + img.image.width * scale;
         }, 0);
 
-        //console.log('Width', calcWidth, canvasWidth)
         if (calcWidth >= canvasWidth) {
+          console.log('*Width', calcWidth, canvasWidth)
           break
         }
         delta = 0.001
@@ -133,7 +133,7 @@ export class CanvasLayout {
         let realWidth = img.image.width * scale
         left += realWidth;
 
-        let offset = curLeft + realWidth + borderWidth - canvasWidth
+        let offset = curLeft + realWidth - canvasWidth
         if (offset > 0) {
           curLeft -= offset
         }

@@ -24,6 +24,7 @@ class ImageBox {
   zoom: number = 1.0
   brightness: number = 0.01
   boardRect: fabric.Rect
+  backBoard: fabric.Rect
   boardRectPos: fabric.Point
   lockBoardRect: Boolean
   tag: string
@@ -51,7 +52,8 @@ class ImageBox {
 
   addLockedBoard(left, top, width, height) {
     this.lockBoardRect = true
-    this.boardRect = new fabric.Rect({
+
+    this.backBoard = new fabric.Rect({
       type: this.tag,
       originX: 'left',
       originY: 'top',
@@ -63,7 +65,24 @@ class ImageBox {
       absolutePositioned: true,
       selectable: false,
       stroke: this.strokeColor,
-      strokeWidth: 1,
+      strokeWidth: this.strokeWidth,
+      padding: 0,
+    })
+    this.canvas.add(this.backBoard)
+
+    this.boardRect = new fabric.Rect({
+      type: this.tag,
+      originX: 'left',
+      originY: 'top',
+      left: left,
+      top: top,
+      width: width,
+      height: height,
+      fill: 'rgba(0,0,0,0)',
+      absolutePositioned: true,
+      selectable: false,
+      stroke: this.strokeColor,
+      strokeWidth: this.strokeWidth,
       padding: 0,
     })
     this.canvas.add(this.boardRect)
@@ -139,6 +158,8 @@ class ImageBox {
   }
 
   private onImageLoaded(img) {
+    console.log("onImageLoaded");
+
     if (this.image) {
       this.removeImage()
     }
@@ -146,7 +167,7 @@ class ImageBox {
     this.updateImage()
     this.canvas.add(this.image)
 
-    this.addImageClipPath()
+    this.update()
     this.onImageLoadCompleted && this.onImageLoadCompleted()
   }
 
@@ -166,7 +187,6 @@ class ImageBox {
   }
 
   containsPoint(px, py) {
-    console.log(this.boardRect.width, this.boardRect.height)
     return this.boardRect.containsPoint(new fabric.Point(px, py))
   }
 
@@ -189,6 +209,7 @@ class ImageBox {
     this.updateImage()
     this.addImageClipPath()
     this.setBrightness(this.brightness)
+    this.canvas.bringToFront(this.boardRect)
     this.canvas.renderAll()
   }
 
@@ -277,6 +298,8 @@ class ImageBox {
   onObjectScaling(e) {
     if (e.target.type == this.tag) {
       this.scale = this.initialScale * e.target.scaleX
+      this.boardRect.strokeWidth = this.strokeWidth / e.target.scaleX;
+      console.log(this.strokeWidth, this.boardRect.strokeWidth)
       this.boardRectPos = new fabric.Point(e.target.left, e.target.top)
       this.updateImage()
       this.addImageClipPath()
