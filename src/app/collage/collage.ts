@@ -155,6 +155,17 @@ export class Collage {
       const canvasHeight = canvasWidth * this.setting.heightInch / this.setting.widthInch;
       this.createCanvasElement(canvasWidth, canvasHeight)
       this.createFabricCanvas(canvasWidth, canvasHeight)
+
+      const margin = this.setting.margin
+      const width = (this.canvas.width - margin) / this.setting.cells
+      const height = (this.canvas.height - margin) / this.setting.cells
+      for (let i = 0; i < this.setting.cells; i++) {
+        for (let j = 0; j < this.setting.cells; j++) {
+          const left = margin + i * width
+          const top = margin + j * height
+          this.addCellWithPos(left, top, width - margin, height - margin)
+        }
+      }
     }
     catch (err) {
       console.log(err)
@@ -240,12 +251,16 @@ export class Collage {
 
   private cellIndex: number = 0
   addCell() {
+    this.addCellWithPos(this.menuPoint.x, this.menuPoint.y, 320, 320)
+  }
+
+  addCellWithPos(left, top, width, height) {
     this.cellIndex++
     const tag = "cell_" + this.cellIndex
     const cell = new ImageBox(this.canvas)
       .setTag(tag)
       .setBorder(this.setting.borderWidth, this.setting.borderColor)
-      .addCellBoard(this.menuPoint.x, this.menuPoint.y, 320, 320)
+      .addCellBoard(left, top, width, height)
     this.images[tag] = cell
   }
 

@@ -26,6 +26,20 @@
             </mat-form-field>
           </div>
         </div>
+        <div class="row collage-setting-row">
+          <div class="col-12 col-md-6">
+            <mat-form-field class="collage-border">
+              <mat-label>Cells</mat-label>
+              <input matInput maxlength="2" type="number" class="text-center" [(ngModel)]="setting.cells">
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <mat-form-field class="collage-border">
+              <mat-label>Margin</mat-label>
+              <input matInput maxlength="2" type="number" class="text-center" [(ngModel)]="setting.margin">
+            </mat-form-field>
+          </div>
+        </div>
         <!-- <div class="collage-setting-row">
           <mat-checkbox class="pl-2" [(ngModel)]="setting.landscape">Landscape</mat-checkbox>
         </div> -->

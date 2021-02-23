@@ -10,4 +10,6 @@ export class Setting {
     borderWidth: number = 0;
     borderColor: string = "rgb(90,160,70)";
     mode: string = "auto";
+    cells: number = 3;
+    margin: number = 15;
 }
