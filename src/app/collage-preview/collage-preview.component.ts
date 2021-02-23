@@ -69,7 +69,7 @@ export class CollagePreviewComponent implements OnInit {
   }
 
   linkCollageMaker() {
-    this.router.navigate(["/collage"]);
+    this.router.navigate(["/collage/auto"]);
   }
 
   printPhoto(image, way) {
