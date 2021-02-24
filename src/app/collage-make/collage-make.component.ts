@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatDialog, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { AuthService } from "../auth.service";
 import { ImageEditorComponent } from "../image-editor/image-editor.component";
 import { ImageCropperComponent } from "../image-editor/image-cropper.component";
+import { ImageSelectComponent } from "../image-select/image-select.component";
 import { Collage } from '../collage/collage'
 import ImageBox from "../collage/image-box"
 import { Setting } from '../collage/setting';
@@ -57,6 +57,10 @@ export class CollageMakeComponent implements OnInit {
         await this.openImageCropWindow()
         break
 
+      case 'add':
+        await this.openSelectImageWindow()
+        break
+
       case 'delete':
         this.collage.deleteSelectedImage()
         break
@@ -90,6 +94,16 @@ export class CollageMakeComponent implements OnInit {
         ratio: board.width / board.height
       },
     });
+  }
+
+  async openSelectImageWindow() {
+    const box: ImageBox = this.collage.getSelectedImage()
+    console.log('~~~~~~~~~~~~~~~', box)
+    if (box.lockBoardRect) {
+      this.dialog.open(ImageSelectComponent, {
+        data: {},
+      });
+    }
   }
 
   handleDrop(e) {

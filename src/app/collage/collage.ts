@@ -163,7 +163,11 @@ export class Collage {
         for (let j = 0; j < this.setting.cells; j++) {
           const left = margin + i * width
           const top = margin + j * height
-          this.addCellWithPos(left, top, width - margin, height - margin)
+          const cell = this.addCellWithPos(left, top, width - margin, height - margin)
+          cell.cellRowIndex = i
+          cell.cellColIndex = j
+          cell.cellMargin = margin
+          cell.onCellScaling = (cell) => this.onCellScaling(cell)        
         }
       }
     }
@@ -262,6 +266,7 @@ export class Collage {
       .setBorder(this.setting.borderWidth, this.setting.borderColor)
       .addCellBoard(left, top, width, height)
     this.images[tag] = cell
+    return cell
   }
 
   deleteCell() {
@@ -505,5 +510,53 @@ export class Collage {
 
   private resizeCanvas() {
     console.log("resizeCanvas")
+  }
+
+  async onImageSelected(url) {
+    const box: ImageBox = this.getSelectedImage()
+    if (box) {
+      this.setLoadingState(true)
+      const imageUrl = await toDataURL("GET", url)
+      box.onImageLoadCompleted = () => this.setLoadingState(false)
+      box.removeImage()
+      box.setImageUrl(imageUrl).loadImage(imageUrl)
+    }
+  }
+
+  private onCellScaling(cell: ImageBox) {
+    const col = cell.cellColIndex
+    const row = cell.cellRowIndex
+    const margin = cell.cellMargin
+    
+    const rect = cell.boardRect
+    const rw = rect.width * rect.scaleX
+    const rh = rect.height * rect.scaleY
+    const p0 = new fabric.Point(rect.left, rect.top)
+    const p1 = new fabric.Point(rect.left + rw, rect.top)
+    const p2 = new fabric.Point(rect.left + rw, rect.top + rh)
+    const p3 = new fabric.Point(rect.left, rect.top + rh)
+    
+    const m0 = new fabric.Point(rect.left, rect.top + rh / 2)
+    const m3 = new fabric.Point(rect.left + rw / 2, rect.top)
+    const m1 = new fabric.Point(rect.left + rw, rect.top + rh / 2)
+    const m2 = new fabric.Point(rect.left + rw / 2, rect.top + rh)
+    
+    for (let tag in this.images) {
+      const neigh: ImageBox = this.images[tag]
+      if (neigh == cell) {
+        continue
+      }
+
+      if (neigh.containsPoint(m0.x, m0.y)) {
+        const br = neigh.boardRect
+        const width = p0.x - br.left - margin
+        if (width > 20) {
+          br.set({ width: p0.x - br.left - margin, scaleX: 1.0 })
+        }
+        else {
+          cell.boardRect.set({ left : br.left + br.width * br.scaleX + margin})
+        }
+      }
+    }
   }
 }

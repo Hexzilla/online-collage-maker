@@ -12,4 +12,5 @@ export class Setting {
     mode: string = "auto";
     cells: number = 3;
     margin: number = 15;
+    thumbImages: Array<object>;
 }

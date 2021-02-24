@@ -34,7 +34,7 @@
               <button type="button" class="close" aria-label="Close" style="position: absolute; right: 6px" (click)="deleteImage(image)">
                 <span aria-hidden="true" style="color: #dc3545">&times;</span>
               </button>
-              <img draggable="true" (dragstart)="onDragStart($event, image)" class="img-fluid img-thumbnail" width="100%" src="{{image}}" alt="">
+              <img draggable="true" (dragstart)="onDragStart($event, image.url)" class="img-fluid img-thumbnail" width="100%" src="{{image.imageBase64}}" alt="">
             </div>
           </div>
       </div>

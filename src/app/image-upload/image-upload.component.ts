@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
 import { ToastrService } from "ngx-toastr";
 import { ApiService } from "../api/api";
 import { Collage } from '../collage/collage'
+import { toDataURL } from "../collage/util";
+import { Setting } from "../collage/setting";
 
 @Component({
   selector: "image-upload",
@@ -13,13 +14,13 @@ export class ImageUploadComponent implements OnInit {
   files: File[] = [];
   progressShow: boolean;
   dropZoneStatus: boolean;
-  images: string[] = [];
+  images: Array<any> = [];
 
   constructor(
-    private http: HttpClient,
     private toastr: ToastrService,
     private api: ApiService,
-    private collage: Collage
+    private collage: Collage,
+    private setting: Setting
   ) {}
 
   ngOnInit() {
@@ -29,16 +30,19 @@ export class ImageUploadComponent implements OnInit {
   }
 
   async getImageFromServer() {
-    this.images = await this.api.getImages();
+    const urls = await this.api.getImages();
+    this.images = await Promise.all(urls.map(async (url) => {
+      const imageBase64 = await toDataURL("GET", url)
+      return { url: url, imageBase64: imageBase64}
+    }))
+    this.setting.thumbImages = this.images
   }
 
   onSelect(event) {
-    console.log(event);
     this.files.push(...event.addedFiles);
   }
 
   onRemove(event) {
-    console.log(event);
     this.files.splice(this.files.indexOf(event), 1);
   }
 
@@ -69,7 +73,7 @@ export class ImageUploadComponent implements OnInit {
   }
 
   async deleteImage(image) {
-    let result = await this.api.deleteImage(image);
+    let result = await this.api.deleteImage(image.url);
     if (result) {
       const index = this.images.indexOf(image);
       if (index > -1) {

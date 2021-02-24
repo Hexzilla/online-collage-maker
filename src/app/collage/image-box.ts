@@ -19,8 +19,6 @@ class ImageBox {
   url: string
   canvas: fabric.Canvas
   image: fabric.Image
-  initialScale: number = 1.0  //TODO-remove this
-  scale: number = 1.0
   zoom: number = 1.0
   brightness: number = 0.01
   cellSizeText: fabric.Text
@@ -32,10 +30,16 @@ class ImageBox {
   strokeColor: string = 'rgb(136, 0, 26)'
   strokeWidth: number = 0
   onImageLoadCompleted: Function
+  
+  cellMargin: number = 0
+  cellColIndex: number = 0
+  cellRowIndex: number = 0  
+  onCellScaling: Function
 
   constructor(canvas) {
     this.canvas = canvas
     this.canvas.on('mouse:down', (e) => this.onMouseDown(e))
+    //this.canvas.on('mouse:up', (e) => this.onMouseUp(e))
     this.canvas.on('object:moving', (e) => this.onObjectMoving(e))
     this.canvas.on('object:moved', (e) => this.onObjectMoved(e))
     this.canvas.on('object:scaling', (e) => this.onObjectScaling(e))
@@ -47,7 +51,6 @@ class ImageBox {
   }
 
   setScale(scale) {
-    this.initialScale = this.scale = scale
     return this
   }
 
@@ -194,7 +197,6 @@ class ImageBox {
   }
 
   reset() {
-    this.initialScale = this.scale = 1.0
     this.zoom = 1.0
     this.brightness = 0.01
     this.loadImage(this.url)
@@ -258,7 +260,6 @@ class ImageBox {
   }
 
   restoreImage() {
-    this.initialScale = this.scale = 1.0
     this.zoom = 1.0
     this.brightness = 0.01
     this.loadImage(this.url)
@@ -267,7 +268,6 @@ class ImageBox {
   update() {
     this.updateImage()
     this.addImageClipPath()
-    this.setBrightness(this.brightness)
     this.canvas.bringToFront(this.boardRect)
     this.canvas.renderAll()
   }
@@ -325,6 +325,17 @@ class ImageBox {
     }
   }
 
+  onMouseUp(e) {
+    if (this.boardRect) {
+      const r = this.boardRect
+      r.width = r.width * r.scaleX
+      r.scaleX = 1
+      r.height = r.height * r.scaleY
+      r.scaleY = 1
+      r.strokeWidth = this.strokeWidth
+    }
+  }
+
   onObjectMoving(e) {
     if (e.target.type == this.tag) {
       const dx = e.target.left - this.boardRectPos.x
@@ -360,11 +371,13 @@ class ImageBox {
 
   onObjectScaling(e) {
     if (e.target.type == this.tag) {
-      this.scale = this.initialScale * e.target.scaleX
       this.boardRect.strokeWidth = this.strokeWidth / e.target.scaleX;
       this.boardRectPos = new fabric.Point(e.target.left, e.target.top)
+      
       this.updateImage()
       this.addImageClipPath()
+
+      //this.onCellScaling && this.onCellScaling(this)
       this.canvas.renderAll()
     }
   }
