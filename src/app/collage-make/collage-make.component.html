@@ -2,6 +2,9 @@
 <div class="collage-content">
   <div class="container-fluid">
     <div class="row">
+      <div class="collage-maker-title">Free Online Automatic Collage Maker</div>
+    </div>
+    <div class="row">
       <div id="menu-image-edit" class="menu">
         <ul class="menu-options">
           <li id="crop" class="menu-option">Crop Image</li>
@@ -12,41 +15,41 @@
         </ul>
       </div>
     </div>
-      <div class="row">
-        <div class="col-md-2">
-          <image-upload></image-upload>
-          <hr class="mt-2 mb-2">
-          <control-panel></control-panel>
-        </div>
-        <div class="col-md-10">
-            <div class="grey-box">
-              <div class="row">
-                <div ngbDropdown class="col-12">
-                  <div class="col-md-2 col-sm-6 btn-collage-menu">
-                    <button mat-raised-button class="btn btn-sm btn-block btn-default" (click)="showCollages()">Collages</button>
-                  </div>
-                  <div ngbDropdown class="col-md-2 col-sm-6 btn-collage-menu">
-                    <button mat-raised-button class="btn btn-sm btn-block btn-success" id="dropdownBasic1" ngbDropdownToggle>Print Collage</button>
-                    <div ngbDropdownMenu aria-labelledby="drop_down_menu">
-                      <button ngbDropdownItem (click)="printCollage(0)">Canvas Print - Single Frame</button>
-                      <button ngbDropdownItem (click)="printCollage(1)">Poster Print - With Sticker</button>
-                      <button ngbDropdownItem (click)="printCollage(2)">Poster Print - Without Sticker</button>
-                      <a id="print-button" hidden href="#" target="_blank"></a>
-                    </div>
-                  </div>
+    <div class="row">
+      <div class="col-md-2">
+        <image-upload></image-upload>
+        <hr class="mt-2 mb-2">
+        <control-panel></control-panel>
+        <hr class="mt-2 mb-2">
+        <image-list></image-list>
+      </div>
+      <div class="col-md-10">
+        <div class="grey-box">
+          <div class="row">
+            <div ngbDropdown class="col-12">
+              <div class="col-md-2 col-sm-6 btn-collage-menu">
+                <button mat-raised-button class="btn btn-sm btn-block btn-primary"
+                  (click)="showCollages()">Collages</button>
               </div>
-              <div class="card-body">
-                <div 
-                  id="canvas-container"
-                  (dragover)="false"
-                  (dragend)="false"
-                  (drop)="handleDrop($event)">
-                  <!-- <canvas id="main-canvas" style="width:36in; height: 36in;"></canvas> -->
-                </div>
-                <div id="virtual-canvas-container">
+              <div ngbDropdown class="col-md-2 col-sm-6 btn-collage-menu">
+                <button mat-raised-button class="btn btn-sm btn-block btn-primary" id="dropdownBasic1"
+                  ngbDropdownToggle>Print Collage</button>
+                <div ngbDropdownMenu aria-labelledby="drop_down_menu">
+                  <button ngbDropdownItem (click)="printCollage(0)">Canvas Print - Single Frame</button>
+                  <button ngbDropdownItem (click)="printCollage(1)">Poster Print - With Sticker</button>
+                  <button ngbDropdownItem (click)="printCollage(2)">Poster Print - Without Sticker</button>
+                  <a id="print-button" hidden href="#" target="_blank"></a>
                 </div>
               </div>
             </div>
+            <div class="card-body">
+              <div id="canvas-container" (dragover)="false" (dragend)="false" (drop)="handleDrop($event)">
+                <!-- <canvas id="main-canvas" style="width:36in; height: 36in;"></canvas> -->
+              </div>
+              <div id="virtual-canvas-container">
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row" *ngIf="loading">
@@ -54,7 +57,6 @@
           <mat-spinner class="vertical-center" [diameter]="60"></mat-spinner>
         </div>
       </div>
+    </div>
   </div>
 </div>
-
-

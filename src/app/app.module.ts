@@ -17,6 +17,7 @@ import { ImageEditorComponent } from "./image-editor/image-editor.component";
 import { ImageCropperComponent } from "./image-editor/image-cropper.component";
 import { ImageUploadComponent } from "./image-upload/image-upload.component";
 import { ImageSelectComponent } from "./image-select/image-select.component";
+import { ImageListComponent } from "./image-list/image-list.component";
 import { FooterComponent } from './footer/footer.component';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -85,6 +86,7 @@ const appRoutes: Routes = [
     ImageCropperComponent,
     ImageUploadComponent,
     ImageSelectComponent,
+    ImageListComponent,
     MainNavComponent,
     PreviewDialog,
     DialogLoginComponent,

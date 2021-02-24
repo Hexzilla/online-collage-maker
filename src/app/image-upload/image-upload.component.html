@@ -26,17 +26,5 @@
           <button type="button" class="btn btn-primary btn-sm shadow mt-2 upload-button" [disabled]="dropZoneStatus" (click)="uploadFiles()">Upload</button>
         </div>
       </div>
-      <hr class="mt-2 mb-2">
-    
-      <div class="row text-center text-lg-left p-3 m-0">
-          <div *ngFor="let image of images" class="col-lg-4 col-md-4 col-sm-4 col-4 p-0" id="server-images">
-            <div class="d-block mb-1 h-200">
-              <button type="button" class="close" aria-label="Close" style="position: absolute; right: 6px" (click)="deleteImage(image)">
-                <span aria-hidden="true" style="color: #dc3545">&times;</span>
-              </button>
-              <img draggable="true" (dragstart)="onDragStart($event, image.url)" class="img-fluid img-thumbnail" width="100%" src="{{image.imageBase64}}" alt="">
-            </div>
-          </div>
-      </div>
   </div>
 </mat-expansion-panel>
