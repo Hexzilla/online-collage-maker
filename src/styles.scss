@@ -426,6 +426,13 @@ a {
   float: right;
 }
 
+.btn-print-menu {
+  float: right;
+  width: 220px;
+  margin-right: 20px;
+  line-height: 36px;
+}
+
 .top-right-menu {
     position: absolute; 
     right: 42px;
@@ -439,14 +446,17 @@ a {
     .grey-box .card-body {
         margin-top: 6px;
     }
-
     .top-right-menu {
         position: inherit; 
         right: 0px;
     }
-
     .top-left-menu {
         margin-left: 0px;
+    }
+    .btn-print-menu {
+      float: inherit;
+      width: inherit;
+      margin-bottom: 6px;
     }
 }
 

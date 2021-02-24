@@ -26,13 +26,23 @@
       <div class="col-md-10">
         <div class="grey-box">
           <div class="row">
-            <div ngbDropdown class="col-12">
-              <div class="col-md-2 col-sm-6 btn-collage-menu">
-                <button mat-raised-button class="btn btn-sm btn-block btn-primary"
-                  (click)="showCollages()">Collages</button>
+            <div class="col-12">
+              <div class="btn-print-menu">
+                <button class="btn btn-sm btn-block btn-primary" (click)="showCollages()">Collages</button>
               </div>
-              <div ngbDropdown class="col-md-2 col-sm-6 btn-collage-menu">
-                <button mat-raised-button class="btn btn-sm btn-block btn-primary" id="dropdownBasic1"
+              <div *ngIf="!isMobile">
+                <div class="btn-print-menu">
+                  <button class="btn btn-sm btn-block btn-primary" (click)="printCollage(0)">Canvas Print - Single Frame</button>
+                </div>
+                <div class="btn-print-menu">
+                  <button class="btn btn-sm btn-block btn-primary" (click)="printCollage(1)">Poster Print - With Sticker</button>
+                </div>
+                <div class="btn-print-menu">
+                  <button class="btn btn-sm btn-block btn-primary" (click)="printCollage(2)">Poster Print - Without Sticker</button>
+                </div>
+              </div>
+              <div *ngIf="isMobile" ngbDropdown class="btn-print-menu">
+                <button class="btn btn-sm btn-block btn-primary" id="dropdownBasic1"
                   ngbDropdownToggle>Print Collage</button>
                 <div ngbDropdownMenu aria-labelledby="drop_down_menu">
                   <button ngbDropdownItem (click)="printCollage(0)">Canvas Print - Single Frame</button>

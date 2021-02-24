@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from "@angular/material/dialog";
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { AuthService } from "../auth.service";
 import { ImageEditorComponent } from "../image-editor/image-editor.component";
 import { ImageCropperComponent } from "../image-editor/image-cropper.component";
@@ -17,9 +18,11 @@ import { Setting } from '../collage/setting';
 })
 export class CollageMakeComponent implements OnInit {
   public loading: boolean = false;
+  public isMobile: any;
 
   constructor(
     private dialog: MatDialog,
+    private deviceService: DeviceDetectorService,
     private authSvc: AuthService,
     private router: Router,
     private route: ActivatedRoute,
@@ -28,6 +31,9 @@ export class CollageMakeComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    this.isMobile = this.deviceService.isMobile();
+    console.log(this.isMobile)
+
     const routeParams = this.route.snapshot.paramMap;
     this.setting.mode = routeParams.get('mode');
     console.log(this.setting.mode)

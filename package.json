@@ -42,6 +42,7 @@
     "masonry-layout": "^4.2.2",
     "ng-masonry-grid": "^1.3.0",
     "ngx-color-picker": "^11.0.0",
+    "ngx-device-detector": "^2.0.5",
     "ngx-dropzone": "^3.0.0",
     "ngx-image-cropper": "^3.3.5",
     "ngx-toastr": "^13.2.0",
