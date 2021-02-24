@@ -80,7 +80,7 @@ export class CollageMakeComponent implements OnInit {
       },
       position: {
         left: "0px"
-      }
+      },
     });
   }
 
@@ -98,7 +98,6 @@ export class CollageMakeComponent implements OnInit {
 
   async openSelectImageWindow() {
     const box: ImageBox = this.collage.getSelectedImage()
-    console.log('~~~~~~~~~~~~~~~', box)
     if (box.lockBoardRect) {
       this.dialog.open(ImageSelectComponent, {
         data: {},

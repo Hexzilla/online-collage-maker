@@ -12,7 +12,7 @@ export class ImageSelectComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ImageSelectComponent>,
     private collage: Collage,
-    private setting: Setting
+    public setting: Setting
   ) { }
 
   async ngOnInit() { }
