@@ -405,6 +405,10 @@ export class Collage {
     })
   }
 
+  checkCanvas() {
+    return this.canvas != null;
+  }
+
   async saveImage(userId) {
     if (!this.canvas) {
       return

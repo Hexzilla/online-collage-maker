@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from "@angular/material/dialog";
+import { ToastrService } from "ngx-toastr";
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { AuthService } from "../auth.service";
 import { ImageEditorComponent } from "../image-editor/image-editor.component";
@@ -23,6 +24,7 @@ export class CollageMakeComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private deviceService: DeviceDetectorService,
+    private toastr: ToastrService,
     private authSvc: AuthService,
     private router: Router,
     private route: ActivatedRoute,
@@ -118,6 +120,21 @@ export class CollageMakeComponent implements OnInit {
 
   showCollages() {
     this.router.navigate(["/preview"]);
+  }
+
+  async saveCollage() {
+    if (!this.collage.checkCanvas()) {
+      this.toastr.error("Make a collage first")
+      return
+    }
+    const userId = this.authSvc.getUserId()
+    const slug = await this.collage.saveImage(userId)
+    if (slug) {
+      this.toastr.success("Success")
+    }
+    else {
+      this.toastr.error("Failed to save collage")
+    }
   }
 
   async printCollage(way) {
