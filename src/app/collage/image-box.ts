@@ -136,7 +136,7 @@ class ImageBox {
       width: width,
       height: height,
       opacity: 1.0,
-      fill: 'rgba(255,255,255, 1.0)',
+      fill: 'rgba(100,100,100, 1.0)',
       absolutePositioned: true,
       lockScalingFlip: true,
       selectable: true,

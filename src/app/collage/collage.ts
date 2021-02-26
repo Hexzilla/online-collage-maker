@@ -187,7 +187,7 @@ export class Collage {
       selection: false,
       width: width,
       height: height,
-      backgroundColor: '#444',
+      backgroundColor: '#ddd',
     })
 
     let touchTimestamp = 0
@@ -369,7 +369,7 @@ export class Collage {
       selection: false,
       width: width,
       height: height,
-      backgroundColor: '#444',
+      backgroundColor: '#ddd',
     })
 
     return new Promise<fabric.Canvas>(resolve => {
@@ -461,13 +461,13 @@ export class Collage {
   async saveTemplate(id) {
     this.setLoadingState(true)
 
-    const twidth = 160
+    const twidth = 320
     const theight = twidth * (this.canvas.height / this.canvas.width)
 
     const virtualCanvas = await this.createVirtualCanvas(twidth, theight)
     const dataUrl = virtualCanvas.toDataURL({
       format: 'jpeg',
-      quality: 0.5
+      quality: 1.0
     });
 
     const setting = Object.assign({
