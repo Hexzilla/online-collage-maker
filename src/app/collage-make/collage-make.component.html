@@ -50,11 +50,11 @@
                 <div ngbDropdownMenu aria-labelledby="drop_down_menu">
                   <button ngbDropdownItem (click)="printCollage(0)">Canvas Print - Single Frame</button>
                   <button ngbDropdownItem (click)="printCollage(1)">Poster Print - With Sticker</button>
-                  <button ngbDropdownItem (click)="printCollage(2)">Poster Print - Without Sticker</button>
-                  <a id="print-button" hidden href="#" target="_blank"></a>
+                  <button ngbDropdownItem (click)="printCollage(2)">Poster Print - Without Sticker</button>                  
                 </div>
               </div>
             </div>
+            <a id="print-button" hidden href="#" target="_blank"></a>
             <div class="card-body">
               <div id="canvas-container" (dragover)="false" (dragend)="false" (drop)="handleDrop($event)">
                 <!-- <canvas id="main-canvas" style="width:36in; height: 36in;"></canvas> -->
