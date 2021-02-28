@@ -65,7 +65,7 @@ class ImageBox {
       top: top,
       width: width,
       height: height,
-      fill: 'rgba(215,215,215,1)',
+      fill: 'rgba(100,100,100,1)',
       absolutePositioned: true,
       selectable: false,
       stroke: this.strokeColor,

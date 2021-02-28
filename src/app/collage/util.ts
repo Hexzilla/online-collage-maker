@@ -1,12 +1,12 @@
 export function toDataURL(method, url) {
-  return new Promise(function (resolve, reject) {
+  return new Promise<string>(function (resolve, reject) {
     const xhr = new XMLHttpRequest();
     xhr.open(method, url);
     xhr.responseType = 'blob';
     xhr.onload = function() {
       const reader = new FileReader();
       reader.onloadend = function() {
-        resolve(reader.result);
+        resolve(reader.result as string);
       }
       reader.readAsDataURL(xhr.response);
     };

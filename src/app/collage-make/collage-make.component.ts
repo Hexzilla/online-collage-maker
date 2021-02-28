@@ -73,6 +73,10 @@ export class CollageMakeComponent implements OnInit {
         this.collage.deleteSelectedImage()
         break
 
+      case 'background':
+        this.setBackgroundImage()
+        break
+
       case 'reset':
         const box: ImageBox = this.collage.getSelectedImage()
         box.reset()
@@ -107,10 +111,26 @@ export class CollageMakeComponent implements OnInit {
   async openSelectImageWindow() {
     const box: ImageBox = this.collage.getSelectedImage()
     if (box.lockBoardRect) {
-      this.dialog.open(ImageSelectComponent, {
+      const dialogRef = this.dialog.open(ImageSelectComponent, {
         data: {},
       });
+      dialogRef.afterClosed().subscribe(url => {
+        if (url) {
+          this.collage.onImageSelected(url)
+        }
+      })
     }
+  }
+
+  setBackgroundImage() {
+    const dialogRef = this.dialog.open(ImageSelectComponent, {
+      data: {},
+    });
+    dialogRef.afterClosed().subscribe(async (url) => {
+      if (url) {
+        await this.collage.setBackgroundImage(url)
+      }
+    })
   }
 
   handleDrop(e) {

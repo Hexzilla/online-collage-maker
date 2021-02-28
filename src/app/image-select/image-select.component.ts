@@ -18,8 +18,7 @@ export class ImageSelectComponent implements OnInit {
   async ngOnInit() { }
 
   async onSelectImage(image) {
-    await this.collage.onImageSelected(image.url)
-    this.onClose()
+    this.dialogRef.close(image.url)
   }
 
   onClose() {

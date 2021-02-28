@@ -299,6 +299,19 @@ export class Collage {
     }
   }
 
+  async setBackgroundImage(url) {
+    const imageUrl = await toDataURL("GET", url)
+    fabric.Image.fromURL(imageUrl, (img) => {
+      const scale = Math.max(this.canvas.width / img.width, this.canvas.height / img.height)
+      img.set({
+        scaleX: scale,
+        scaleY: scale,
+      })
+      this.canvas.backgroundImage = img
+      this.canvas.renderAll()
+    }, {crossOrigin: 'anonymous'})
+  }
+
   //////////////////////////////////////////////////////
   //Create Collage by Template ID
   //////////////////////////////////////////////////////
