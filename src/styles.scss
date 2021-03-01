@@ -2,6 +2,8 @@
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 @import url("https://fonts.googleapis.com/css?family=Nunito");
 @import "../node_modules/@angular/material/theming";
+@import "./assets/css/bulma.css";
+@import "./assets/css/core.css";
 
 $custom-typography: mat-typography-config(
   $font-family: "Nunito ,sans-serif",

@@ -18,12 +18,19 @@ export class ImageCropperComponent implements OnInit {
   selectionRect: fabric.Rect;
   startPoint: fabric.Point;
   croppedImage: any = '';
+  showImagePicker = true;
+  imagePicketTitle = '';
+  imagePickerImageUrl = '';
+  imagePickerType = '';
+  imageUploading = false;
 
   constructor(
     public dialogRef: MatDialogRef<ImageCropperComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ImageData,
     private collage: Collage
-  ) { }
+  ) { 
+    this.imagePickerImageUrl = this.data.imageBase64
+  }
 
   ngOnInit() { }
 

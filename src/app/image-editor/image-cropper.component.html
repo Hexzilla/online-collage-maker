@@ -1,16 +1,6 @@
-<h1 mat-dialog-title>Edit Image</h1>
 <mat-dialog-content>
-    <div class="row">
-        <image-cropper
-            [imageBase64]="data.imageBase64"
-            [maintainAspectRatio]="true"
-            [aspectRatio]="data.ratio"
-            format="png"
-            (imageCropped)="imageCropped($event)"
-            (imageLoaded)="imageLoaded()"
-            (cropperReady)="cropperReady()"
-            (loadImageFailed)="loadImageFailed()"
-        ></image-cropper>
+    <div class=" is-xxl has-light-bg" [ngClass]="{'is-active':showImagePicker}">
+        <app-image-picker [(showImagePicker)]="showImagePicker" [(imagePickerImageUrl)]="imagePickerImageUrl" (imagePickerImageUrlChange)="fileUpload()" *ngIf="showImagePicker"></app-image-picker> 
     </div>
 </mat-dialog-content>
 <div mat-dialog-actions align="end">

@@ -1,0 +1,389 @@
+<div class="card post-detail" style="width: 90%;margin-left: auto;margin-right: auto;">
+  <div class="card-heading bb-grey">
+    <h3 *ngIf="!imagePickerImageUrl && !cameraMode">Select an image</h3>
+    <h3 *ngIf="imagePickerImageUrl || cameraMode">Edit image</h3>
+    
+    <div class="close-wrap">
+      <span class="close-modal" (click)="closeImagePicker()">
+        <i class="fas fa-times"></i> 
+      </span>
+    </div>
+  </div>
+  <div class="card-body" [ngClass]="{'no-padding': imagePickerImageUrl || cameraMode}">
+
+    <div class="flex frst-container" *ngIf="!imagePickerImageUrl && !cameraMode">
+      <label title="{{ !isCameraAvalilable ? 'Camera is not available' : 'Click to open webcam'}}" class="cover-uploader-box" for="upload-cover-picture" [ngClass]="{'no-camera-available': !isCameraAvalilable}" (click)="isCameraAvalilable ? openCamera() : null">
+        <span class="inner-content text-center">
+          <i class="fas fa-camera modal-fa fadeInUp"></i>
+          <span>Use Webcam to click an image</span>
+        </span>
+      </label>
+      <div class="m-0-10" *ngIf="isCameraAvalilable"></div>
+      <label title="Drag and drop any image or click to select any image" class="cover-uploader-box" for="upload-cover-pictures" appDragDrop (onFileDropped)="onFileSelected($event)">
+        <span class="inner-content text-center">
+          <i class="fas fa-image modal-fa fadeInUp"></i>
+          <span>Drag or Select an image</span>
+        </span>
+        <input type="file" #file id="upload-cover-pictures" (change)="onFileSelected(file.files)" accept="image/*">
+      </label>
+    </div>
+
+    <div class="just flex responsive imagepicker-toolBox" *ngIf="imagePickerImageUrl || cameraMode"> 
+      <div class="column is-1 just flex-wrap light-blue-bg">
+        
+        <ng-container *ngIf="cameraMode">
+          <div class="extreme-left-options">
+            <button class="" [ngClass]="{'active': cameraMode}">
+              <span class="icon fadeInUp">
+                <i class="fas fa-camera"></i>
+              </span>
+              <span>Camera</span>
+            </button>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="!cameraMode">
+            <div class="extreme-left-options">
+              <button [ngClass]="{'active': cropMode, 'disable-button' : rotateMode || mirrorMode || filterMode || adjustMode}" (click)="rotateMode || mirrorMode || filterMode || adjustMode ? null : enableCropMode()">
+                <span class="icon fadeInUp">
+                  <i class="fas fa-crop-alt"></i>
+                </span>
+                <span>Crop</span>
+              </button>
+
+              <button class="" [ngClass]="{'active': rotateMode, 'disable-button' : cropMode || mirrorMode || filterMode || adjustMode}" (click)="cropMode || mirrorMode || filterMode || adjustMode ? null : enableRotateMode()">
+                <span class="icon fadeInUp">
+                  <i class="fas fa-undo"></i>
+                </span>
+                <span>Rotate</span>
+              </button>
+
+              <button class="" [ngClass]="{'active': mirrorMode, 'disable-button' : cropMode || rotateMode || filterMode || adjustMode}" (click)="cropMode || rotateMode || filterMode || adjustMode ? null : enableMirrorMode()">
+                <span class="icon fadeInUp">
+                  <i class="fas fa-object-group"></i>
+                </span>
+                <span>Mirror</span>
+              </button>
+
+              <button class="" [ngClass]="{'active': filterMode, 'disable-button' : cropMode || rotateMode || mirrorMode || adjustMode}" (click)="cropMode || rotateMode || mirrorMode || adjustMode ? null : enableFilterMode()" >
+                <span class="icon fadeInUp">
+                  <i class="fas fa-image"></i>
+                </span>
+                <span>Filters</span>
+              </button>
+
+              <button class="" [ngClass]="{'active': adjustMode, 'disable-button' : cropMode || rotateMode || mirrorMode || filterMode}" (click)="cropMode || rotateMode || mirrorMode || filterMode ? null : enableAdjustMode()" >
+                <span class="icon fadeInUp">
+                  <i class="fas fa-adjust"></i>
+                </span>
+                <span>Adjust</span>
+              </button>
+
+            </div>
+          
+        </ng-container>
+      </div>
+
+
+      <div class="column is-2 just is-2-container">
+
+        <ng-container *ngIf="cameraMode">
+          <div class="fadeIn sec-btns-container">
+            <button class="sec-btns" (click)="capturePhoto()">
+              <span>Capture</span>
+            </button>
+            <button class="sec-btns" (click)="closeCamera()">
+              <span>Cancel</span>
+            </button>
+          </div>
+        </ng-container>
+
+
+        <ng-container *ngIf="!cameraMode">
+          <p class="sec-msg" *ngIf="!cropMode && !rotateMode && !mirrorMode && !adjustMode && !filterMode">Select any option to edit the image</p>
+
+          <!-- ROTATE MODE -->
+          <ng-container *ngIf="cropMode">
+            <div class="fadeIn sec-btns-container">
+              <button class="sec-btns" (click)="cropWithRatio('NaN')">
+                <span>Free Crop</span>
+              </button>
+              <button class="sec-btns" (click)="cropWithRatio(1)">
+                <span>Ratio 1:1</span>
+              </button>
+              <button class="sec-btns" (click)="cropWithRatio(1.5)">
+                <span>Ratio 3:2</span>
+              </button>
+              <button class="sec-btns" (click)="cropWithRatio(1.3)">
+                <span>Ratio 4:3</span>
+              </button>
+              <button class="sec-btns" (click)="cropWithRatio(1.77)">
+                <span>Ratio 16:9</span>
+              </button>
+              <button class="sec-btns" (click)="cropWithRatio(3)">
+                <span>Ratio 18:6</span>
+              </button>
+            </div>
+          </ng-container>
+
+          
+
+          <!-- ROTATE MODE -->
+          <ng-container *ngIf="rotateMode">
+            <div class="fadeIn sec-btns-container">
+              <button class="sec-btns" (click)="rotateClockwise()">
+                <span>Rotate Clockwise</span>
+              </button>
+            </div>
+          </ng-container>
+          
+          <!-- MIRROR MODE -->
+          <ng-container *ngIf="mirrorMode">
+            <div class="fadeIn sec-btns-container">
+              <button class="sec-btns" (click)="mirror()"> 
+                <span>Mirror Horizonatal</span>
+              </button>
+              <button class="sec-btns" (click)="mirrorVertical()"> 
+                <span>Mirror Verical</span>
+              </button>
+            </div>
+          </ng-container>
+
+          <!-- ADJUST MODE -->
+          <ng-container *ngIf="adjustMode">
+            <div class="fadeIn sec-btns-container">
+              <div class="single-adjustment">
+                <button class="adjust-button" (click)="decreaseContrast()">
+                  <span class="icon"><i class="fas fa-minus"></i></span>
+                </button>
+                <p>Contrast</p>
+                <button class="adjust-button" (click)="increaseContrast()">
+                  <span class="icon"><i class="fas fa-plus"></i></span>
+                </button>
+              </div>
+
+              <div class="single-adjustment">
+                <button class="adjust-button" (click)="decreaseBrightness()">
+                  <span class="icon"><i class="fas fa-minus"></i></span>
+                </button>
+                <p>Brightness</p>
+                <button class="adjust-button" (click)="increaseBrightness()">
+                  <span class="icon"><i class="fas fa-plus"></i></span>
+                </button>
+              </div>
+
+              <div class="single-adjustment">
+                <button class="adjust-button" (click)="decreaseExposure()">
+                  <span class="icon"><i class="fas fa-minus"></i></span>
+                </button>
+                <p>Exposure</p>
+                <button class="adjust-button" (click)="increaseExposure()">
+                  <span class="icon"><i class="fas fa-plus"></i></span>
+                </button>
+              </div>
+
+              <div class="single-adjustment">
+                <button class="adjust-button" (click)="decreaseSaturation()">
+                  <span class="icon"><i class="fas fa-minus"></i></span>
+                </button>
+                <p>Saturation</p>
+                <button class="adjust-button" (click)="increaseSaturation()">
+                  <span class="icon"><i class="fas fa-plus"></i></span>
+                </button>
+              </div>
+
+              <div class="single-adjustment">
+                <button class="adjust-button" (click)="decreaseVibrance()">
+                  <span class="icon"><i class="fas fa-minus"></i></span>
+                </button>
+                <p>Vibrance</p>
+                <button class="adjust-button" (click)="increaseVibrance()">
+                  <span class="icon"><i class="fas fa-plus"></i></span>
+                </button>
+              </div>
+
+              <button class="sec-btns" (click)="invertImage()">
+                <span>Invert Image</span>
+              </button>
+
+              <button class="sec-btns" (click)="applySepia()">
+                <span>Sepia</span>
+              </button>
+
+              <button class="sec-btns" (click)="applyNoise()">
+                <span>Noise</span>
+              </button>
+            </div>
+          </ng-container>
+
+          <!-- FILTER MODE -->
+          <ng-container *ngIf="filterMode">
+
+            <div class="fadeIn sec-btns-container">
+
+              <div class="filter-group" (click)="filterAuto()">
+                <div class="filter-prev-container">
+                  <img id="auto-btn" src="assets/images/filters/auto.jpg" class="img-responsive filter-prev">
+                </div>
+                <p class="filter-name">Auto</p>						
+              </div>
+
+              <div class="filter-group" (click)="filterGrayscale()">
+                <div class="filter-prev-container">
+                  <img id="grayscale-btn" src="assets/images/filters/Grayscale.jpg" class="img-responsive filter-prev">
+                </div>	
+                <p class="filter-name">Grayscale</p>				
+              </div>
+
+              <div class="filter-group" (click)="filterNostalgia()">
+                <div class="filter-prev-container">
+                  <img id="nostalgia-btn" src="assets/images/filters/Nostalgia.jpg" class="img-responsive filter-prev">		
+                </div>										
+                <p class="filter-name">Nostalgia</p>	
+              </div>
+
+              <div (click)="filterMajestic()" class="filter-group">
+                <div class="filter-prev-container">
+                  <img id="majestic-btn" src="assets/images/filters/Majestic.jpg" class="img-responsive filter-prev">			
+                </div>																					
+                <p class="filter-name">Majestic</p>
+              </div>
+
+              <div (click)="filterLomo()" class="filter-group">
+                <div class="filter-prev-container">
+                  <img id="lomo-btn" src="assets/images/filters/Lomo.jpg" class="img-responsive filter-prev">			
+                </div>																																	
+                <p class="filter-name">Lomo</p>
+              </div>
+
+              <div (click)="filterSincity()" class="filter-group">
+                <div class="filter-prev-container">
+                  <img id="sincity-btn" src="assets/images/filters/SinCity.jpg" class="img-responsive filter-prev">	
+                </div>	
+                <p class="filter-name">Sincity</p>							
+              </div>
+
+              <div (click)="filterSepia()" class="filter-group">
+                <div class="filter-prev-container">
+                  <img id="sepia-btn" src="assets/images/filters/Sepia.jpg" class="img-responsive filter-prev">
+                </div>
+                <p class="filter-name">Sepia</p>			
+              </div>
+
+              <div (click)="filterPinhole()" class="filter-group">
+                <div class="filter-prev-container">
+                  <img id="pinhole-btn" src="assets/images/filters/Pinhole.jpg" class="img-responsive filter-prev">	
+                </div>
+                <p  class="filter-name">Pinhole</p>	               
+              </div>
+
+              <div (click)="filterClarity()" class="filter-group">
+                <div class="filter-prev-container">
+                  <img id="clarity-btn" src="assets/images/filters/Clarity.jpg" class="img-responsive filter-prev">	
+                </div>
+                <p class="filter-name">Clarity</p>		
+              </div>
+
+              <div (click)="filterSunrise()" class="filter-group">
+                <div class="filter-prev-container">
+                  <img id="sunrise-btn" src="assets/images/filters/Sunrise.jpg" class="img-responsive filter-prev">
+                </div>
+                <p class="filter-name">Sunrise</p>									
+              </div>
+
+              <div (click)="filterGrungy()" class="filter-group">
+                <div class="filter-prev-container">
+                  <img id="grungy-btn" src="assets/images/filters/Grungy.jpg" class="img-responsive filter-prev">	
+                </div>
+                <p class="filter-name">Grungy</p>	
+              </div>
+
+              <div (click)="filterJarques()" class="filter-group">
+                <div class="filter-prev-container">
+                  <img id="jarques-btn" src="assets/images/filters/Jarques.jpg" class="img-responsive filter-prev">	
+                </div>	
+                <p class="filter-name">Jarques</p>		
+              </div>
+
+              <div (click)="filterOldBoot()" class="filter-group">
+                <div class="filter-prev-container">
+                  <img id="oldBoot-btn" src="assets/images/filters/OldBoot.jpg" class="img-responsive filter-prev">			
+                </div>								
+                <p class="filter-name">Old Boot</p>	
+              </div>
+
+              <div (click)="filterHemingway()" class="filter-group">
+                <div class="filter-prev-container">
+                  <img id="hemingway-btn" src="assets/images/filters/Hemingway.jpg" class="img-responsive filter-prev">
+                </div>	
+                <p class="filter-name">Heming</p>			
+              </div>
+
+              <div (click)="filterConcentrate()" class="filter-group">
+                <div class="filter-prev-container">
+                  <img id="concentrate-btn" src="assets/images/filters/Concentrate.jpg" class="img-responsive filter-prev">	
+                </div>
+                <p class="filter-name">Trate</p>			
+              </div>					
+
+              <div (click)="filterGlowingSun()" class="filter-group">
+                <div class="filter-prev-container">
+                  <img id="glowingSun-btn" src="assets/images/filters/GlowingSun.jpg" class="img-responsive filter-prev">
+                </div>												
+                <p class="filter-name">Glow</p>
+              </div>
+
+            </div>
+          </ng-container>
+
+          <!-- APPLY AND CANCEL -->
+          <ng-container *ngIf="cropMode || filterMode || rotateMode || mirrorMode || adjustMode">
+            <div class="ac-container">
+              <button  class="button is-solid accent-button" (click)="cropMode ? applyCrop() : rotateMode ? applyRotate() : mirrorMode ? applyMirror() : adjustMode ? applyAdjust() : applyFilter()">
+                <span>Apply</span>
+              </button>
+              <button class="button is-outline accent-button" (click)="cropMode ? cancelCrop() : rotateMode ? cancelRotate() : mirrorMode ? cancelMirror() : adjustMode ? cancelAdjust() : cancelFilter()">
+                <span>Cancel</span>
+              </button>
+            </div>
+          </ng-container>
+
+        </ng-container>
+      </div>
+
+
+      <div class="column is-9 just flex" >
+        
+        <ng-container *ngIf="cameraMode">
+          <video #videoPreviewEl autoplay="true" [muted]="true" class="local-video landscape canvas-height"></video>
+          <canvas #capturedImageEl style="display:none"></canvas>
+        </ng-container>
+
+        <ng-container *ngIf="!cameraMode">
+          <div class="preview-wrapper" [ngClass]="{'overlay': imageProcessing}" style="text-align:center;">
+            <canvas #canvasEl id="canvas" class="black-overlay canvas-height"></canvas>
+            <p class="image-filter-process-message" *ngIf="imageProcessing">
+              <i class="fa fa-spinner fa-pulse" style="font-size:23px"></i>
+            </p>
+          </div>
+        </ng-container>
+      </div>
+    </div>  
+  </div>
+
+  <!-- <div class="card-bottom bt-grey" *ngIf="imagePickerImageUrl || cameraMode">
+    
+    <div class="close-wrap responsive">
+      <button [disabled]="cameraMode" class="footer-outline-button mr-10" (click)="imagePickerImageUrl = null">
+        Select Another Image
+      </button>
+      <button [disabled]="(cropMode || filterMode || rotateMode || adjustMode || mirrorMode)" class="footer-solid-button mr-10" [disabled]="!(imagePickerImageUrl)" (click)="submitImage()">
+        <span><i class="fas fa-check fadeInUp"></i> Use This Picture</span>
+      </button>
+      <a class="footer-solid-button" (click)="downloadImage()">
+        <span><i class="fas fa-download fadeInUp"></i> Download Picture</span>
+      </a>
+    </div>
+  </div> -->
+
+</div>

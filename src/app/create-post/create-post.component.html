@@ -1,0 +1,222 @@
+<div class="view-wrapper" [ngClass]="{'darkmode': globals.darkmode}">
+  <div class="container is-custom">
+    <div id="pages-main" class="view-wrap is-headless">
+      <div class="logo-area">
+        <img *ngIf="!globals.darkmode"src="assets/images/global/pictor-logo.png" class="pictor-logo"/>
+        <img *ngIf="globals.darkmode" src="assets/images/global/pictor-logo-light.png" class="pictor-logo"/>
+      </div>
+      <div class="columns has-portrait-padding mt-5 justify-content">
+
+       
+
+        <div class="column is-9">
+          <div class="stats-wrapper" id="activity-feed">
+            <div id="compose-card" class="card is-new-content create-post card-shadow"> 
+
+              <div class="tabs-wrapper">
+                <div class="stats-header-container">
+                  <div class="stats-header create-post-space">
+                   
+                    <div id="basic-options" class="compose-options most-right">
+                      <div class="compose-option" (click)="openImagePicker('edit')" data-modal="upload-crop-cover-modal">
+                        <i class="fas fa-image"></i>
+                        <span>Edit an Image</span>
+                      </div>
+                      <div class="compose-option">
+                        <i class="fas fa-video"></i>
+                        <span>Select a Video</span>
+                        <input type="file" #videofile (change)="onVideoFileSelected(videofile.files, $event)" accept="video/mp4,video/3gpp,video/quicktime">
+                      </div>
+
+                      <div class="compose-option" [ngClass]="{'active':compressArea}" (click)="showCompressArea()">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                        <span>Compress Image</span>
+                      </div>
+
+                      <div class="compose-option" [ngClass]="{'active':convertArea}" (click)="showConvertArea()">
+                        <i class="fas fa-retweet"></i>
+                        <span>Convert Image</span>
+                      </div>
+                      
+                      <label class="switch">
+                        <input type="checkbox" [(ngModel)]="isChecked" (change)="globals.checkValue(isChecked?'dark':'normal')">
+                        <span class="slider round"></span>
+                        <p>
+                          <i *ngIf="globals.darkmode" class="fas fa-sun moon-icon"></i>
+                          <i *ngIf="!globals.darkmode"class="fas fa-moon sun-icon" ></i>
+                        </p> 
+                      </label>
+
+                    </div>
+                  </div>
+                </div>
+          
+                <div class="tab-content"> 
+                  <div class="compose edited">
+
+                    <!-- CANVAS -->
+                    <canvas #canvasEls style="display: none;" class="black-overlay canvas-height"></canvas>
+                    <!-- CANVAS -->
+
+                    <!-- Compress Div Start-->
+                    <div *ngIf="compressArea" class="compose-options second-menu">
+
+                      <div class="columns">
+                        <div class="column is-6 br-1">
+                          <div class="second-menu-left">
+                            <p class="second-menu-heading">Compress by size and resolution</p>
+                            <div class="secondmenu-options-container">
+                              <div class="secondmenu-option" (click)="compressFile(80)">
+                                <span>Compress 20%</span>
+                              </div>
+                              <div class="secondmenu-option" (click)="compressFile(70)">
+                                <span>Compress 30%</span>
+                              </div>
+                              <div class="secondmenu-option" (click)="compressFile(60)">
+                                <span>Compress 40%</span>
+                              </div>
+                              <div class="secondmenu-option" (click)="compressFile(50)">
+                                <span>Compress 50%</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="column is-6">
+                          <div class="second-menu-right">
+                            <p class="second-menu-heading">Compress only size maintain resolution</p>
+                            <div class="secondmenu-options-container">
+                              <input style="display: none" type="file" accept="image/jpeg" (change)="compressMaintainingResolution($event, 'image/jpeg')" #selectJPG>
+                              <div class="secondmenu-option" (click)="selectJPG.click()">
+                                <span>Select Image (.jpg)</span>
+                              </div>
+                              <!-- <input style="display: none" type="file" accept="image/png" (change)="compressMaintainingResolution($event, 'image/png')" #selectPNG>
+                              <div class="secondmenu-option" (click)="selectPNG.click()">
+                                <span>Select Image (.png)</span>
+                              </div> -->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    
+                    </div>
+                    
+                    <!-- Compress Div End-->
+
+
+
+
+
+
+
+                    <!-- Convert Div Start -->
+                    <div *ngIf="convertArea" class="compose-options second-menu">
+
+                      <div class="columns">
+                        <div class="column is-6 br-1">
+                          <div class="second-menu-left">
+                            <p class="second-menu-heading">Convert to .png</p>
+                            <input style="display: none" type="file" accept="image/jpeg" (change)="convertImage($event, 'image/png')" #convertPNG>
+                            <div class="secondmenu-options-container">
+                              <div class="secondmenu-option" (click)="convertPNG.click()">
+                                <span>Select Image (.jpg)</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="column is-6">
+                          <div class="second-menu-right">
+                            <p class="second-menu-heading">Convert to .jpg</p>
+                            <input style="display: none" type="file" accept="image/png" (change)="convertImage($event, 'image/jpeg')" #convertJPG>
+                            <div class="secondmenu-options-container">
+                              <div class="secondmenu-option" (click)="convertJPG.click()">
+                                <span>Select Image (.png)</span>
+                              </div>
+                              <div class="convert-checkbox-container">
+                                <label class="convert-checkbox">Change background color of transparent .png
+                                  <input type="checkbox" checked="checked" [(ngModel)]="showColorPicker">
+                                  <span class="checkmark"></span>
+                                </label>
+                               
+                                <input class="fadeIn" *ngIf="showColorPicker" type="color" [(ngModel)]="pngBGcolor" id="favcolor" name="favcolor" value="#ffffff">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <!-- Convert Div End -->
+
+                    
+
+
+
+
+
+                    <div class="compose-form">
+                      <div class="control">
+                        <p class="edited-text" *ngIf="!myPictureData.length">
+                          <span>Edited images or attached videos will be appeared here (Base64 Format)</span>
+                        </p>
+                        <!-- <img src="assets/images/avatars/bobby.jpg" class="profile-image-create-port" alt="">
+                        <textarea [(ngModel)]="newPostText" id="publish" class="textarea" rows="3" name="newPostText"  placeholder="Hey !  What's Happening ?"></textarea> -->
+                      </div>
+                    </div> 
+                    <!--Image Container Start-->
+                    <div class="cp-image-container">    
+                      <div class="single-post-img-container black-overlay" *ngFor="let img of myPictureData, index as i">
+                        <div class="loiku">
+                          <img  [src]="img" class="single-post-img" alt="">
+                          <i class="fas fa-play-circle video-icn" *ngIf="files[i].type == 'video/mp4' || files[i].type == 'video/3gpp'"></i>
+                          <i class="fas fa-times-circle single-clse" (click)="removeImage(i);"></i>
+                          <a *ngIf="!(files[i].type == 'video/mp4' || files[i].type == 'video/3gpp')" [href]="img" download="edited-by-pictor" title="Download" class="final-download-btn">Download</a>
+                        </div>
+                      </div>
+                    </div>
+                    <!--Image Container End-->  
+                  </div>
+                  <!-- <div id="basic-options" class="compose-options" style="    padding: 15px 18px;">
+                    <button id="publish-button" (click)="createPost('notDraft')" type="button" class="button is-solid accent-button full-width">
+                      Post
+                    </button>
+                  </div> -->
+                </div>
+
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Starts-->
+  <div id="upload-crop-cover-modal"  class="modal upload-crop-cover-modal is-xxl has-light-bg" [ngClass]="{'is-active':showImagePicker}">
+    <div class="modal-background" appOutside (click)="clickedOut($event)"></div>
+      <div class="modal-content">
+      <app-image-picker [(showImagePicker)]="showImagePicker" [(imagePickerImageUrl)]="imagePickerImageUrl" (imagePickerImageUrlChange)="fileUpload()" *ngIf="showImagePicker"></app-image-picker> 
+    </div>
+  </div>
+  <!-- Modal End-->
+  <p class="copyright-text">&copy; Copyright 2020 | Created with <span><i class="fas fa-heart"></i></span> by <a href="https://xato-web.web.app/" target="_blank">XatoWeb</a></p>
+</div>
+
+<div class="full-page-loader" *ngIf="fullPageLoading">
+  <img src="assets/images/global/spinners.svg" style="height:50px"/>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

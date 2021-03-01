@@ -49,6 +49,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { MatExpansionModule } from '@angular/material/expansion';
 
+import { GlobalsService } from './../providers/globals-service';
+import { VideoService } from './../providers/video-service';
+import { CreatePostComponent } from './create-post/create-post.component';
+import { ImagePickerComponent } from './image-picker/image-picker.component';
+import { AlertModule } from 'ngx-alerts';
+import { NgxImageCompressService } from 'ngx-image-compress'; // It should be added too
 
 const appRoutes: Routes = [
   { path: '', component: LandingComponent },
@@ -56,6 +62,7 @@ const appRoutes: Routes = [
   { path: 'collage/:mode', component: CollageMakeComponent },
   { path: 'template', component: CollageTemplateComponent },
   { path: 'template/preview', component: TemplatePreviewComponent },
+  { path: 'pictor/create-post', component: ImagePickerComponent },
   { path: 'home', pathMatch: 'full', redirectTo: '' },
   { path: 'login', loadChildren: './login/login.module#LoginModule' },
   { path: 'register', loadChildren: './register/register.module#RegisterModule' },
@@ -91,6 +98,8 @@ const appRoutes: Routes = [
     PreviewDialog,
     DialogLoginComponent,
     OrderSuccessComponent,
+    CreatePostComponent,
+    ImagePickerComponent
   ],
   imports: [
     BrowserModule,
@@ -113,6 +122,7 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     RouterModule.forRoot(appRoutes, { useHash: false }),
+    AlertModule.forRoot({maxMessages: 5, timeout: 2000, positionX: 'right'}),
     HttpClientModule,
     ServiceWorkerModule.register("ngsw-worker.js", {
       enabled: environment.production,
@@ -127,8 +137,12 @@ const appRoutes: Routes = [
     MatListModule,
     ImageEditorComponent,
     ImageCropperComponent,
+    CreatePostComponent,
   ],
   providers: [
+    GlobalsService,
+    VideoService,
+    NgxImageCompressService,
     TokenService,
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: {} },

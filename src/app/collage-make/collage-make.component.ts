@@ -101,6 +101,8 @@ export class CollageMakeComponent implements OnInit {
     const imageBase64 = box.getImageUrl()
     const board = box.getBoard()
     this.dialog.open(ImageCropperComponent, {
+      width: "100%",
+      height: "100%",
       data: {
         imageBase64: imageBase64,
         ratio: board.width / board.height
