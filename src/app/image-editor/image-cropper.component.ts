@@ -15,14 +15,12 @@ export interface ImageData {
   styleUrls: ["image-editor.component.scss"],
 })
 export class ImageCropperComponent implements OnInit {
-  selectionRect: fabric.Rect;
-  startPoint: fabric.Point;
-  croppedImage: any = '';
   showImagePicker = true;
   imagePicketTitle = '';
   imagePickerImageUrl = '';
   imagePickerType = '';
   imageUploading = false;
+  cropRatio = 1.0
 
   constructor(
     public dialogRef: MatDialogRef<ImageCropperComponent>,
@@ -30,28 +28,15 @@ export class ImageCropperComponent implements OnInit {
     private collage: Collage
   ) { 
     this.imagePickerImageUrl = this.data.imageBase64
+    this.cropRatio = this.data.ratio
   }
 
   ngOnInit() { }
 
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-  }
-
-  imageLoaded() {
-    // show cropper
-  }
-
-  cropperReady() {
-    console.log("cropperReady")
-  }
-
-  loadImageFailed() {
-    console.log("loadImageFailed")
-  }
-
-  onApply() {
-    this.collage.onImageCropped(this.croppedImage)
+  onApply(imageUrl) {
+    if (imageUrl) {
+      this.collage.onImageCropped(imageUrl)
+    }
     this.dialogRef.close()
   }
 

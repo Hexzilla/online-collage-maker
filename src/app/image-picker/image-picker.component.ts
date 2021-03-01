@@ -5,8 +5,12 @@ import { GlobalsService } from './../../providers/globals-service';
 import { VideoService } from './../../providers/video-service';
 
 
-declare var Caman: any;
+//declare var Caman: any;
 declare var Cropper: any;
+
+const Caman = function(eventName, callback = null, params = null) {
+
+}
 
 @Component({
   selector: 'app-image-picker',
@@ -16,6 +20,7 @@ declare var Cropper: any;
 
 export class ImagePickerComponent implements OnInit {
 
+  @Input() cropRatio: number;
   @Input() showImagePicker: boolean;
   @Output() showImagePickerChange = new EventEmitter<boolean>();
   @Input() imagePickerImageUrl: any;
@@ -24,6 +29,7 @@ export class ImagePickerComponent implements OnInit {
   @ViewChild('videoPreviewEl') videoPreviewEl : any;
   @ViewChild('capturedImageEl') capturedImageEl : any;
 
+  
 
 
   isCameraAvalilable = false;
@@ -166,12 +172,12 @@ export class ImagePickerComponent implements OnInit {
           });
         });
       };
-      Caman.Event.listen("processStart", (job) => {
+      /*Caman.Event.listen("processStart", (job) => {
         this.imageProcessing = true;
       });
       Caman.Event.listen("processComplete", (job) => {
         this.imageProcessing = false;
-      });
+      });*/
     });
   }
 
@@ -185,7 +191,7 @@ export class ImagePickerComponent implements OnInit {
   }
 
   enableCropMode(){
-    this.crp = new Cropper(this.canvas,{aspectRatio: 1});
+    this.crp = new Cropper(this.canvas,{aspectRatio: this.cropRatio});
     this.cropMode = true;
   }
 
@@ -590,6 +596,10 @@ export class ImagePickerComponent implements OnInit {
     this.imagePickerImageUrlChange.emit(this.imagePickerImageUrl);
     this.showImagePicker = false;
     this.showImagePickerChange.emit(this.showImagePicker);
+  }
+
+  close() {
+    this.imagePickerImageUrlChange.emit(null);
   }
 
   downloadImage(){

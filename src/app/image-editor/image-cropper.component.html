@@ -1,9 +1,5 @@
 <mat-dialog-content>
     <div class=" is-xxl has-light-bg" [ngClass]="{'is-active':showImagePicker}">
-        <app-image-picker [(showImagePicker)]="showImagePicker" [(imagePickerImageUrl)]="imagePickerImageUrl" (imagePickerImageUrlChange)="fileUpload()" *ngIf="showImagePicker"></app-image-picker> 
+        <app-image-picker [(cropRatio)]="cropRatio" [(showImagePicker)]="showImagePicker" [(imagePickerImageUrl)]="imagePickerImageUrl" (imagePickerImageUrlChange)="onApply($event)" *ngIf="showImagePicker"></app-image-picker> 
     </div>
 </mat-dialog-content>
-<div mat-dialog-actions align="end">
-    <button mat-raised-button (click)="onClose()">Close</button>
-    <button mat-raised-button color="accent" (click)="onApply()">Apply</button>
-</div>
