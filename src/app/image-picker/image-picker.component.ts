@@ -589,13 +589,26 @@ export class ImagePickerComponent implements OnInit {
 
   submitImage() {
     this.imagePickerImageUrl = this.canvas.toDataURL("image/jpeg");
-    this.imagePickerImageUrlChange.emit(this.imagePickerImageUrl);
+    this.imagePickerImageUrlChange.emit({
+      "action": "change",
+      "image": this.imagePickerImageUrl
+    });
     this.showImagePicker = false;
     this.showImagePickerChange.emit(this.showImagePicker);
   }
 
   close() {
-    this.imagePickerImageUrlChange.emit(null);
+    this.imagePickerImageUrlChange.emit({
+      "action": "close"
+    });
+  }
+
+  uploadImage(){
+    this.imagePickerImageUrl = this.canvas.toDataURL("image/jpeg");
+    this.imagePickerImageUrlChange.emit({
+      "action": "upload",
+      "image": this.imagePickerImageUrl
+    });
   }
 
   downloadImage(){

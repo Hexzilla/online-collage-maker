@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit, Input } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { fabric } from "fabric";
+import { ApiService } from "../api/api";
+import { ToastrService } from "ngx-toastr";
 import { Collage } from "../collage/collage";
+import { Setting } from "../collage/setting";
+import { b64toBlob } from "../collage/util";
 
 export interface ImageData {
   imageBase64: string;
@@ -15,6 +17,7 @@ export interface ImageData {
   styleUrls: ["image-editor.component.scss"],
 })
 export class ImageCropperComponent implements OnInit {
+  loading = false;
   showImagePicker = true;
   imagePicketTitle = '';
   imagePickerImageUrl = '';
@@ -25,7 +28,10 @@ export class ImageCropperComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ImageCropperComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ImageData,
-    private collage: Collage
+    private toastr: ToastrService,
+    private api: ApiService,
+    private collage: Collage,
+    public  setting: Setting
   ) { 
     this.imagePickerImageUrl = this.data.imageBase64
     this.cropRatio = this.data.ratio
@@ -33,11 +39,38 @@ export class ImageCropperComponent implements OnInit {
 
   ngOnInit() { }
 
-  onApply(imageUrl) {
-    if (imageUrl) {
-      this.collage.onImageCropped(imageUrl)
+  async onApply(data) {
+    if (data.action == "close") {
+      this.dialogRef.close()
+      return
     }
-    this.dialogRef.close()
+
+    if (data.action == "upload") {
+      await this.uploadImage(data.image)
+
+    }
+    else if (data.action == "change") {
+      data.image && this.collage.onImageCropped(data.image)
+      this.dialogRef.close()
+    }
+  }
+
+  async uploadImage(image) {
+    this.loading = true
+    const blob = b64toBlob(image, "image/jpeg")
+
+    let formData = new FormData();
+    formData.append("images", blob, "image_editor_upload.jpg")
+
+    let result = await this.api.uploadFiles(formData)
+    if (result) {
+      this.toastr.success("success")
+      await this.setting.updateUserImages(this.api)
+    } 
+    else {
+      this.toastr.error("failed")
+    }
+    this.loading = false
   }
 
   onClose() {
