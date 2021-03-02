@@ -378,12 +378,12 @@
       <button [disabled]="(cropMode || filterMode || rotateMode || adjustMode || mirrorMode)" class="footer-solid-button mr-10" [disabled]="!(imagePickerImageUrl)" (click)="submitImage()">
         <span><i class="fas fa-check fadeInUp"></i> Use This Picture</span>
       </button>
-      <button class="footer-solid-button ml-10" (click)="close()">
-        <span><i class="fas fa-check fadeInUp"></i> Close</span>
-      </button>
-      <!-- <a class="footer-solid-button" (click)="downloadImage()">
+      <a class="footer-solid-button mr-10" (click)="downloadImage()">
         <span><i class="fas fa-download fadeInUp"></i> Download Picture</span>
-      </a>-->
+      </a>
+      <a class="footer-solid-button mr-10" (click)="close()">
+        <span><i class="fas fa-check fadeInUp"></i> Close</span>
+      </a>
     </div>
   </div>
 

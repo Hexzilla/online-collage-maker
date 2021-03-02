@@ -5,12 +5,8 @@ import { GlobalsService } from './../../providers/globals-service';
 import { VideoService } from './../../providers/video-service';
 
 
-//declare var Caman: any;
+declare var Caman: any;
 declare var Cropper: any;
-
-const Caman = function(eventName, callback = null, params = null) {
-
-}
 
 @Component({
   selector: 'app-image-picker',
