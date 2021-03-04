@@ -1,8 +1,6 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { ApiService } from "../api/api";
-import { environment } from "../../environments/environment";
-import { loadImage } from "../collage/util";
+import { loadImage, toDataURL } from "../collage/util";
 
 export interface SelectDialogData {
   title: string;
@@ -20,21 +18,15 @@ export class SelectDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<SelectDialogComponent>,
-    private api: ApiService,
     @Inject(MAT_DIALOG_DATA) public data: SelectDialogData
   ) { }
 
   async ngOnInit() {
     const images = this.data.images
-    const count = Math.min(4, images.length)
-    const preloadImages = images.slice(0, count);
-    await Promise.all(
-      preloadImages.map(async (item) => {
-        return await loadImage(item.src);
-      })
-    );
-    
-    this.images = images
+    images.forEach(async (item) => {
+      item.src = await toDataURL("GET", item.src)
+      this.images.push(item)
+    })
   }
 
   onItemSelected(image) {

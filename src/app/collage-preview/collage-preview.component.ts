@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { MatDialog } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../auth.service";
 import { ApiService } from "../api/api";
@@ -18,9 +17,7 @@ export class CollagePreviewComponent implements OnInit {
   images: Array<string> = [];
 
   constructor(
-    private http: HttpClient,
     private toastr: ToastrService,
-    private dialog: MatDialog,
     private api: ApiService,
     private authSvc: AuthService,
     private router: Router

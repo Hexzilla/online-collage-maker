@@ -134,12 +134,12 @@ export class CollageMakeComponent implements OnInit {
     }
     else if (e.action == "select_template") {
       this.loading = true
-      this.openSelectTemplateDialog()
+      await this.openSelectTemplateDialog()
       this.loading = false
     }
     else if (e.action == "select_wall") {
       this.loading = true
-      this.openSelectWallDialog()
+      await this.openSelectWallDialog()
       this.loading = false
     }
   }
