@@ -1,20 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from "../auth.service";
-import { Collage } from '../collage/collage'
+import { ToastrService } from "ngx-toastr";
+import { AuthService } from "../../auth.service";
+import { Collage } from '../../collage/collage'
+import { Setting } from "../../collage/setting";
 
 @Component({
-  selector: "collage-template",
-  templateUrl: "collage-template.component.html",
-  styleUrls: ["collage-template.component.scss"],
+  selector: "template-maker",
+  templateUrl: "template-maker.component.html",
+  styleUrls: ["template-maker.component.scss"],
 })
-export class CollageTemplateComponent implements OnInit {
+export class TemplateMakerComponent implements OnInit {
   public loading: boolean = false;
 
   constructor(
+    private toastr: ToastrService,
     private authSvc: AuthService,
     private router: Router,
-    private collage: Collage
+    private collage: Collage,
+    private setting: Setting
   ) {}
 
   async ngOnInit() {
@@ -47,12 +51,36 @@ export class CollageTemplateComponent implements OnInit {
     }
   }
 
+  async onControlActionEvent(e) {
+    if (e.action == "create_template") {
+      await this.collage.createTemplate();
+    }
+  }
+
+  async saveTemplate() {
+    if (this.setting.savedTemplate) {
+      const saved = await this.collage.saveTemplate(this.setting.savedTemplate._id);
+      if (saved) {
+        this.toastr.success("Success");
+        return
+      }
+    }
+    else {
+      this.setting.savedTemplate = await this.collage.saveTemplate(0);
+      if (this.setting.savedTemplate) {
+        this.toastr.success("Success");  
+        return
+      }
+    }
+
+    this.toastr.success("Failed to save template");  
+  }
+
   showTemplates() {
-    this.router.navigate(["/template/preview"]);
+    this.router.navigate(["/admin/templates"]);
   }
 
   handleDrop(e) {
-    console.log(e, e.offsetX, e.offsetY)
     this.collage.onHandleDrop(e.offsetX, e.offsetY)
     return false;
   }

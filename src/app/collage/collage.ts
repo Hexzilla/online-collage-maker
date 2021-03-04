@@ -144,6 +144,8 @@ export class Collage {
     }
 
     try {
+      this.setting.savedTemplate = null
+      
       const ccw = this.getCanvasContainerWidth()
       this.layout = new CanvasLayout(this.setting, ccw)
 
@@ -168,6 +170,52 @@ export class Collage {
           cell.cellColIndex = j
           cell.cellMargin = margin
           cell.onCellScaling = (cell) => this.onCellScaling(cell)        
+        }
+      }
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+
+  createWallFrames() {
+    if (this.loading) {
+      return
+    }
+
+    try {
+      this.setting.savedWallFrames = null
+      
+      const ccw = this.getCanvasContainerWidth()
+      this.layout = new CanvasLayout(this.setting, ccw)
+
+      this.images = []
+      this.savedCollage = null
+      this.removeCanvasElement()
+
+      const canvasWidth = this.layout.calculateWidth();
+      const canvasHeight = canvasWidth * this.setting.heightInch / this.setting.widthInch;
+      this.createCanvasElement(canvasWidth, canvasHeight)
+      this.createFabricCanvas(canvasWidth, canvasHeight)
+
+      const margin = this.setting.margin
+      const width = 0.4 * (this.canvas.width - margin) / this.setting.cells
+      const height = 0.4 * (this.canvas.height - margin) / this.setting.cells
+      const marginLeft = (this.canvas.width - width * this.setting.cells) / 2
+      const marginTop = (this.canvas.height - height * this.setting.cells) / 8
+      for (let i = 0; i < this.setting.cells; i++) {
+        for (let j = 0; j < this.setting.cells; j++) {
+          const left = marginLeft + margin + i * width
+          const top = marginTop + margin + j * height
+          const cellWidth = width - margin
+          const cellHeight = height - margin
+          const showWidth = parseFloat((this.setting.widthInch * cellWidth / this.canvas.width).toFixed(2))
+          const showHeight = parseFloat((this.setting.heightInch * cellHeight / this.canvas.height).toFixed(2))
+          const cell = this.addCellWithPos(left, top, cellWidth, cellHeight, showWidth, showHeight)
+          cell.cellRowIndex = i
+          cell.cellColIndex = j
+          cell.cellMargin = margin
+          cell.onCellScaling = (cell) => this.onCellScaling(cell)
         }
       }
     }
@@ -258,12 +306,21 @@ export class Collage {
     this.addCellWithPos(this.menuPoint.x, this.menuPoint.y, 320, 320)
   }
 
-  addCellWithPos(left, top, width, height) {
+  addWallFrame() {
+    const cellWidth = 120
+    const cellHeight = 120
+    const showWidth = parseFloat((this.setting.widthInch * cellWidth / this.canvas.width).toFixed(2))
+    const showHeight = parseFloat((this.setting.heightInch * cellHeight / this.canvas.height).toFixed(2))
+    this.addCellWithPos(this.menuPoint.x, this.menuPoint.y, cellWidth, cellHeight, showWidth, showHeight)
+  }
+
+  addCellWithPos(left, top, width, height, showWidth = 0, showHeight = 0) {
     this.cellIndex++
     const tag = "cell_" + this.cellIndex
     const cell = new ImageBox(this.canvas)
       .setTag(tag)
       .setBorder(this.setting.borderWidth, this.setting.borderColor)
+      .setShowSize(showWidth, showHeight)
       .addCellBoard(left, top, width, height)
     this.images[tag] = cell
     return cell
@@ -502,6 +559,37 @@ export class Collage {
     return template
   }
 
+  async saveWallFrames(id) {
+    this.setLoadingState(true)
+
+    const twidth = 320
+    const theight = twidth * (this.canvas.height / this.canvas.width)
+
+    const virtualCanvas = await this.createVirtualCanvas(twidth, theight)
+    const dataUrl = virtualCanvas.toDataURL({
+      format: 'jpeg',
+      quality: 1.0
+    });
+
+    const setting = Object.assign({
+      canvasWidth: this.canvas.width,
+      canvasHeight: this.canvas.height
+    }, this.layout.getSetting())
+
+    const data = {setting: setting, images: this.getTemplateInfo(), image: dataUrl};
+    if (id) {
+      data['id'] = id
+    }
+    console.log("Save Wall Frames:", data);
+
+    const wallFrames = await this.api.saveWallFrames(data)
+    console.log('template', wallFrames)
+    
+    this.removeVirtualCanvas(virtualCanvas)
+    this.setLoadingState(false)
+    return wallFrames
+  }
+
   async printCollageImage(userId, way) {
     const slug = await this.saveImage(userId);
     if (slug) {
@@ -574,6 +662,51 @@ export class Collage {
           cell.boardRect.set({ left : br.left + br.width * br.scaleX + margin})
         }
       }
+    }
+  }
+
+  //////////////////////////////////////////////////////
+  //Create Collage by Wall ID
+  //////////////////////////////////////////////////////
+  async createCollageByWallId(templateId) {
+    try {
+      this.setLoadingState(true);
+
+      const wall = await this.api.getWallById(templateId)
+      console.log('WallFrame', wall)
+      if (!wall) {
+        return
+      }
+
+      const setting = wall.setting
+      const ccw = this.getCanvasContainerWidth()
+      this.layout = new CanvasLayout(setting, ccw)
+
+      this.savedCollage = null
+      this.removeCanvasElement()
+
+      const canvasWidth = this.layout.calculateWidth()
+      const canvasHeight = setting.canvasHeight * canvasWidth / setting.canvasWidth
+      const scale = canvasWidth / setting.canvasWidth
+      this.createCanvasElement(canvasWidth, canvasHeight)
+      this.createFabricCanvas(canvasWidth, canvasHeight)
+
+      // Add images to canvas.
+      this.images = []
+      wall.images.forEach(it => {
+        const tag = `img_${it.index}`
+        this.images[tag] = new ImageBox(this.canvas)
+          .setScale(1.0)
+          .setTag(tag)
+          .setBorder(setting.borderWidth, setting.borderColor)
+          .addLockedBoard(it.left * scale, it.top * scale, it.width * scale, it.height * scale)
+      })
+    }
+    catch (err) {
+      console.log(err)
+    }
+    finally {
+      this.setLoadingState(false);
     }
   }
 }

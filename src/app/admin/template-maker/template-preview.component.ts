@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from "ngx-toastr";
-import { AuthService } from "../auth.service";
-import { ApiService } from "../api/api";
-import { environment } from "./../../environments/environment";
-import { toDataURL } from "../collage/util";
+import { AuthService } from "../../auth.service";
+import { ApiService } from "../../api/api";
+import { environment } from "../../../environments/environment";
+import { toDataURL } from "../../collage/util";
 
 @Component({
   selector: "template-preview",
@@ -63,7 +63,7 @@ export class TemplatePreviewComponent implements OnInit {
   }
 
   createTemplate() {
-    this.router.navigate(["/template"]);
+    this.router.navigate(["/admin/template"]);
   }
 
   editTemplate(image){

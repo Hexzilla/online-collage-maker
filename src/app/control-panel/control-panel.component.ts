@@ -1,9 +1,6 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
-import { ToastrService } from "ngx-toastr";
-import { Collage } from "../collage/collage";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { Setting } from "../collage/setting";
-import { SelectTemplateComponent } from "./select-template.component";
+
 
 @Component({
   selector: "control-panel",
@@ -13,18 +10,18 @@ import { SelectTemplateComponent } from "./select-template.component";
 export class ControlPanelComponent implements OnInit {
   public collageWidth = [8, 10, 12, 16, 20, 24, 30, 36, 40, 48, 54, 60];
   public collageHeight = [8, 10, 12, 16, 20, 24, 30, 36, 40, 48, 54, 60];
+  
+  @Input() showMarginSettings: boolean = false
+  @Input() showTemplateButtons: boolean = false
+  @Input() showCollageButtons: boolean = false
+  @Input() showWallButtons: boolean = false
+  @Output() actionEvent = new EventEmitter<any>();
 
   constructor(
-    private dialog: MatDialog,
-    private toastr: ToastrService,
     public setting: Setting,
-    private collage: Collage
   ) {}
 
   ngOnInit() {
-    // Remove mouse click on page
-    document.addEventListener("contextmenu", (event) => event.preventDefault());
-    console.log('~~~', this.setting)
   }
 
   onWidthChanged(e) {
@@ -40,39 +37,32 @@ export class ControlPanelComponent implements OnInit {
   }
 
   async createCollage() {
-    this.savedTemplate = null
-    await this.collage.createAutoCollage();
+    this.actionEvent.emit({
+      "action": "create_auto_collage"
+    })
   }
-
+  
   async selectTemplate() {
-    console.log('selectTemplate')
-    this.dialog.open(SelectTemplateComponent, {
-      data: {},
-    });
+    this.actionEvent.emit({
+      "action": "select_template"
+    })
   }
 
-  savedTemplate: any = null
-  async saveTemplate() {
-    if (this.savedTemplate) {
-      const saved = await this.collage.saveTemplate(this.savedTemplate._id);
-      if (saved) {
-        this.toastr.success("Success");
-        return
-      }
-    }
-    else {
-      this.savedTemplate = await this.collage.saveTemplate(0);
-      if (this.savedTemplate) {
-        this.toastr.success("Success");  
-        return
-      }
-    }
-
-    this.toastr.success("Failed to save template");  
+  async selectWallFrame() {
+    this.actionEvent.emit({
+      "action": "select_wall"
+    })
   }
-
-  /*async printCollage(way) {
-    const userId = this.authSvc.getUserId()
-    await this.collage.printCollageImage(userId, way)
-  }*/
+  
+  createWallFrames() {
+    this.actionEvent.emit({
+      "action": "create_wall_frames"
+    })
+  }
+  
+  createTemplate() {
+    this.actionEvent.emit({
+      "action": "create_template"
+    })
+  }
 }

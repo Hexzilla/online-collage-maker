@@ -15,7 +15,7 @@
     </div>
       <div class="row">
         <div class="col-md-2">
-          <control-template></control-template>
+          <control-panel [showTemplateButtons]="true" [showMarginSettings]="true" (actionEvent)="onControlActionEvent($event)"></control-panel>
         </div>
         <div class="col-md-10">
             <div class="grey-box">
@@ -24,14 +24,8 @@
                   <div class="col-md-2 col-sm-6 btn-collage-menu">
                     <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="showTemplates()">Templates</button>
                   </div>
-                  <div ngbDropdown class="col-md-2 col-sm-6 btn-collage-menu">
-                    <button mat-raised-button class="btn btn-sm btn-block btn-primary" id="dropdownBasic1" ngbDropdownToggle>Print Collage</button>
-                    <div ngbDropdownMenu aria-labelledby="drop_down_menu">
-                      <button ngbDropdownItem (click)="printCollage(0)">Canvas Print - Single Frame</button>
-                      <button ngbDropdownItem (click)="printCollage(1)">Poster Print - With Sticker</button>
-                      <button ngbDropdownItem (click)="printCollage(2)">Poster Print - Without Sticker</button>
-                      <a id="print-button" hidden href="#" target="_blank"></a>
-                    </div>
+                  <div class="col-md-2 col-sm-6 btn-collage-menu">
+                    <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="saveTemplate()">Save Template</button>
                   </div>
               </div>
               <div class="card-body">

@@ -111,7 +111,7 @@ export class CanvasLayout {
         }, 0);
 
         if (calcWidth >= canvasWidth) {
-          console.log('*Width', calcWidth, canvasWidth)
+          //console.log('*Width', calcWidth, canvasWidth)
           break
         }
         delta = 0.001

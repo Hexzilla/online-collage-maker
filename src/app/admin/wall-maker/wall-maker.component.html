@@ -1,0 +1,54 @@
+<div id="dpi" style="height: 1in; width: 1in; left: 100%; position: fixed; top: 100%;"></div>
+<div class="collage-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div id="menu-image-edit" class="menu">
+        <ul class="menu-options">
+          <li id="delete_frame" class="menu-option">Delete Frame</li>
+        </ul>
+      </div>
+      <div id="menu-template" class="menu">
+        <ul class="menu-options">
+          <li id="add_frame" class="menu-option">Add Frame</li>
+          <li id="add_background" class="menu-option">Background Image</li>
+        </ul>
+      </div>
+    </div>
+      <div class="row">
+        <div class="col-md-2">
+          <control-panel [showWallButtons]="true" [showMarginSettings]="true" (actionEvent)="onControlActionEvent($event)"></control-panel>
+        </div>
+        <div class="col-md-10">
+            <div class="grey-box">
+              <div class="row">
+                <div ngbDropdown class="col-12">
+                  <div class="col-md-2 col-sm-6 btn-collage-menu">
+                    <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="showTemplates()">Show Frames</button>
+                  </div>
+                  <div class="col-md-2 col-sm-6 btn-collage-menu">
+                    <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="saveWallFrames()">Save Frames</button>
+                  </div>
+              </div>
+              <div class="card-body">
+                <div 
+                  id="canvas-container"
+                  (dragover)="false"
+                  (dragend)="false"
+                  (drop)="handleDrop($event)">
+                  <!-- <canvas id="main-canvas" style="width:36in; height: 36in;"></canvas> -->
+                </div>
+                <div id="virtual-canvas-container">
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="loading">
+        <div class="col-md-12 spinner-container">
+          <mat-spinner class="vertical-center" [diameter]="60"></mat-spinner>
+        </div>
+      </div>
+  </div>
+</div>
+
+

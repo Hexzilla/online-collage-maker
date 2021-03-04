@@ -8,11 +8,12 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { LandingComponent } from './landing/landing.component';
 import { CollagePreviewComponent } from "./collage-preview/collage-preview.component";
 import { CollageMakeComponent } from "./collage-make/collage-make.component";
-import { CollageTemplateComponent } from "./collage-template/collage-template.component";
-import { TemplatePreviewComponent } from "./collage-template/template-preview.component";
+//import { CollageWallComponent } from "./collage-wall/collage-wall.component";
+import { TemplateMakerComponent } from "./admin/template-maker/template-maker.component";
+import { TemplatePreviewComponent } from "./admin/template-maker/template-preview.component";
+import { WallMakerComponent } from "./admin/wall-maker/wall-maker.component";
 import { ControlPanelComponent } from "./control-panel/control-panel.component";
-import { ControlTemplateComponent } from "./control-panel/control-template.component";
-import { SelectTemplateComponent } from "./control-panel/select-template.component";
+import { SelectDialogComponent } from "./select-dialog/select-dialog.component";
 import { ImageEditorComponent } from "./image-editor/image-editor.component";
 import { ImageCropperComponent } from "./image-editor/image-cropper.component";
 import { ImageUploadComponent } from "./image-upload/image-upload.component";
@@ -60,8 +61,9 @@ const appRoutes: Routes = [
   { path: '', component: LandingComponent },
   { path: 'preview', component: CollagePreviewComponent },
   { path: 'collage/:mode', component: CollageMakeComponent },
-  { path: 'template', component: CollageTemplateComponent },
-  { path: 'template/preview', component: TemplatePreviewComponent },
+  { path: 'admin/template', component: TemplateMakerComponent },
+  { path: 'admin/templates', component: TemplatePreviewComponent },
+  { path: 'admin/wall', component: WallMakerComponent },
   { path: 'pictor/create-post', component: ImagePickerComponent },
   { path: 'home', pathMatch: 'full', redirectTo: '' },
   { path: 'login', loadChildren: './login/login.module#LoginModule' },
@@ -82,13 +84,14 @@ const appRoutes: Routes = [
     LandingComponent,
     CollagePreviewComponent,
     CollageMakeComponent,
-    CollageTemplateComponent,
+    //CollageWallComponent,
+    TemplateMakerComponent,
     TemplatePreviewComponent,
+    WallMakerComponent,
     CartComponent,
     CrudComponent,
     ControlPanelComponent,
-    ControlTemplateComponent,
-    SelectTemplateComponent,
+    SelectDialogComponent,
     ImageEditorComponent,
     ImageCropperComponent,
     ImageUploadComponent,

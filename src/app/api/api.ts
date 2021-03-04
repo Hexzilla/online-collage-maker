@@ -181,6 +181,45 @@ export class ApiService {
         return null;
     }
 
+    async getWallById(templateId) {
+        try {
+            const url = environment.apiUrl + "/collage/wallframes/wallframe/" + templateId;
+            const response = await this.http.get(url).toPromise();
+            if (response['success'] == true) {
+                return response['data']
+            }
+        } catch (e) {
+            console.log(e);
+        }
+        return null;
+    }
+
+    async getWallList() {
+        try {
+            const url = environment.apiUrl + "/collage/wallframes/list";
+            const response = await this.http.post(url, {}).toPromise();
+            if (response['success'] == true) {
+                return response['data']
+            }
+        } catch (e) {
+            console.log(e);
+        }
+        return null;
+    }
+
+    async saveWallFrames(data) {
+        try {
+            const url = environment.apiUrl + "/collage/wallframes/save";
+            const response = await this.http.post(url, data).toPromise();
+            if (response['success'] == true) {
+                return response['data']
+            }
+        } catch (e) {
+            console.log(e);
+        }
+        return null;
+    }
+
     async deleteTemplate(templateId) {
         try {
             const url = environment.apiUrl + "/collage/templates/delete/" + templateId;

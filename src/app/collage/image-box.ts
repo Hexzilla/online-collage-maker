@@ -30,6 +30,9 @@ class ImageBox {
   strokeColor: string = 'rgb(136, 0, 26)'
   strokeWidth: number = 0
   onImageLoadCompleted: Function
+
+  showWidth: number = 0
+  showHeight: number = 0
   
   cellMargin: number = 0
   cellColIndex: number = 0
@@ -136,7 +139,7 @@ class ImageBox {
       width: width,
       height: height,
       opacity: 1.0,
-      fill: 'rgba(100,100,100, 1.0)',
+      fill: 'rgba(100,100,100, 0.0)',
       absolutePositioned: true,
       lockScalingFlip: true,
       selectable: true,
@@ -144,9 +147,9 @@ class ImageBox {
       cornerColor: 'white',
       cornerStrokeColor: 'black',
       borderColor: 'black',
-      cornerSize: 12,
+      cornerSize: 8,
       stroke: this.strokeColor,
-      strokeWidth: this.strokeWidth,
+      strokeWidth: Math.max(1, this.strokeWidth),
       padding: 0,
       cornerStyle: 'circle',
       borderDashArray: [5, 5],
@@ -157,29 +160,18 @@ class ImageBox {
     this.boardRectPos = new fabric.Point(this.boardRect.left, this.boardRect.top)
     this.canvas.add(this.boardRect)
 
-    /*this.cellSizeText = new fabric.Text('20" x 20"', { 
-      left: this.boardRect.left, //Take the block's position
-      top: this.boardRect.top, 
-      fontSize: 16,
-      fill: 'rgb(60,60,60)'
-    })
-    this.canvas.add(this.cellSizeText)
-
-    var g = new fabric.Group([this.boardRect, this.cellSizeText],{
-      absolutePositioned: true,
-      lockScalingFlip: true,
-      selectable: true,
-      transparentCorners: false,
-      cornerColor: 'white',
-      cornerStrokeColor: 'black',
-      borderColor: 'black',
-      cornerSize: 12,
-      padding: 0,
-      cornerStyle: 'circle',
-      borderDashArray: [5, 5],
-      borderScaleFactor: 1.3
-    });
-    this.canvas.add(g)*/
+    if (this.showWidth && this.showHeight) {
+      this.cellSizeText = new fabric.Text(`${this.showWidth}" x ${this.showHeight}"`, { 
+        left: this.boardRect.left + this.strokeWidth + 3, //Take the block's position
+        top: this.boardRect.top + this.strokeWidth + 3, 
+        fontSize: 15,
+        fill: 'rgb(20,20,20)',
+        lockScalingX: true,
+        lockScalingY: true,
+        lockUniScaling: true,
+      })
+      this.canvas.add(this.cellSizeText)
+    }
 
     return this
   }
@@ -193,6 +185,12 @@ class ImageBox {
   setBorder(borderWidth, borderColor) {
     this.strokeWidth = borderWidth
     this.strokeColor = borderColor
+    return this
+  }
+
+  setShowSize(showWidth, showHeight) {
+    this.showWidth = showWidth
+    this.showHeight = showHeight
     return this
   }
 
@@ -219,8 +217,6 @@ class ImageBox {
   }
 
   private onImageLoaded(img) {
-    console.log("onImageLoaded");
-
     if (this.image) {
       this.removeImage()
     }
@@ -252,11 +248,14 @@ class ImageBox {
   }
 
   removeImage() {
-    this.canvas.remove(this.image)
+    this.image && this.canvas.remove(this.image)
+    this.image = null
   }
 
   removeBoard() {
-    this.canvas.remove(this.boardRect)
+    this.boardRect && this.canvas.remove(this.boardRect)
+    this.cellSizeText && this.canvas.remove(this.cellSizeText)
+    this.boardRect = this.cellSizeText = null
   }
 
   restoreImage() {
@@ -297,6 +296,19 @@ class ImageBox {
     this.image.setControlsVisibility({
       mtr: false,
     })
+  }
+
+  private updateSizeText() {
+    if (this.cellSizeText) {
+      const board = this.boardRect
+      const width = (board.scaleX * this.showWidth).toFixed(2)
+      const height = (board.scaleY * this.showHeight).toFixed(2)
+      this.cellSizeText.set({
+        left: this.boardRect.left,
+        top: this.boardRect.top,
+        text: `${width}" x ${height}"`,
+      })
+    }
   }
 
   private addImageClipPath() {
@@ -347,6 +359,7 @@ class ImageBox {
 
       this.boardRectPos = new fabric.Point(e.target.left, e.target.top)
       this.addImageClipPath()
+      this.updateSizeText()
     }
   }
 
@@ -373,11 +386,10 @@ class ImageBox {
     if (e.target.type == this.tag) {
       this.boardRect.strokeWidth = this.strokeWidth / e.target.scaleX;
       this.boardRectPos = new fabric.Point(e.target.left, e.target.top)
-      
       this.updateImage()
+      this.updateSizeText()
       this.addImageClipPath()
 
-      //this.onCellScaling && this.onCellScaling(this)
       this.canvas.renderAll()
     }
   }
