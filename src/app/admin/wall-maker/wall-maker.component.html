@@ -23,7 +23,7 @@
               <div class="row">
                 <div ngbDropdown class="col-12">
                   <div class="col-md-2 col-sm-6 btn-collage-menu">
-                    <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="showTemplates()">Show Frames</button>
+                    <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="showWallFrames()">Show Frames</button>
                   </div>
                   <div class="col-md-2 col-sm-6 btn-collage-menu">
                     <button mat-raised-button class="btn btn-sm btn-block btn-primary" (click)="saveWallFrames()">Save Frames</button>
@@ -45,7 +45,7 @@
       </div>
       <div class="row" *ngIf="loading">
         <div class="col-md-12 spinner-container">
-          <mat-spinner class="vertical-center" [diameter]="60"></mat-spinner>
+          <mat-spinner class="vertical-center" [diameter]="50"></mat-spinner>
         </div>
       </div>
   </div>

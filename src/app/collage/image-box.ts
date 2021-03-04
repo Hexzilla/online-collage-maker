@@ -27,17 +27,13 @@ class ImageBox {
   boardRectPos: fabric.Point
   lockBoardRect: Boolean
   tag: string
+  grid: number = 0
   strokeColor: string = 'rgb(136, 0, 26)'
   strokeWidth: number = 0
   onImageLoadCompleted: Function
 
   showWidth: number = 0
   showHeight: number = 0
-  
-  cellMargin: number = 0
-  cellColIndex: number = 0
-  cellRowIndex: number = 0  
-  onCellScaling: Function
 
   constructor(canvas) {
     this.canvas = canvas
@@ -46,6 +42,7 @@ class ImageBox {
     this.canvas.on('object:moving', (e) => this.onObjectMoving(e))
     this.canvas.on('object:moved', (e) => this.onObjectMoved(e))
     this.canvas.on('object:scaling', (e) => this.onObjectScaling(e))
+    this.canvas.on('object:scaled', (e) => this.onObjectScaled(e))
   }
 
   setTag(tag) {
@@ -68,7 +65,7 @@ class ImageBox {
       top: top,
       width: width,
       height: height,
-      fill: 'rgba(100,100,100,1)',
+      fill: 'rgba(160,160,160,1)',
       absolutePositioned: true,
       selectable: false,
       stroke: this.strokeColor,
@@ -198,6 +195,11 @@ class ImageBox {
     this.zoom = 1.0
     this.brightness = 0.01
     this.loadImage(this.url)
+  }
+
+  setGrid(grid) {
+    this.grid = grid
+    return this;
   }
 
   getImageUrl() {
@@ -350,6 +352,13 @@ class ImageBox {
 
   onObjectMoving(e) {
     if (e.target.type == this.tag) {
+      if (this.grid) {
+        e.target.set({
+          left: Math.round(e.target.left / this.grid) * this.grid,
+          top: Math.round(e.target.top / this.grid) * this.grid
+        });
+      }
+
       const dx = e.target.left - this.boardRectPos.x
       const dy = e.target.top - this.boardRectPos.y
       if (this.image) {
@@ -391,6 +400,21 @@ class ImageBox {
       this.addImageClipPath()
 
       this.canvas.renderAll()
+    }
+  }
+
+  onObjectScaled(e) {
+    if (e.target.type == this.tag) {
+      if (this.grid) {
+        let width = e.target.scaleX * e.target.width
+        let height = e.target.scaleY * e.target.height
+        let newWidth = (Math.round(width / this.grid)) * this.grid;
+        let newHeight = (Math.round(height / this.grid)) * this.grid;
+        e.target.set({ 
+          scaleX: e.target.scaleX * newWidth / width,
+          scaleY: e.target.scaleY * newHeight / height
+        });
+      }
     }
   }
 }

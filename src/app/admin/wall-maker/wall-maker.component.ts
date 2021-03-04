@@ -93,8 +93,8 @@ export class WallMakerComponent implements OnInit {
     this.toastr.success("Failed to save template");  
   }
 
-  showTemplates() {
-    this.router.navigate(["/walls"]);
+  showWallFrames() {
+    this.router.navigate(["/admin/walls"]);
   }
 
   handleDrop(e) {

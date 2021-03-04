@@ -181,6 +181,19 @@ export class ApiService {
         return null;
     }
 
+    async deleteTemplate(templateId) {
+        try {
+            const url = environment.apiUrl + "/collage/templates/delete/" + templateId;
+            const response = await this.http.delete(url).toPromise();
+            if (response['success'] == true) {
+                return true;
+            }
+        } catch (e) {
+            console.log(e);
+        }
+        return false;
+    }
+
     async getWallById(templateId) {
         try {
             const url = environment.apiUrl + "/collage/wallframes/wallframe/" + templateId;
@@ -220,9 +233,9 @@ export class ApiService {
         return null;
     }
 
-    async deleteTemplate(templateId) {
+    async deleteWallFrame(templateId) {
         try {
-            const url = environment.apiUrl + "/collage/templates/delete/" + templateId;
+            const url = environment.apiUrl + "/collage/wallframes/delete/" + templateId;
             const response = await this.http.delete(url).toPromise();
             if (response['success'] == true) {
                 return true;

@@ -114,21 +114,6 @@ export class Collage {
           .loadImage(data.img.src)
           .addMovableBoard(data.left, data.top, data.width, data.height)
       })
-
-      /*let data = layoutItems[0]
-      new ImageBox(this.canvas)
-        .setTag("tag")
-        .setBorder(0, setting.borderColor)
-        .setImageUrl(data.img.src)
-        .loadImage(data.img.src)
-        .addMovableBoard(data.left, data.top, data.width, data.height)
-
-        new ImageBox(this.canvas)
-        .setTag("tag")
-        .setBorder(10, setting.borderColor)
-        .setImageUrl(data.img.src)
-        .loadImage(data.img.src)
-        .addMovableBoard(data.left, 400, data.width, data.height)*/
     }
     catch (err) {
       console.log(err)
@@ -157,19 +142,21 @@ export class Collage {
       const canvasHeight = canvasWidth * this.setting.heightInch / this.setting.widthInch;
       this.createCanvasElement(canvasWidth, canvasHeight)
       this.createFabricCanvas(canvasWidth, canvasHeight)
+      this.drawGridLines()
 
-      const margin = this.setting.margin
-      const width = (this.canvas.width - margin) / this.setting.cells
-      const height = (this.canvas.height - margin) / this.setting.cells
+      const grid = this.setting.grid
+      const margin = Math.ceil(this.setting.margin / grid) * grid
+      const width = Math.floor((this.canvas.width - margin) / this.setting.cells / grid) * grid
+      const height = Math.floor((this.canvas.height - margin) / this.setting.cells / grid) * grid
       for (let i = 0; i < this.setting.cells; i++) {
         for (let j = 0; j < this.setting.cells; j++) {
           const left = margin + i * width
           const top = margin + j * height
-          const cell = this.addCellWithPos(left, top, width - margin, height - margin)
-          cell.cellRowIndex = i
-          cell.cellColIndex = j
-          cell.cellMargin = margin
-          cell.onCellScaling = (cell) => this.onCellScaling(cell)        
+          const cellWidth = width - margin
+          const cellHeight = height - margin
+          const showWidth = parseFloat((this.setting.widthInch * cellWidth / this.canvas.width).toFixed(2))
+          const showHeight = parseFloat((this.setting.heightInch * cellHeight / this.canvas.height).toFixed(2))
+          const cell = this.addCellWithPos(left, top, cellWidth, cellHeight, showWidth, showHeight)  
         }
       }
     }
@@ -197,12 +184,14 @@ export class Collage {
       const canvasHeight = canvasWidth * this.setting.heightInch / this.setting.widthInch;
       this.createCanvasElement(canvasWidth, canvasHeight)
       this.createFabricCanvas(canvasWidth, canvasHeight)
+      this.drawGridLines()
 
-      const margin = this.setting.margin
-      const width = 0.4 * (this.canvas.width - margin) / this.setting.cells
-      const height = 0.4 * (this.canvas.height - margin) / this.setting.cells
-      const marginLeft = (this.canvas.width - width * this.setting.cells) / 2
-      const marginTop = (this.canvas.height - height * this.setting.cells) / 8
+      const grid = this.setting.grid
+      const margin = Math.ceil(this.setting.margin / grid) * grid
+      const width = Math.floor(0.4 * (this.canvas.width - margin) / this.setting.cells / grid) * grid
+      const height = Math.floor(0.4 * (this.canvas.height - margin) / this.setting.cells / grid) * grid
+      const marginLeft = Math.floor((this.canvas.width - width * this.setting.cells) / 2 / grid) * margin
+      const marginTop = Math.floor((this.canvas.height - height * this.setting.cells) / 8 / grid) * margin
       for (let i = 0; i < this.setting.cells; i++) {
         for (let j = 0; j < this.setting.cells; j++) {
           const left = marginLeft + margin + i * width
@@ -212,10 +201,6 @@ export class Collage {
           const showWidth = parseFloat((this.setting.widthInch * cellWidth / this.canvas.width).toFixed(2))
           const showHeight = parseFloat((this.setting.heightInch * cellHeight / this.canvas.height).toFixed(2))
           const cell = this.addCellWithPos(left, top, cellWidth, cellHeight, showWidth, showHeight)
-          cell.cellRowIndex = i
-          cell.cellColIndex = j
-          cell.cellMargin = margin
-          cell.onCellScaling = (cell) => this.onCellScaling(cell)
         }
       }
     }
@@ -257,6 +242,16 @@ export class Collage {
         }
       }
     })
+  }
+
+  private drawGridLines() {
+    const grid = this.setting.grid
+    const canvasWidth = this.canvas.getWidth()
+    const canvasHeight = this.canvas.getHeight()
+    for (var i = 0; i < (canvasWidth / grid); i++) {
+      this.canvas.add(new fabric.Line([ i * grid, 0, i * grid, canvasHeight], { type:'line', stroke: '#ccc', selectable: false }));
+      this.canvas.add(new fabric.Line([ 0, i * grid, canvasWidth, i * grid], { type: 'line', stroke: '#ccc', selectable: false }))
+    }
   }
 
   private createContextMenu(event) {
@@ -319,6 +314,7 @@ export class Collage {
     const tag = "cell_" + this.cellIndex
     const cell = new ImageBox(this.canvas)
       .setTag(tag)
+      .setGrid(this.setting.grid)
       .setBorder(this.setting.borderWidth, this.setting.borderColor)
       .setShowSize(showWidth, showHeight)
       .addCellBoard(left, top, width, height)
@@ -629,7 +625,7 @@ export class Collage {
   }
 
   private onCellScaling(cell: ImageBox) {
-    const col = cell.cellColIndex
+    /*const col = cell.cellColIndex
     const row = cell.cellRowIndex
     const margin = cell.cellMargin
     
@@ -662,7 +658,7 @@ export class Collage {
           cell.boardRect.set({ left : br.left + br.width * br.scaleX + margin})
         }
       }
-    }
+    }*/
   }
 
   //////////////////////////////////////////////////////

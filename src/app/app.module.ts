@@ -12,6 +12,7 @@ import { CollageMakeComponent } from "./collage-make/collage-make.component";
 import { TemplateMakerComponent } from "./admin/template-maker/template-maker.component";
 import { TemplatePreviewComponent } from "./admin/template-maker/template-preview.component";
 import { WallMakerComponent } from "./admin/wall-maker/wall-maker.component";
+import { WallPreviewComponent } from "./admin/wall-maker/wall-preview.component";
 import { ControlPanelComponent } from "./control-panel/control-panel.component";
 import { SelectDialogComponent } from "./select-dialog/select-dialog.component";
 import { ImageEditorComponent } from "./image-editor/image-editor.component";
@@ -64,6 +65,7 @@ const appRoutes: Routes = [
   { path: 'admin/template', component: TemplateMakerComponent },
   { path: 'admin/templates', component: TemplatePreviewComponent },
   { path: 'admin/wall', component: WallMakerComponent },
+  { path: 'admin/walls', component: WallPreviewComponent },
   { path: 'pictor/create-post', component: ImagePickerComponent },
   { path: 'home', pathMatch: 'full', redirectTo: '' },
   { path: 'login', loadChildren: './login/login.module#LoginModule' },
@@ -88,6 +90,7 @@ const appRoutes: Routes = [
     TemplateMakerComponent,
     TemplatePreviewComponent,
     WallMakerComponent,
+    WallPreviewComponent,
     CartComponent,
     CrudComponent,
     ControlPanelComponent,

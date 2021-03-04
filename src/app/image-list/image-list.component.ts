@@ -9,6 +9,8 @@ import { Setting } from "../collage/setting";
   styleUrls: ["./image-list.component.scss"],
 })
 export class ImageListComponent implements OnInit {
+  loading: boolean = false
+  
   constructor(
     private api: ApiService,
     private collage: Collage,
@@ -16,7 +18,9 @@ export class ImageListComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    this.loading = true
     await this.setting.updateUserImages(this.api);
+    this.loading = false
   }
 
   async deleteImage(image) {

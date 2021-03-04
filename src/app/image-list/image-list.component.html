@@ -14,6 +14,11 @@
               <img draggable="true" (dragstart)="onDragStart($event, image.url)" class="img-fluid img-thumbnail" width="100%" src="{{image.imageBase64}}" alt="">
             </div>
           </div>
+          <!-- <div *ngIf="loading">
+            <div class="col-md-12 spinner-container">
+              <mat-spinner class="vertical-center" [diameter]="30"></mat-spinner>
+            </div>
+          </div> -->
       </div>
   </div>
 </mat-expansion-panel>

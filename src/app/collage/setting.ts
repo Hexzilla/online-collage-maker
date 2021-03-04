@@ -6,6 +6,7 @@ import { toDataURL } from "../collage/util"
     providedIn: "root",
 })
 export class Setting {
+    grid: number = 15.0
     widthInch: number = 16
     heightInch: number = 12
     landscape: boolean = false
