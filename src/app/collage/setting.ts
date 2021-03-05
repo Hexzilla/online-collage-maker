@@ -7,8 +7,9 @@ import { toDataURL } from "../collage/util"
 })
 export class Setting {
     grid: number = 15.0
-    widthInch: number = 16
-    heightInch: number = 12
+    canvasWidth: number = 12
+    canvasHeight: number = 12
+    unitOfLength: string = "inch"
     landscape: boolean = false
     borderWidth: number = 1
     borderColor: string = "rgb(0,0,0)"
@@ -27,5 +28,23 @@ export class Setting {
                 return { url: url, imageBase64: imageBase64 }
             })
         )
+    }
+
+    getCanvasSizeText() {
+        return `${this.canvasWidth} x ${this.canvasHeight} (${this.unitOfLength})`
+    }
+
+    getWidth() {
+        if (this.unitOfLength == "feet") {
+            return this.canvasWidth * 12
+        }
+        return this.canvasWidth
+    }
+
+    getHeight() {
+        if (this.unitOfLength == "feet") {
+            return this.canvasHeight * 12
+        }
+        return this.canvasHeight
     }
 }

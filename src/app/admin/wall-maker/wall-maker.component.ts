@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from "ngx-toastr";
 import { MatDialog } from "@angular/material/dialog";
 import { ImageSelectComponent } from "../../image-select/image-select.component";
+import { SizeDialogComponent } from "../../size-dialog/size-dialog.component";
 import { AuthService } from "../../auth.service";
 import { Collage } from '../../collage/collage'
 import { Setting } from "../../collage/setting";
@@ -35,6 +36,9 @@ export class WallMakerComponent implements OnInit {
       return false;
     }
 
+    this.setting.unitOfLength = "feet"
+    this.setting.canvasWidth = 10
+    this.setting.canvasHeight = 10
     this.collage.createWallFrames();
   }
 
@@ -51,10 +55,26 @@ export class WallMakerComponent implements OnInit {
         this.setBackgroundImage()
         break
 
+      case 'change_size':
+        this.openChangeSizeDialog();
+        break
+
       case 'delete_frame':
         this.collage.deleteCell()
         break
     }
+  }
+
+  openChangeSizeDialog() {
+    const size = this.collage.getSelectedImageBoxSize()
+    const dialogRef = this.dialog.open(SizeDialogComponent, {
+      data: size,
+    });
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data) {
+        this.collage.changeCellSize(data)
+      }
+    })
   }
 
   setBackgroundImage() {

@@ -15,6 +15,7 @@ import { WallMakerComponent } from "./admin/wall-maker/wall-maker.component";
 import { WallPreviewComponent } from "./admin/wall-maker/wall-preview.component";
 import { ControlPanelComponent } from "./control-panel/control-panel.component";
 import { SelectDialogComponent } from "./select-dialog/select-dialog.component";
+import { SizeDialogComponent } from "./size-dialog/size-dialog.component";
 import { ImageEditorComponent } from "./image-editor/image-editor.component";
 import { ImageCropperComponent } from "./image-editor/image-cropper.component";
 import { ImageUploadComponent } from "./image-upload/image-upload.component";
@@ -95,6 +96,7 @@ const appRoutes: Routes = [
     CrudComponent,
     ControlPanelComponent,
     SelectDialogComponent,
+    SizeDialogComponent,
     ImageEditorComponent,
     ImageCropperComponent,
     ImageUploadComponent,

@@ -21,7 +21,7 @@ export class CanvasLayout {
 
   calculateWidth() {
     if (this.setting.landscape) {
-      return (this.setting.widthInch * this.getContainerWidth()) / this.setting.heightInch;
+      return (this.setting.getWidth() * this.getContainerWidth()) / this.setting.getHeight();
     } else {
       return this.getContainerWidth();
     }
@@ -31,7 +31,7 @@ export class CanvasLayout {
     if (this.setting.landscape) {
       return this.getContainerWidth();
     } else {
-      return (this.setting.heightInch * this.getContainerWidth()) / this.setting.widthInch;
+      return (this.setting.getHeight() * this.getContainerWidth()) / this.setting.getWidth();
     }
   }
 

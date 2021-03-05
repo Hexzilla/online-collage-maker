@@ -11,6 +11,7 @@ export class ControlPanelComponent implements OnInit {
   public collageWidth = [8, 10, 12, 16, 20, 24, 30, 36, 40, 48, 54, 60];
   public collageHeight = [8, 10, 12, 16, 20, 24, 30, 36, 40, 48, 54, 60];
   
+  @Input() unitOfLength: string = "inch"
   @Input() showMarginSettings: boolean = false
   @Input() showTemplateButtons: boolean = false
   @Input() showCollageButtons: boolean = false
@@ -22,14 +23,21 @@ export class ControlPanelComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    if (this.unitOfLength == "feet") {
+      this.collageWidth = [], this.collageHeight = []
+      for (let i = 10; i < 16; i++) {
+        this.collageWidth.push(i);
+        this.collageHeight.push(i);
+      }
+    }
   }
 
   onWidthChanged(e) {
-    this.setting.widthInch = e.value
+    this.setting.canvasWidth = e.value
   }
 
   onHeightChanged(e) {
-    this.setting.heightInch = e.value
+    this.setting.canvasHeight = e.value
   }
 
   onBorderSizeChanged(value) {

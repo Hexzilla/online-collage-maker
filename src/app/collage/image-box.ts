@@ -125,6 +125,16 @@ class ImageBox {
     return this
   }
 
+  setCellSize(width, height) {
+    this.boardRect.set({
+      width: width,
+      height: height,
+      scaleX: 1.0,
+      scaleY: 1.0
+    })
+    this.canvas.renderAll()
+  }
+
   addCellBoard(left, top, width, height) {
     this.lockBoardRect = false
     this.boardRect = new fabric.Rect({
@@ -162,15 +172,24 @@ class ImageBox {
         left: this.boardRect.left + this.strokeWidth + 3, //Take the block's position
         top: this.boardRect.top + this.strokeWidth + 3, 
         fontSize: 15,
-        fill: 'rgb(20,20,20)',
+        fill: 'rgb(10,10,10)',
         lockScalingX: true,
         lockScalingY: true,
         lockUniScaling: true,
+        selectable: false,
       })
       this.canvas.add(this.cellSizeText)
     }
 
     return this
+  }
+
+  getBoardSizeInInch() {
+    const board = this.boardRect
+    return {
+      width: (board.scaleX * this.showWidth).toFixed(1),
+      height: (board.scaleY * this.showHeight).toFixed(1)
+    }
   }
 
   getBoard(): Rect {
@@ -300,14 +319,14 @@ class ImageBox {
     })
   }
 
-  private updateSizeText() {
+  private updateCellSizeText() {
     if (this.cellSizeText) {
       const board = this.boardRect
-      const width = (board.scaleX * this.showWidth).toFixed(2)
-      const height = (board.scaleY * this.showHeight).toFixed(2)
+      const width = (board.scaleX * this.showWidth).toFixed(1)
+      const height = (board.scaleY * this.showHeight).toFixed(1)
       this.cellSizeText.set({
-        left: this.boardRect.left,
-        top: this.boardRect.top,
+        left: this.boardRect.left + this.strokeWidth + 3 ,
+        top: this.boardRect.top + this.strokeWidth + 3,
         text: `${width}" x ${height}"`,
       })
     }
@@ -368,7 +387,7 @@ class ImageBox {
 
       this.boardRectPos = new fabric.Point(e.target.left, e.target.top)
       this.addImageClipPath()
-      this.updateSizeText()
+      this.updateCellSizeText()
     }
   }
 
@@ -396,7 +415,7 @@ class ImageBox {
       this.boardRect.strokeWidth = this.strokeWidth / e.target.scaleX;
       this.boardRectPos = new fabric.Point(e.target.left, e.target.top)
       this.updateImage()
-      this.updateSizeText()
+      this.updateCellSizeText()
       this.addImageClipPath()
 
       this.canvas.renderAll()
@@ -414,6 +433,7 @@ class ImageBox {
           scaleX: e.target.scaleX * newWidth / width,
           scaleY: e.target.scaleY * newHeight / height
         });
+        this.updateCellSizeText()
       }
     }
   }

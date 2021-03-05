@@ -139,10 +139,11 @@ export class Collage {
       this.removeCanvasElement()
 
       const canvasWidth = this.layout.calculateWidth();
-      const canvasHeight = canvasWidth * this.setting.heightInch / this.setting.widthInch;
+      const canvasHeight = canvasWidth * this.setting.getHeight() / this.setting.getWidth();
       this.createCanvasElement(canvasWidth, canvasHeight)
       this.createFabricCanvas(canvasWidth, canvasHeight)
       this.drawGridLines()
+      //this.drawCanvasSizeText();
 
       const grid = this.setting.grid
       const margin = Math.ceil(this.setting.margin / grid) * grid
@@ -154,9 +155,9 @@ export class Collage {
           const top = margin + j * height
           const cellWidth = width - margin
           const cellHeight = height - margin
-          const showWidth = parseFloat((this.setting.widthInch * cellWidth / this.canvas.width).toFixed(2))
-          const showHeight = parseFloat((this.setting.heightInch * cellHeight / this.canvas.height).toFixed(2))
-          const cell = this.addCellWithPos(left, top, cellWidth, cellHeight, showWidth, showHeight)  
+          const showWidth = parseFloat((this.setting.getWidth() * cellWidth / this.canvas.width).toFixed(1))
+          const showHeight = parseFloat((this.setting.getHeight() * cellHeight / this.canvas.height).toFixed(1))
+          this.addCellWithPos(left, top, cellWidth, cellHeight, showWidth, showHeight)  
         }
       }
     }
@@ -181,11 +182,12 @@ export class Collage {
       this.removeCanvasElement()
 
       const canvasWidth = this.layout.calculateWidth();
-      const canvasHeight = canvasWidth * this.setting.heightInch / this.setting.widthInch;
+      const canvasHeight = canvasWidth * this.setting.getHeight() / this.setting.getWidth();
       this.createCanvasElement(canvasWidth, canvasHeight)
       this.createFabricCanvas(canvasWidth, canvasHeight)
       this.drawGridLines()
-
+      this.drawCanvasSizeText();
+      
       const grid = this.setting.grid
       const margin = Math.ceil(this.setting.margin / grid) * grid
       const width = Math.floor(0.4 * (this.canvas.width - margin) / this.setting.cells / grid) * grid
@@ -198,9 +200,9 @@ export class Collage {
           const top = marginTop + margin + j * height
           const cellWidth = width - margin
           const cellHeight = height - margin
-          const showWidth = parseFloat((this.setting.widthInch * cellWidth / this.canvas.width).toFixed(2))
-          const showHeight = parseFloat((this.setting.heightInch * cellHeight / this.canvas.height).toFixed(2))
-          const cell = this.addCellWithPos(left, top, cellWidth, cellHeight, showWidth, showHeight)
+          const showWidth = parseFloat((this.setting.getWidth() * cellWidth / this.canvas.width).toFixed(1))
+          const showHeight = parseFloat((this.setting.getHeight() * cellHeight / this.canvas.height).toFixed(1))
+          this.addCellWithPos(left, top, cellWidth, cellHeight, showWidth, showHeight)
         }
       }
     }
@@ -254,6 +256,21 @@ export class Collage {
     }
   }
 
+  private drawCanvasSizeText() {
+    const label = this.setting.getCanvasSizeText()
+    const text = new fabric.Text(label, { 
+      left: 5,
+      top: 5,
+      fontSize: 15,
+      fill: 'rgb(10,10,10)',
+      lockScalingX: true,
+      lockScalingY: true,
+      lockUniScaling: true,
+      selectable: false,
+    })
+    this.canvas.add(text)
+  }
+
   private createContextMenu(event) {
     var pointer = this.canvas.getPointer(event.e);
     this.menuPoint = pointer
@@ -304,8 +321,8 @@ export class Collage {
   addWallFrame() {
     const cellWidth = 120
     const cellHeight = 120
-    const showWidth = parseFloat((this.setting.widthInch * cellWidth / this.canvas.width).toFixed(2))
-    const showHeight = parseFloat((this.setting.heightInch * cellHeight / this.canvas.height).toFixed(2))
+    const showWidth = parseFloat((this.setting.getWidth() * cellWidth / this.canvas.width).toFixed(1))
+    const showHeight = parseFloat((this.setting.getHeight() * cellHeight / this.canvas.height).toFixed(1))
     this.addCellWithPos(this.menuPoint.x, this.menuPoint.y, cellWidth, cellHeight, showWidth, showHeight)
   }
 
@@ -363,6 +380,23 @@ export class Collage {
       this.canvas.backgroundImage = img
       this.canvas.renderAll()
     }, {crossOrigin: 'anonymous'})
+  }
+
+  getSelectedImageBoxSize() {
+    const box: ImageBox = this.getSelectedImage()
+    if (box) {
+      return box.getBoardSizeInInch()
+    }
+    return null
+  }
+
+  changeCellSize(data) {
+    const box: ImageBox = this.getSelectedImage()
+    if (box) {
+      const w = parseFloat((this.canvas.width * data.width / this.setting.getWidth()).toFixed(1))
+      const h = parseFloat((this.canvas.height * data.height / this.setting.getHeight()).toFixed(1))
+      box.setCellSize(w, h)
+    }
   }
 
   //////////////////////////////////////////////////////
@@ -439,7 +473,7 @@ export class Collage {
     })
 
     return new Promise<fabric.Canvas>(resolve => {
-      const objects = this.canvas.getObjects()
+      const objects = this.canvas.getObjects().filter(it => it.type !='line')
       const promises = objects.map(obj => {
         return new Promise(_resolve => {
           obj.clone(cloned => {
@@ -484,7 +518,7 @@ export class Collage {
 
     const setting = this.layout.getSetting()
     const dpi = document.getElementById("dpi").clientWidth
-    const width = dpi * setting.widthInch
+    const width = dpi * setting.getWidth()
     const height = width * (this.canvas.height / this.canvas.width)
 
     const virtualCanvas = await this.createVirtualCanvas(width, height)

@@ -4,6 +4,7 @@
     <div class="row">
       <div id="menu-image-edit" class="menu">
         <ul class="menu-options">
+          <li id="change_size" class="menu-option">Change Size</li>
           <li id="delete_frame" class="menu-option">Delete Frame</li>
         </ul>
       </div>
@@ -16,7 +17,7 @@
     </div>
       <div class="row">
         <div class="col-md-2">
-          <control-panel [showWallButtons]="true" [showMarginSettings]="true" (actionEvent)="onControlActionEvent($event)"></control-panel>
+          <control-panel [showWallButtons]="true" [showMarginSettings]="true" unitOfLength="feet" (actionEvent)="onControlActionEvent($event)"></control-panel>
         </div>
         <div class="col-md-10">
             <div class="grey-box">
