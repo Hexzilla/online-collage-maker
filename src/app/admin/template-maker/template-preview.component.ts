@@ -62,7 +62,7 @@ export class TemplatePreviewComponent implements OnInit {
     return this.authSvc.loggedIn();
   }
 
-  createTemplate() {
+  onCreateButtonClick() {
     this.router.navigate(["/admin/template"]);
   }
 

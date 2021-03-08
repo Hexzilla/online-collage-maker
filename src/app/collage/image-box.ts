@@ -21,7 +21,6 @@ class ImageBox {
   image: fabric.Image
   zoom: number = 1.0
   brightness: number = 0.01
-  cellSizeText: fabric.Text
   boardRect: fabric.Rect
   backBoard: fabric.Rect
   boardRectPos: fabric.Point
@@ -32,8 +31,9 @@ class ImageBox {
   strokeWidth: number = 0
   onImageLoadCompleted: Function
 
-  showWidth: number = 0
-  showHeight: number = 0
+  widthInch: number = 0
+  heightInch: number = 0
+  cellSizeText: fabric.Text
 
   constructor(canvas) {
     this.canvas = canvas
@@ -42,7 +42,7 @@ class ImageBox {
     this.canvas.on('object:moving', (e) => this.onObjectMoving(e))
     this.canvas.on('object:moved', (e) => this.onObjectMoved(e))
     this.canvas.on('object:scaling', (e) => this.onObjectScaling(e))
-    this.canvas.on('object:scaled', (e) => this.onObjectScaled(e))
+    //this.canvas.on('object:scaled', (e) => this.onObjectScaled(e))
   }
 
   setTag(tag) {
@@ -132,6 +132,7 @@ class ImageBox {
       scaleX: 1.0,
       scaleY: 1.0
     })
+    this.updateCellSizeText()
     this.canvas.renderAll()
   }
 
@@ -167,8 +168,8 @@ class ImageBox {
     this.boardRectPos = new fabric.Point(this.boardRect.left, this.boardRect.top)
     this.canvas.add(this.boardRect)
 
-    if (this.showWidth && this.showHeight) {
-      this.cellSizeText = new fabric.Text(`${this.showWidth}" x ${this.showHeight}"`, { 
+    if (this.widthInch && this.heightInch) {
+      this.cellSizeText = new fabric.Text(`${this.widthInch}" x ${this.heightInch}"`, { 
         left: this.boardRect.left + this.strokeWidth + 3, //Take the block's position
         top: this.boardRect.top + this.strokeWidth + 3, 
         fontSize: 15,
@@ -186,9 +187,10 @@ class ImageBox {
 
   getBoardSizeInInch() {
     const board = this.boardRect
+    console.log(this.widthInch, this.heightInch)
     return {
-      width: (board.scaleX * this.showWidth).toFixed(1),
-      height: (board.scaleY * this.showHeight).toFixed(1)
+      width: (board.scaleX * this.widthInch).toFixed(1),
+      height: (board.scaleY * this.heightInch).toFixed(1)
     }
   }
 
@@ -204,9 +206,9 @@ class ImageBox {
     return this
   }
 
-  setShowSize(showWidth, showHeight) {
-    this.showWidth = showWidth
-    this.showHeight = showHeight
+  setSizeInch(widthInch, heightInch) {
+    this.widthInch = widthInch
+    this.heightInch = heightInch
     return this
   }
 
@@ -322,8 +324,8 @@ class ImageBox {
   private updateCellSizeText() {
     if (this.cellSizeText) {
       const board = this.boardRect
-      const width = (board.scaleX * this.showWidth).toFixed(1)
-      const height = (board.scaleY * this.showHeight).toFixed(1)
+      const width = (board.scaleX * this.widthInch).toFixed(1)
+      const height = (board.scaleY * this.heightInch).toFixed(1)
       this.cellSizeText.set({
         left: this.boardRect.left + this.strokeWidth + 3 ,
         top: this.boardRect.top + this.strokeWidth + 3,

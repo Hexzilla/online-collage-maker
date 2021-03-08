@@ -40,6 +40,7 @@ export class WallPreviewComponent implements OnInit {
           loaded: false
         };
       });
+      console.log('Wall Frames: ', images)
 
       images.map(item => {
         toDataURL("GET", item.src)
@@ -62,7 +63,7 @@ export class WallPreviewComponent implements OnInit {
     return this.authSvc.loggedIn();
   }
 
-  createTemplate() {
+  onCreateButtonClick() {
     this.router.navigate(["/admin/wall"]);
   }
 

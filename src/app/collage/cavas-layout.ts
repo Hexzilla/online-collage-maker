@@ -4,40 +4,34 @@ import { Setting } from "./setting"
 
 export class CanvasLayout {
   private setting: Setting;
-  private containerWidth: number = 0;
 
-  constructor(setting: Setting, containerWidth) {
+  constructor(setting: Setting) {
     this.setting = setting
-    this.containerWidth = containerWidth
+  }
+
+  private getCanvasContainerWidthInPixel() {
+    return document.getElementById("canvas-container").offsetWidth;
   }
 
   getContainerWidth() {
-    return this.containerWidth
+    return this.getCanvasContainerWidthInPixel()
   }
 
   getSetting() {
     return this.setting
   }
 
-  calculateWidth() {
-    if (this.setting.landscape) {
-      return (this.setting.getWidth() * this.getContainerWidth()) / this.setting.getHeight();
-    } else {
-      return this.getContainerWidth();
-    }
+  getCanvasWidthInPixel() {
+    return this.getContainerWidth();
   }
 
-  calculateHeight() {
-    if (this.setting.landscape) {
-      return this.getContainerWidth();
-    } else {
-      return (this.setting.getHeight() * this.getContainerWidth()) / this.setting.getWidth();
-    }
+  getCanvasHeightInPixel() {
+    return (this.setting.getHeight() * this.getContainerWidth()) / this.setting.getWidth();
   }
 
   getCanvasLayout(images) {
-    const widthInPixels = this.calculateWidth();
-    const heightInPixels = this.calculateHeight();
+    const widthInPixels = this.getCanvasWidthInPixel();
+    const heightInPixels = this.getCanvasHeightInPixel();
 
     let minDelta = 0;
     let perfectLayouts = null;

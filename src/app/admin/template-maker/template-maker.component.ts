@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../auth.service";
-import { Collage } from '../../collage/collage'
+import { Collage } from '../../collage/collage.service'
 import { Setting } from "../../collage/setting";
+import { createTemplate, saveTemplate } from "../template.builder";
 
 @Component({
   selector: "template-maker",
@@ -32,7 +33,7 @@ export class TemplateMakerComponent implements OnInit {
       return false;
     }
 
-    this.collage.createTemplate();
+    await this.create();
   }
 
   loggedIn() {
@@ -53,30 +54,25 @@ export class TemplateMakerComponent implements OnInit {
 
   async onControlActionEvent(e) {
     if (e.action == "create_template") {
-      await this.collage.createTemplate();
+      this.create()
     }
   }
 
-  async saveTemplate() {
-    if (this.setting.savedTemplate) {
-      const saved = await this.collage.saveTemplate(this.setting.savedTemplate._id);
-      if (saved) {
-        this.toastr.success("Success");
-        return
-      }
+  private async create() {
+    this.collage.setSetting(this.setting.clone())
+    await createTemplate(this.collage);
+  }
+
+  async onSaveTemplateButtonClick() {
+    if (await saveTemplate(this.collage)) {
+      this.toastr.success("Success");
     }
     else {
-      this.setting.savedTemplate = await this.collage.saveTemplate(0);
-      if (this.setting.savedTemplate) {
-        this.toastr.success("Success");  
-        return
-      }
+      this.toastr.success("Failed to save template");  
     }
-
-    this.toastr.success("Failed to save template");  
   }
 
-  showTemplates() {
+  onShowTemplatesButtonClick() {
     this.router.navigate(["/admin/templates"]);
   }
 

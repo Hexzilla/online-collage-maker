@@ -18,7 +18,19 @@ export class Setting {
     margin: number = 15
     thumbImages: Array<object>
     savedTemplate: any = null
-    savedWallFrames: any = null
+    savedWall: any = null
+
+    setData(s: any) {
+        this.canvasWidth = s.canvasWidth
+        this.canvasHeight = s.canvasHeight
+        this.borderWidth = s.borderWidth
+        this.borderColor = s.borderColor
+        this.landscape = s.landscape
+    }
+
+    clone(): Setting {
+        return Object.assign(Object.create(Object.getPrototypeOf(this)), this)
+    }
 
     async updateUserImages(api: ApiService) {
         const urls = await api.getImages()

@@ -62,13 +62,13 @@ export class ControlPanelComponent implements OnInit {
     })
   }
   
-  createWallFrames() {
+  onCreateWallButtonClick() {
     this.actionEvent.emit({
       "action": "create_wall_frames"
     })
   }
   
-  createTemplate() {
+  onCreateTemplateButtonClick() {
     this.actionEvent.emit({
       "action": "create_template"
     })

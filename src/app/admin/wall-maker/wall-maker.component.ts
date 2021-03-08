@@ -5,8 +5,9 @@ import { MatDialog } from "@angular/material/dialog";
 import { ImageSelectComponent } from "../../image-select/image-select.component";
 import { SizeDialogComponent } from "../../size-dialog/size-dialog.component";
 import { AuthService } from "../../auth.service";
-import { Collage } from '../../collage/collage'
+import { Collage } from '../../collage/collage.service'
 import { Setting } from "../../collage/setting";
+import { createWall, saveWall } from "../template.builder";
 
 @Component({
   selector: "wall-maker",
@@ -39,7 +40,7 @@ export class WallMakerComponent implements OnInit {
     this.setting.unitOfLength = "feet"
     this.setting.canvasWidth = 10
     this.setting.canvasHeight = 10
-    this.collage.createWallFrames();
+    this.create();
   }
 
   loggedIn() {
@@ -90,30 +91,25 @@ export class WallMakerComponent implements OnInit {
   
   async onControlActionEvent(e) {
     if (e.action == "create_wall_frames") {
-      await this.collage.createWallFrames();
+      await this.create();
     }
   }
 
-  async saveWallFrames() {
-    if (this.setting.savedWallFrames) {
-      const saved = await this.collage.saveWallFrames(this.setting.savedWallFrames._id);
-      if (saved) {
-        this.toastr.success("Success");
-        return
-      }
+  private async create() {
+    this.collage.setSetting(this.setting.clone())
+    await createWall(this.collage);
+  }
+
+  async onSaveWallButtonClick() {
+    if (await saveWall(this.collage)) {
+      this.toastr.success("Success");
     }
     else {
-      this.setting.savedWallFrames = await this.collage.saveWallFrames(0);
-      if (this.setting.savedWallFrames) {
-        this.toastr.success("Success");  
-        return
-      }
+      this.toastr.success("Failed to save wall");  
     }
-
-    this.toastr.success("Failed to save template");  
   }
 
-  showWallFrames() {
+  onShowWallsButtonClick() {
     this.router.navigate(["/admin/walls"]);
   }
 

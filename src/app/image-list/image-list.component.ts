@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { ApiService } from "../api/api";
-import { Collage } from '../collage/collage'
+import { Collage } from '../collage/collage.service'
 import { Setting } from "../collage/setting";
 
 @Component({

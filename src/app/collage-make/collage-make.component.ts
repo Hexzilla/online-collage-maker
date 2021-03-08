@@ -10,9 +10,14 @@ import { ImageSelectComponent } from "../image-select/image-select.component";
 import { SelectDialogComponent } from "../select-dialog/select-dialog.component";
 import { environment } from "../../environments/environment";
 import { ApiService } from "../api/api";
-import { Collage } from '../collage/collage'
+import { Collage } from '../collage/collage.service'
 import ImageBox from "../collage/image-box"
 import { Setting } from '../collage/setting';
+import { 
+  createAutoCollage, 
+  createCollageByTemplateId, 
+  createCollageByWallId 
+} from '../collage/collage.maker'
 
 
 @Component({
@@ -42,7 +47,6 @@ export class CollageMakeComponent implements OnInit {
 
     const routeParams = this.route.snapshot.paramMap;
     this.setting.mode = routeParams.get('mode');
-    console.log(this.setting.mode)
 
     this.collage.onLoadingStateChanged = (state) => (this.loading = state)
     this.collage.onMenuItemClicked = (e) => this.onMenuItemClicked(e)
@@ -130,7 +134,8 @@ export class CollageMakeComponent implements OnInit {
 
   async onControlActionEvent(e) {
     if (e.action == "create_auto_collage") {
-      await this.collage.createAutoCollage();
+      this.collage.setSetting(this.setting.clone())
+      await createAutoCollage(this.collage);
     }
     else if (e.action == "select_template") {
       this.loading = true
@@ -163,7 +168,8 @@ export class CollageMakeComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe(async (itemId) => {
         if (itemId) {
-          await this.collage.createCollageByTemplateId(itemId)
+          this.collage.setSetting(this.setting.clone())
+          await createCollageByTemplateId(this.collage, itemId)
         }
       })
     }
@@ -188,7 +194,8 @@ export class CollageMakeComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe(async (itemId) => {
         if (itemId) {
-          await this.collage.createCollageByWallId(itemId)
+          this.collage.setSetting(this.setting.clone())
+          await createCollageByWallId(this.collage, itemId)
         }
       })
     }
