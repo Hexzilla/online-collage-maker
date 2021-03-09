@@ -38,8 +38,8 @@ export class WallMakerComponent implements OnInit {
     }
 
     this.setting.unitOfLength = "feet"
-    this.setting.canvasWidth = 10
-    this.setting.canvasHeight = 10
+    this.setting.width = 10
+    this.setting.height = 10
     this.create();
   }
 

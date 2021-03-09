@@ -33,11 +33,11 @@ export class ControlPanelComponent implements OnInit {
   }
 
   onWidthChanged(e) {
-    this.setting.canvasWidth = e.value
+    this.setting.width = e.value
   }
 
   onHeightChanged(e) {
-    this.setting.canvasHeight = e.value
+    this.setting.height = e.value
   }
 
   onBorderSizeChanged(value) {

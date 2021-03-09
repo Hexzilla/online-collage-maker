@@ -8,7 +8,7 @@
           <div class="col-12 col-md-6">
             <mat-form-field appearance="fill">
               <mat-label>Width</mat-label>
-              <mat-select [(value)]="setting.canvasWidth" (selectionChange)="onWidthChanged($event)">
+              <mat-select [(value)]="setting.width" (selectionChange)="onWidthChanged($event)">
                 <mat-option *ngFor="let size of collageWidth" [value]="size">
                   {{size}} {{unitOfLength}}
                 </mat-option>
@@ -18,7 +18,7 @@
           <div class="col-12 col-md-6">
             <mat-form-field appearance="fill">
               <mat-label>Height</mat-label>
-              <mat-select [(value)]="setting.canvasHeight" (selectionChange)="onHeightChanged($event)">
+              <mat-select [(value)]="setting.height" (selectionChange)="onHeightChanged($event)">
                 <mat-option *ngFor="let size of collageHeight" [value]="size">
                   {{size}} {{unitOfLength}}
                 </mat-option>

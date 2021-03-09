@@ -69,12 +69,13 @@ export async function createCollageByTemplateId(collage: Collage, templateId: nu
     if (!template) {
       return
     }
+    console.log('Selected Template: ', template)
 
     collage.resetSavedCollage()
     collage.removeCanvasElement()
 
     const setting = collage.getSetting()
-    setting.setData(template.setting)//TODO Unit
+    setting.setData(template.setting)
     const layout = new CanvasLayout(setting)
 
     const canvasWidth = layout.getCanvasWidthInPixel()
@@ -116,7 +117,7 @@ export async function createCollageByWallId(collage: Collage, wallId: number) {
     collage.removeCanvasElement()
 
     const setting = collage.getSetting()
-    setting.setData(wall.setting)//TODO Unit
+    setting.setData(wall.setting)
     const layout = new CanvasLayout(setting)
 
     const canvasWidth = layout.getCanvasWidthInPixel()
