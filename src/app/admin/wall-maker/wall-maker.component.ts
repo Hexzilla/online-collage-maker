@@ -12,6 +12,7 @@ import { toDataURL } from '../../collage/util';
 import { createWall, saveWall } from "../template.builder";
 import { environment } from 'src/environments/environment';
 import { ImageService, WallImageService } from 'src/app/collage/image.service';
+import { PriceDialogComponent } from 'src/app/price-dialog/price-dialog.component';
 
 @Component({
   selector: "wall-maker",
@@ -69,6 +70,10 @@ export class WallMakerComponent implements OnInit {
         this.openChangeSizeDialog();
         break
 
+      case 'frame_price':
+        this.openPriceDialog()
+        break
+
       case 'delete_frame':
         this.collage.deleteCell()
         break
@@ -86,6 +91,20 @@ export class WallMakerComponent implements OnInit {
       }
     })
   }
+
+  openPriceDialog() {
+    const dialogRef = this.dialog.open(PriceDialogComponent, {
+      data: {
+        title: "Price",
+        price: 0
+      },
+    });
+    dialogRef.afterClosed().subscribe((price) => {
+      if (price) {
+        console.log("Price", price)
+      }
+    })
+  }
   
   async onControlActionEvent(e) {
     if (e.action == "create_wall_frames") {
@@ -99,12 +118,22 @@ export class WallMakerComponent implements OnInit {
   }
 
   async onSaveWallButtonClick() {
-    if (await saveWall(this.collage)) {
-      this.toastr.success("Success");
-    }
-    else {
-      this.toastr.success("Failed to save wall");  
-    }
+    const dialogRef = this.dialog.open(PriceDialogComponent, {
+      data: {
+        title: "Discount",
+        price: 0
+      },
+    });
+    dialogRef.afterClosed().subscribe(async (discount: number) => {
+      if (discount) {
+        if (await saveWall(this.collage, discount)) {
+          this.toastr.success("Success");
+        }
+        else {
+          this.toastr.success("Failed to save wall");  
+        }
+      }
+    })
   }
 
   onShowWallsButtonClick() {

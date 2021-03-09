@@ -58,6 +58,7 @@ import { CreatePostComponent } from './create-post/create-post.component';
 import { ImagePickerComponent } from './image-picker/image-picker.component';
 import { AlertModule } from 'ngx-alerts';
 import { NgxImageCompressService } from 'ngx-image-compress'; // It should be added too
+import { PriceDialogComponent } from './price-dialog/price-dialog.component';
 
 const appRoutes: Routes = [
   { path: '', component: LandingComponent },
@@ -96,6 +97,7 @@ const appRoutes: Routes = [
     CrudComponent,
     ControlPanelComponent,
     SelectDialogComponent,
+    PriceDialogComponent,
     SizeDialogComponent,
     ImageEditorComponent,
     ImageCropperComponent,

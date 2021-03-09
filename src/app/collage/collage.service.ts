@@ -288,6 +288,13 @@ export class Collage {
     }
   }
 
+  setFramePrice(price) {
+    const box: ImageBox = this.getSelectedImage()
+    if (box) {
+      box.price = price
+    }
+  }
+
   removeVirtualCanvas(virtualCanvas) {
     virtualCanvas.dispose()
     const container = document.getElementById("virtual-canvas-container");

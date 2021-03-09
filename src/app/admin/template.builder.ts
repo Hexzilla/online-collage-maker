@@ -128,7 +128,7 @@ export async function saveTemplate(collage: Collage) {
   return template
 }
 
-export async function saveWall(collage: Collage) {
+export async function saveWall(collage: Collage, discount: number) {
   collage.setLoadingState(true)
 
   const canvasWidth = collage.getCanvasWidth()
@@ -148,7 +148,7 @@ export async function saveWall(collage: Collage) {
     canvasHeight: canvasHeight
   })
 
-  const data = {setting: setting, images: collage.getTemplateInfo(), image: dataUrl};
+  const data = {setting: setting, images: collage.getTemplateInfo(), image: dataUrl, discount: discount};
   if (s.savedObject) {
     data['id'] = s.savedObject.id
   }

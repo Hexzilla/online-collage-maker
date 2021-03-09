@@ -31,6 +31,7 @@ class ImageBox {
   strokeWidth: number = 0
   onImageLoadCompleted: Function
   onObjectMove: Function
+  price: number = 0
 
   widthInch: number = 0
   heightInch: number = 0
