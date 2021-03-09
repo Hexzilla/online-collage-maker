@@ -39,7 +39,7 @@ export class CollageMakeComponent implements OnInit {
     private route: ActivatedRoute,
     private api: ApiService,
     private collage: Collage,
-    private setting: Setting
+    public setting: Setting
   ) {}
 
   async ngOnInit(): Promise<void> {

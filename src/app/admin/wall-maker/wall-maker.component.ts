@@ -27,7 +27,7 @@ export class WallMakerComponent implements OnInit {
     private router: Router,
     private api: ApiService,
     private collage: Collage,
-    private setting: Setting
+    public setting: Setting
   ) {}
 
   async ngOnInit() {
