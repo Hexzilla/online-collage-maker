@@ -23,11 +23,11 @@
     </div>
     <div class="row">
       <div class="col-md-2">
-        <image-upload></image-upload>
+        <image-upload uploadMode="user"></image-upload>
         <hr class="mt-2 mb-2">
         <control-panel [showCollageButtons]="true" (actionEvent)="onControlActionEvent($event)"></control-panel>
         <hr class="mt-2 mb-2">
-        <image-list></image-list>
+        <image-list [images]="setting.thumbImages"></image-list>
       </div>
       <div class="col-md-10">
         <div class="grey-box">

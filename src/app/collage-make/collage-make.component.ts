@@ -42,9 +42,9 @@ export class CollageMakeComponent implements OnInit {
     private setting: Setting
   ) {}
 
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
     this.isMobile = this.deviceService.isMobile();
-    console.log(this.isMobile)
+    console.log("IsMobile", this.isMobile)
 
     const routeParams = this.route.snapshot.paramMap;
     this.setting.mode = routeParams.get('mode');
@@ -56,8 +56,12 @@ export class CollageMakeComponent implements OnInit {
 
     if (!this.loggedIn()) {
       this.router.navigate(["/login"]);
-      return false;
+      return;
     }
+
+    this.loading = true
+    await this.setting.updateUserImages(this.api);
+    this.loading = false
   }
 
   loggedIn() {

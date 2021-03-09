@@ -5,9 +5,12 @@ import { MatDialog } from "@angular/material/dialog";
 import { ImageSelectComponent } from "../../image-select/image-select.component";
 import { SizeDialogComponent } from "../../size-dialog/size-dialog.component";
 import { AuthService } from "../../auth.service";
+import { ApiService } from "../../api/api";
 import { Collage } from '../../collage/collage.service'
 import { Setting } from "../../collage/setting";
+import { toDataURL } from '../../collage/util';
 import { createWall, saveWall } from "../template.builder";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: "wall-maker",
@@ -22,6 +25,7 @@ export class WallMakerComponent implements OnInit {
     private dialog: MatDialog,
     private authSvc: AuthService,
     private router: Router,
+    private api: ApiService,
     private collage: Collage,
     private setting: Setting
   ) {}
@@ -37,10 +41,15 @@ export class WallMakerComponent implements OnInit {
       return false;
     }
 
+    this.loading = true
+    await this.setting.updateWallImages(this.api)
+
     this.setting.unitOfLength = "feet"
     this.setting.width = 10
     this.setting.height = 10
     this.create();
+
+    this.loading = false
   }
 
   loggedIn() {
@@ -51,9 +60,6 @@ export class WallMakerComponent implements OnInit {
     switch (e.target['id']) {
       case 'add_frame':
         this.collage.addWallFrame()
-        break
-      case 'add_background':
-        this.setBackgroundImage()
         break
 
       case 'change_size':
@@ -78,16 +84,8 @@ export class WallMakerComponent implements OnInit {
     })
   }
 
-  setBackgroundImage() {
-    const images = this.setting.thumbImages
-    const dialogRef = this.dialog.open(ImageSelectComponent, {
-      data: { images: images},
-    });
-    dialogRef.afterClosed().subscribe(async (url) => {
-      if (url) {
-        await this.collage.setBackgroundImage(url)
-      }
-    })
+  async uploadImage(formData) {
+    return await this.api.uploadWallImage(formData)
   }
   
   async onControlActionEvent(e) {

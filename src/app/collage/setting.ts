@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core"
 import { ApiService } from "../api/api"
 import { toDataURL } from "../collage/util"
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: "root",
@@ -19,6 +20,7 @@ export class Setting {
     cells: number = 3
     margin: number = 15
     thumbImages: Array<object>
+    wallImages: Array<object>
     savedObject: any = null
 
     setData(s: any) {
@@ -44,6 +46,19 @@ export class Setting {
                 return { url: url, imageBase64: imageBase64 }
             })
         )
+    }
+
+    async updateWallImages(api: ApiService) {
+        const images = await api.getWallImageList()
+        if (images) {
+            const imageUrls = await api.getWallImageList()
+            this.wallImages = await Promise.all(imageUrls.map(async (it) => {
+                const url = environment.apiUrl + '/collage/wall-images/image/' + it
+                const url_thumb = environment.apiUrl + '/collage/wall-images/thumb/' + it
+                const imageBase64 = await toDataURL("GET", url_thumb)
+                return { url, imageBase64 }
+            }))
+        }
     }
 
     getCanvasSizeText() {

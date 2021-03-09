@@ -258,4 +258,17 @@ export class ApiService {
         }
         return null;
     }
+
+    async uploadWallImage(formData) {
+        try {
+            const url = environment.apiUrl + "/collage/wall-images/upload";
+            const result = await this.http.post(url, formData).toPromise();
+            if (result == 1) {
+                return true;
+            }
+        } catch (e) {
+            console.log(e);
+        }
+        return false;
+    }
 }

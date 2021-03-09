@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { ApiService } from "../api/api";
 import { Collage } from '../collage/collage.service'
-import { Setting } from "../collage/setting";
 
 @Component({
   selector: "image-list",
@@ -10,25 +9,23 @@ import { Setting } from "../collage/setting";
 })
 export class ImageListComponent implements OnInit {
   loading: boolean = false
+  @Input() images: Array<object>
   
   constructor(
     private api: ApiService,
-    private collage: Collage,
-    public  setting: Setting
+    private collage: Collage
   ) {}
 
-  async ngOnInit() {
-    this.loading = true
-    await this.setting.updateUserImages(this.api);
-    this.loading = false
+  async ngOnInit() { 
+    console.log("ImageList", this.images)
   }
 
   async deleteImage(image) {
     let result = await this.api.deleteImage(image.url);
     if (result) {
-      const index = this.setting.thumbImages.indexOf(image);
+      const index = this.images.indexOf(image);
       if (index > -1) {
-        this.setting.thumbImages.splice(index, 1);
+        this.images.splice(index, 1);
       }
     }
   }
