@@ -13,7 +13,7 @@ import { ApiService } from "../api/api";
 import { Collage } from '../collage/collage.service'
 import ImageBox from "../collage/image-box"
 import { Setting } from '../collage/setting';
-import { toDataURL } from '../collage/util';
+import { ImageService, WallImageService } from '../collage/image.service';
 import { 
   createAutoCollage, 
   createCollageByTemplateId, 
@@ -29,6 +29,8 @@ import {
 export class CollageMakeComponent implements OnInit {
   public loading: boolean = false;
   public isMobile: any;
+  public imageSvc: ImageService
+  public wallImageSvc: WallImageService
 
   constructor(
     private dialog: MatDialog,
@@ -48,6 +50,8 @@ export class CollageMakeComponent implements OnInit {
 
     const routeParams = this.route.snapshot.paramMap;
     this.setting.mode = routeParams.get('mode');
+    this.imageSvc = new ImageService(this.api)
+    this.wallImageSvc = new WallImageService(this.api)
 
     this.collage.onLoadingStateChanged = (state) => (this.loading = state)
     this.collage.onMenuItemClicked = (e) => this.onMenuItemClicked(e)
@@ -60,7 +64,7 @@ export class CollageMakeComponent implements OnInit {
     }
 
     this.loading = true
-    await this.setting.updateUserImages(this.api);
+    await this.imageSvc.updateImages();
     this.loading = false
   }
 
@@ -113,22 +117,24 @@ export class CollageMakeComponent implements OnInit {
 
   async openImageCropWindow() {
     const box: ImageBox = this.collage.getSelectedImage()
-    const imageBase64 = box.getImageUrl()
-    const board = box.getBoard()
-    this.dialog.open(ImageCropperComponent, {
-      width: "100%",
-      height: "100%",
-      data: {
-        imageBase64: imageBase64,
-        ratio: board.width / board.height
-      },
-    });
+    if (box.image != null) {
+      const imageBase64 = box.getImageUrl()
+      const board = box.getBoard()
+      this.dialog.open(ImageCropperComponent, {
+        width: "100%",
+        height: "100%",
+        data: {
+          imageBase64: imageBase64,
+          ratio: board.width / board.height,
+          imageSvc: this.imageSvc
+        },
+      });
+    }
   }
 
   async openSelectImageWindow() {
-    const box: ImageBox = this.collage.getSelectedImage()
     if (this.setting.mode == 'select' || this.setting.mode == 'wall') {
-      const images = this.setting.thumbImages
+      const images = this.imageSvc.thumbImages
       const dialogRef = this.dialog.open(ImageSelectComponent, {
         data: { images: images},
         width: (this.isMobile) ? "90%" : "50%"
@@ -211,16 +217,10 @@ export class CollageMakeComponent implements OnInit {
   }
 
   async setBackgroundImage() {
-    let images = this.setting.thumbImages
+    let images = this.imageSvc.thumbImages
     if (this.setting.mode == 'wall') {
       this.loading = true
-      const imageUrls = await this.api.getWallImageList()
-      images = await Promise.all(imageUrls.map(async (it) => {
-        const url = environment.apiUrl + '/collage/wall-images/image/' + it
-        const url_thumb = environment.apiUrl + '/collage/wall-images/thumb/' + it
-        const imageBase64 = await toDataURL("GET", url_thumb)
-        return { url, imageBase64 }
-      }))
+      images = await this.wallImageSvc.updateImages()
       this.loading = false
     }
 
@@ -229,7 +229,6 @@ export class CollageMakeComponent implements OnInit {
       width: (this.isMobile) ? "90%" : "50%"
     });
     dialogRef.afterClosed().subscribe(async (url) => {
-      console.log("SSSSSSSS", url)
       if (url) {
         await this.collage.setBackgroundImage(url)
       }

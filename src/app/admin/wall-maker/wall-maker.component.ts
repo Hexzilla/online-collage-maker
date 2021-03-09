@@ -11,6 +11,7 @@ import { Setting } from "../../collage/setting";
 import { toDataURL } from '../../collage/util';
 import { createWall, saveWall } from "../template.builder";
 import { environment } from 'src/environments/environment';
+import { ImageService, WallImageService } from 'src/app/collage/image.service';
 
 @Component({
   selector: "wall-maker",
@@ -19,6 +20,7 @@ import { environment } from 'src/environments/environment';
 })
 export class WallMakerComponent implements OnInit {
   public loading: boolean = false;
+  public imageSvc: ImageService
 
   constructor(
     private toastr: ToastrService,
@@ -31,6 +33,7 @@ export class WallMakerComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    this.imageSvc = new WallImageService(this.api)
     this.collage.onLoadingStateChanged = (state) => (this.loading = state);
     this.collage.onMenuItemClicked = (e) => this.onMenuItemClicked(e)
 
@@ -42,7 +45,7 @@ export class WallMakerComponent implements OnInit {
     }
 
     this.loading = true
-    await this.setting.updateWallImages(this.api)
+    await this.imageSvc.updateImages()
 
     this.setting.unitOfLength = "feet"
     this.setting.width = 10
@@ -82,10 +85,6 @@ export class WallMakerComponent implements OnInit {
         this.collage.changeCellSize(data)
       }
     })
-  }
-
-  async uploadImage(formData) {
-    return await this.api.uploadWallImage(formData)
   }
   
   async onControlActionEvent(e) {

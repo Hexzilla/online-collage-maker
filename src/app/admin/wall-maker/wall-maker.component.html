@@ -17,11 +17,11 @@
     </div>
       <div class="row">
         <div class="col-md-2">
-          <image-upload uploadMode="wall"></image-upload>
+          <image-upload [imageSvc]="imageSvc"></image-upload>
           <hr class="mt-2 mb-2">
           <control-panel [showWallButtons]="true" [showMarginSettings]="true" unitOfLength="feet" (actionEvent)="onControlActionEvent($event)"></control-panel>
           <hr class="mt-2 mb-2">
-          <image-list [images]="setting.wallImages"></image-list>
+          <image-list [images]="imageSvc.thumbImages"></image-list>
         </div>
         <div class="col-md-10">
             <div class="grey-box">

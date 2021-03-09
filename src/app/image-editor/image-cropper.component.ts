@@ -1,14 +1,14 @@
 import { Component, Inject, OnInit, Input } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { ApiService } from "../api/api";
 import { ToastrService } from "ngx-toastr";
 import { Collage } from "../collage/collage.service";
-import { Setting } from "../collage/setting";
 import { b64toBlob } from "../collage/util";
+import { ImageService } from "../collage/image.service";
 
 export interface ImageData {
   imageBase64: string;
   ratio: number;
+  imageSvc: ImageService;
 }
 
 @Component({
@@ -29,9 +29,7 @@ export class ImageCropperComponent implements OnInit {
     public dialogRef: MatDialogRef<ImageCropperComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ImageData,
     private toastr: ToastrService,
-    private api: ApiService,
-    private collage: Collage,
-    public  setting: Setting
+    private collage: Collage
   ) { 
     this.imagePickerImageUrl = this.data.imageBase64
     this.cropRatio = this.data.ratio
@@ -62,10 +60,10 @@ export class ImageCropperComponent implements OnInit {
     let formData = new FormData();
     formData.append("images", blob, "image_editor_upload.jpg")
 
-    let result = await this.api.uploadFiles(formData)
+    let result = await this.data.imageSvc.uploadImage(formData)
     if (result) {
+      await this.data.imageSvc.updateImages()
       this.toastr.success("success")
-      await this.setting.updateUserImages(this.api)
     } 
     else {
       this.toastr.error("failed")

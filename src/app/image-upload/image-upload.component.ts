@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { ApiService } from "../api/api";
+import { ImageService } from "../collage/image.service";
 import { Setting } from "../collage/setting";
 
 @Component({
@@ -12,7 +13,7 @@ export class ImageUploadComponent implements OnInit {
   files: File[] = [];
   progressShow: boolean;
   dropZoneStatus: boolean;
-  @Input() uploadMode: string = "user"
+  @Input() imageSvc: ImageService
 
   constructor(
     private toastr: ToastrService,
@@ -46,26 +47,13 @@ export class ImageUploadComponent implements OnInit {
       formData.append("images", this.files[i], this.files[i].name)
     }
 
-    let result = false
-    if (this.uploadMode == "user") {
-      result = await this.api.uploadFiles(formData)
-      if (result) {
-        this.toastr.success("success")
-        await this.setting.updateUserImages(this.api)
-      } 
-      else {
-        this.toastr.error("failed")
-      }
-    }
+    const result = await this.imageSvc.uploadImage(formData)
+    if (result) {
+      this.toastr.success("success")
+      await this.imageSvc.updateImages()
+    } 
     else {
-      result = await this.api.uploadWallImage(formData)
-      if (result) {
-        this.toastr.success("success")
-        await this.setting.updateWallImages(this.api)
-      } 
-      else {
-        this.toastr.error("failed")
-      }
+      this.toastr.error("failed")
     }
 
     this.files = []

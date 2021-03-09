@@ -16,9 +16,7 @@ export class ImageListComponent implements OnInit {
     private collage: Collage
   ) {}
 
-  async ngOnInit() { 
-    console.log("ImageList", this.images)
-  }
+  async ngOnInit() { }
 
   async deleteImage(image) {
     let result = await this.api.deleteImage(image.url);
