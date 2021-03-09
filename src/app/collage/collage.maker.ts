@@ -132,8 +132,10 @@ export async function createCollageByWallId(collage: Collage, wallId: number) {
       const box = collage.createSimpleImageBox()
         .setTag(tag)
         .setBorder(setting.borderWidth, setting.borderColor)
-        .addLockedBoard(it.left * scale, it.top * scale, it.width * scale, it.height * scale)
+        .addMovableBoard(it.left * scale, it.top * scale, it.width * scale, it.height * scale)
+
       collage.addImageBox(tag, box)
+      collage.setObjectMoveEvent(box)
     })
   }
   catch (err) {

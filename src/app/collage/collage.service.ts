@@ -17,7 +17,7 @@ export class Collage {
   private layout: CanvasLayout
   private contextMenu: CanvasContextMenu
   private setting: Setting
-  private images: any = {}
+  private imageBoxes: any = {}
   private selectedTag: any
   private savedCollage: any
   private menuPoint: any
@@ -82,11 +82,11 @@ export class Collage {
   }
 
   addImageBox(tag: string, box: ImageBox) {
-    this.images[tag] = box
+    this.imageBoxes[tag] = box
   }
 
   removeImageBoxs() {
-    this.images = []
+    this.imageBoxes = []
   }
 
   createSimpleImageBox() {
@@ -177,12 +177,12 @@ export class Collage {
   }
 
   getSelectedImage() {
-    return this.images[this.selectedTag]
+    return this.imageBoxes[this.selectedTag]
   }
 
   private getImage(offsetX, offsetY) {
-    for (var tag in this.images) {
-      const it: ImageBox = this.images[tag]
+    for (var tag in this.imageBoxes) {
+      const it: ImageBox = this.imageBoxes[tag]
       if (it.containsPoint(offsetX, offsetY)) {
         return it
       }
@@ -190,12 +190,15 @@ export class Collage {
     return null
   }
 
-  deleteSelectedImage() {
+  deleteSelectedImage(mode: string) {
     const box: ImageBox = this.getSelectedImage()
     box.removeImage()
-    if (!box.lockBoardRect) {
-      box.removeBoard()
-      delete this.images[box.tag]
+    
+    if (mode != 'wall') {
+      if (!box.lockBoardRect) {
+        box.removeBoard()
+        delete this.imageBoxes[box.tag]
+      }
     }
   }
 
@@ -219,14 +222,14 @@ export class Collage {
       .setBorder(this.setting.borderWidth, this.setting.borderColor)
       .setSizeInch(widthInch, heighInch)
       .addCellBoard(left, top, widthPixel, heightPixel)
-    this.images[tag] = cell
+    this.imageBoxes[tag] = cell
     return cell
   }
 
   deleteCell() {
     const cell: ImageBox = this.getSelectedImage()
     cell.removeBoard()
-    delete this.images[cell.tag]
+    delete this.imageBoxes[cell.tag]
   }
 
   onImageCropped(imageBase64) {
@@ -254,16 +257,17 @@ export class Collage {
   }
 
   async setBackgroundImage(url) {
+    this.setLoadingState(true)
     const imageUrl = await toDataURL("GET", url)
     fabric.Image.fromURL(imageUrl, (img) => {
-      const scale = Math.max(this.canvas.width / img.width, this.canvas.height / img.height)
       img.set({
-        scaleX: scale,
-        scaleY: scale,
+        scaleX: this.canvas.width / img.width,
+        scaleY: this.canvas.height / img.height,
       })
       this.canvas.backgroundImage = img
       this.canvas.renderAll()
     }, {crossOrigin: 'anonymous'})
+    this.setLoadingState(false)
   }
 
   getSelectedImageBoxSize() {
@@ -390,8 +394,8 @@ export class Collage {
   getTemplateInfo() {
     let index = 1
     const collages = []
-    for (const tag in this.images) {
-      const box: ImageBox = this.images[tag]
+    for (const tag in this.imageBoxes) {
+      const box: ImageBox = this.imageBoxes[tag]
       const info = Object.assign({ index: index++ }, box.getBoard())
       collages.push(info);
     }
@@ -433,6 +437,19 @@ export class Collage {
       box.onImageLoadCompleted = () => this.setLoadingState(false)
       box.removeImage()
       box.setImageUrl(imageUrl).loadImage(imageUrl)
+    }
+  }
+
+  setObjectMoveEvent(box: ImageBox) {
+    box.onObjectMove = (sender: ImageBox, dx: number, dy: number) => this.onImageBoxMove(sender, dx, dy)
+  }
+
+  onImageBoxMove(sender: ImageBox, dx: number, dy: number) {
+    for (var tag in this.imageBoxes) {
+      const it: ImageBox = this.imageBoxes[tag]
+      if (it != sender) {
+        it.objectMove(dx, dy)
+      }
     }
   }
 }

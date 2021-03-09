@@ -1,6 +1,10 @@
 import { Component, Inject, OnInit, Input } from "@angular/core";
-import { MatDialogRef } from "@angular/material/dialog";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Setting } from "../collage/setting";
+
+export interface ImageSelectData {
+  images: Array<any>;
+}
 
 @Component({
   selector: "image-select",
@@ -10,7 +14,7 @@ import { Setting } from "../collage/setting";
 export class ImageSelectComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ImageSelectComponent>,
-    public setting: Setting
+    @Inject(MAT_DIALOG_DATA) public data: ImageSelectData
   ) { }
 
   async ngOnInit() { }

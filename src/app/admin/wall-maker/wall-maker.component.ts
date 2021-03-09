@@ -79,8 +79,9 @@ export class WallMakerComponent implements OnInit {
   }
 
   setBackgroundImage() {
+    const images = this.setting.thumbImages
     const dialogRef = this.dialog.open(ImageSelectComponent, {
-      data: {},
+      data: { images: images},
     });
     dialogRef.afterClosed().subscribe(async (url) => {
       if (url) {

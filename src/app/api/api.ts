@@ -245,4 +245,17 @@ export class ApiService {
         }
         return false;
     }
+
+    async getWallImageList() {
+        try {
+            const url = environment.apiUrl + "/collage/wall-images/list";
+            const response = await this.http.get(url, {}).toPromise();
+            if (response['success'] == true) {
+                return response['data'].map(it => it)
+            }
+        } catch (e) {
+            console.log(e);
+        }
+        return null;
+    }
 }

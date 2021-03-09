@@ -13,6 +13,7 @@ import { ApiService } from "../api/api";
 import { Collage } from '../collage/collage.service'
 import ImageBox from "../collage/image-box"
 import { Setting } from '../collage/setting';
+import { toDataURL } from '../collage/util';
 import { 
   createAutoCollage, 
   createCollageByTemplateId, 
@@ -78,7 +79,7 @@ export class CollageMakeComponent implements OnInit {
         break
 
       case 'delete':
-        this.collage.deleteSelectedImage()
+        this.collage.deleteSelectedImage(this.setting.mode)
         break
 
       case 'background':
@@ -94,14 +95,16 @@ export class CollageMakeComponent implements OnInit {
 
   async openImageEditWindow() {
     const box: ImageBox = this.collage.getSelectedImage()
-    this.dialog.open(ImageEditorComponent, {
-      data: {
-        imageBox: box
-      },
-      position: {
-        left: "0px"
-      },
-    });
+    if (box.image != null) {
+      this.dialog.open(ImageEditorComponent, {
+        data: {
+          imageBox: box
+        },
+        position: {
+          left: "0px"
+        },
+      });
+    }
   }
 
   async openImageCropWindow() {
@@ -120,9 +123,11 @@ export class CollageMakeComponent implements OnInit {
 
   async openSelectImageWindow() {
     const box: ImageBox = this.collage.getSelectedImage()
-    if (box.lockBoardRect) {
+    if (this.setting.mode == 'select' || this.setting.mode == 'wall') {
+      const images = this.setting.thumbImages
       const dialogRef = this.dialog.open(ImageSelectComponent, {
-        data: {},
+        data: { images: images},
+        width: (this.isMobile) ? "90%" : "50%"
       });
       dialogRef.afterClosed().subscribe(url => {
         if (url) {
@@ -201,12 +206,26 @@ export class CollageMakeComponent implements OnInit {
     }
   }
 
+  async setBackgroundImage() {
+    let images = this.setting.thumbImages
+    if (this.setting.mode == 'wall') {
+      this.loading = true
+      const imageUrls = await this.api.getWallImageList()
+      images = await Promise.all(imageUrls.map(async (it) => {
+        const url = environment.apiUrl + '/collage/wall-images/image/' + it
+        const url_thumb = environment.apiUrl + '/collage/wall-images/thumb/' + it
+        const imageBase64 = await toDataURL("GET", url_thumb)
+        return { url, imageBase64 }
+      }))
+      this.loading = false
+    }
 
-  setBackgroundImage() {
     const dialogRef = this.dialog.open(ImageSelectComponent, {
-      data: {},
+      data: { images: images},
+      width: (this.isMobile) ? "90%" : "50%"
     });
     dialogRef.afterClosed().subscribe(async (url) => {
+      console.log("SSSSSSSS", url)
       if (url) {
         await this.collage.setBackgroundImage(url)
       }

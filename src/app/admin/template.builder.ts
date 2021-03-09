@@ -4,7 +4,7 @@ import { Collage } from "../collage/collage.service";
 export async function createTemplate(collage: Collage) {
   try {
     const setting = collage.getSetting()
-    setting.savedTemplate = null
+    setting.savedObject = null
 
     collage.removeImageBoxs()
     collage.resetSavedCollage()
@@ -49,7 +49,7 @@ export async function createTemplate(collage: Collage) {
 export async function createWall(collage: Collage) {
   try {
     const setting = collage.getSetting()
-    setting.savedWall = null
+    setting.savedObject = null
 
     collage.removeImageBoxs()
     collage.resetSavedCollage()
@@ -115,8 +115,8 @@ export async function saveTemplate(collage: Collage) {
   })
 
   const data = {setting: setting, images: collage.getTemplateInfo(), image: dataUrl};
-  if (s.savedTemplate) {
-    data['id'] = s.savedTemplate.id
+  if (s.savedObject) {
+    data['id'] = s.savedObject.id
   }
   console.log("Request Save Template:", data);
 
@@ -149,8 +149,8 @@ export async function saveWall(collage: Collage) {
   })
 
   const data = {setting: setting, images: collage.getTemplateInfo(), image: dataUrl};
-  if (s.savedWall) {
-    data['id'] = s.savedWall.id
+  if (s.savedObject) {
+    data['id'] = s.savedObject.id
   }
   console.log("Save Wall:", data);
 

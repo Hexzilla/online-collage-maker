@@ -17,8 +17,7 @@ export class Setting {
     cells: number = 3
     margin: number = 15
     thumbImages: Array<object>
-    savedTemplate: any = null
-    savedWall: any = null
+    savedObject: any = null
 
     setData(s: any) {
         this.canvasWidth = s.canvasWidth

@@ -30,6 +30,7 @@ class ImageBox {
   strokeColor: string = 'rgb(136, 0, 26)'
   strokeWidth: number = 0
   onImageLoadCompleted: Function
+  onObjectMove: Function
 
   widthInch: number = 0
   heightInch: number = 0
@@ -371,6 +372,21 @@ class ImageBox {
     }
   }
 
+  objectMove(dx, dy) {
+    this.boardRect.left += dx
+    this.boardRect.top += dy
+    this.boardRect.setCoords();
+    if (this.image) {
+      this.image.left += dx
+      this.image.top += dy
+      this.image.setCoords();
+    }
+    this.boardRectPos.x += dx
+    this.boardRectPos.y += dy
+    this.addImageClipPath()
+    this.updateCellSizeText()
+  }
+
   onObjectMoving(e) {
     if (e.target.type == this.tag) {
       if (this.grid) {
@@ -385,11 +401,14 @@ class ImageBox {
       if (this.image) {
         this.image.left += dx
         this.image.top  += dy
+        this.image.setCoords();
       }
 
       this.boardRectPos = new fabric.Point(e.target.left, e.target.top)
       this.addImageClipPath()
       this.updateCellSizeText()
+
+      this.onObjectMove && this.onObjectMove(this, dx, dy)
     }
   }
 
