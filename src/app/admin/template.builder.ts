@@ -61,7 +61,7 @@ export async function createWall(collage: Collage) {
     collage.createCanvasElement(canvasWidth, canvasHeight)
     collage.createFabricCanvas(canvasWidth, canvasHeight)
     collage.drawGridLines()
-    collage.drawCanvasSizeText();
+    //collage.drawCanvasSizeText();
     
     const grid = setting.grid
     const margin = Math.ceil(setting.margin / grid) * grid
