@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from "ngx-toastr";
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { MatDialog } from "@angular/material/dialog";
 import { ImageSelectComponent } from "../../image-select/image-select.component";
 import { SizeDialogComponent } from "../../size-dialog/size-dialog.component";
@@ -21,11 +22,13 @@ import { PriceDialogComponent } from 'src/app/price-dialog/price-dialog.componen
 })
 export class WallMakerComponent implements OnInit {
   public loading: boolean = false;
+  public isMobile: any;
   public imageSvc: ImageService
 
   constructor(
     private toastr: ToastrService,
     private dialog: MatDialog,
+    private deviceService: DeviceDetectorService,
     private authSvc: AuthService,
     private router: Router,
     private api: ApiService,
@@ -34,6 +37,9 @@ export class WallMakerComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    this.isMobile = this.deviceService.isMobile();
+    console.log("IsMobile", this.isMobile)
+
     this.imageSvc = new WallImageService(this.api)
     this.collage.onLoadingStateChanged = (state) => (this.loading = state);
     this.collage.onMenuItemClicked = (e) => this.onMenuItemClicked(e)
@@ -77,6 +83,10 @@ export class WallMakerComponent implements OnInit {
       case 'delete_frame':
         this.collage.deleteCell()
         break
+
+      case 'add_background':
+        this.setBackgroundImage()
+        break
     }
   }
 
@@ -102,6 +112,26 @@ export class WallMakerComponent implements OnInit {
     dialogRef.afterClosed().subscribe((price) => {
       if (price) {
         console.log("Price", price)
+        this.collage.setFramePrice(price)
+      }
+    })
+  }
+
+  async setBackgroundImage() {
+    let images = this.imageSvc.thumbImages
+    if (this.setting.mode == 'wall') {
+      this.loading = true
+      images = await this.imageSvc.updateImages()
+      this.loading = false
+    }
+
+    const dialogRef = this.dialog.open(ImageSelectComponent, {
+      data: { images: images},
+      width: (this.isMobile) ? "90%" : "50%"
+    });
+    dialogRef.afterClosed().subscribe(async (url) => {
+      if (url) {
+        await this.collage.setBackgroundImage(url)
       }
     })
   }
