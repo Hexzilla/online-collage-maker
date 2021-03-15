@@ -12,6 +12,7 @@ import { CollageMakeComponent } from "./collage-make/collage-make.component";
 import { TemplateMakerComponent } from "./admin/template-maker/template-maker.component";
 import { TemplatePreviewComponent } from "./admin/template-maker/template-preview.component";
 import { WallMakerComponent } from "./admin/wall-maker/wall-maker.component";
+import { WallBackgroundComponent } from "./admin/wall-background/wall-background.component";
 import { WallPreviewComponent } from "./admin/wall-maker/wall-preview.component";
 import { ControlPanelComponent } from "./control-panel/control-panel.component";
 import { SelectDialogComponent } from "./select-dialog/select-dialog.component";
@@ -59,14 +60,18 @@ import { ImagePickerComponent } from './image-picker/image-picker.component';
 import { AlertModule } from 'ngx-alerts';
 import { NgxImageCompressService } from 'ngx-image-compress'; // It should be added too
 import { PriceDialogComponent } from './price-dialog/price-dialog.component';
+import { WallSettingComponent } from './wall-setting-dialog/wall-setting.component';
+import { CWallPreviewComponent } from './wall-preview/wall-preview.component';
 
 const appRoutes: Routes = [
   { path: '', component: LandingComponent },
   { path: 'preview', component: CollagePreviewComponent },
   { path: 'collage/:mode', component: CollageMakeComponent },
+  { path: 'collage-walls', component: CWallPreviewComponent },
   { path: 'admin/template', component: TemplateMakerComponent },
   { path: 'admin/templates', component: TemplatePreviewComponent },
   { path: 'admin/wall', component: WallMakerComponent },
+  { path: 'admin/wall/background', component: WallBackgroundComponent },
   { path: 'admin/walls', component: WallPreviewComponent },
   { path: 'pictor/create-post', component: ImagePickerComponent },
   { path: 'home', pathMatch: 'full', redirectTo: '' },
@@ -89,15 +94,18 @@ const appRoutes: Routes = [
     CollagePreviewComponent,
     CollageMakeComponent,
     //CollageWallComponent,
+    CWallPreviewComponent,
     TemplateMakerComponent,
     TemplatePreviewComponent,
     WallMakerComponent,
+    WallBackgroundComponent,
     WallPreviewComponent,
     CartComponent,
     CrudComponent,
     ControlPanelComponent,
     SelectDialogComponent,
     PriceDialogComponent,
+    WallSettingComponent,
     SizeDialogComponent,
     ImageEditorComponent,
     ImageCropperComponent,

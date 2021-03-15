@@ -65,6 +65,12 @@ export class CollageMakeComponent implements OnInit {
 
     this.loading = true
     await this.imageSvc.updateImages();
+
+    if (this.setting.mode == 'wall' && this.setting.selectedWallId) {
+      this.collage.setSetting(this.setting.clone())
+      await createCollageByWallId(this.collage, this.setting.selectedWallId)
+    }
+
     this.loading = false
   }
 
@@ -208,6 +214,7 @@ export class CollageMakeComponent implements OnInit {
         width: (this.isMobile) ? "90%" : "50%"
       });
       dialogRef.afterClosed().subscribe(async (itemId) => {
+        console.log("itemId", itemId)
         if (itemId) {
           this.collage.setSetting(this.setting.clone())
           await createCollageByWallId(this.collage, itemId)

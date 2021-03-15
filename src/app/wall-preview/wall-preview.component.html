@@ -1,0 +1,44 @@
+<div class="collage-content">
+  <div class="container-fluid">
+    <div class="row text-center text-lg-left p-3 m-0">
+      <div *ngFor="let image of images" class="col-lg-3 col-md-3 col-sm-12 mb-3 mt-3" id="preview-images">
+        <mat-card class="example-card">
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Save (40%)</mat-card-title>
+          </mat-card-header>
+          <img mat-card-image src="{{image.src}}" alt="Wall">
+          <mat-card-content>
+            <div class="wall-title">
+              <h4>(3) 12" x 18"</h4>
+            </div>
+            <div class="wall-title">
+              <h4>Wall area: 36" x 18"</h4>
+            </div>
+            <div class="prices">
+              <span class="price-discount">
+                <bdi>$<span>295.00</span></bdi>
+              </span>
+              <span class="price-final">
+                <strong><bdi>$<span>103.25</span></bdi></strong>
+              </span>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button class="btn btn-sm btn-block btn-primary uppercase" (click)="onCreateButtonClick(image)">Create Now</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div *ngIf="previewLoading" class="col-lg-3 col-md-3 col-sm-12">
+        <mat-spinner class="vertical-center" [diameter]="30"></mat-spinner>
+      </div>
+    </div>
+    <div class="row" *ngIf="loading">
+      <div class="col-md-12 spinner-container">
+        <mat-spinner class="vertical-center" [diameter]="50"></mat-spinner>
+      </div>
+    </div>
+  </div>
+</div>
+
+

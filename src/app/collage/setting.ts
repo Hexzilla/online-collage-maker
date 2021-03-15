@@ -20,6 +20,7 @@ export class Setting {
     cells: number = 3
     margin: number = 15
     savedObject: any = null
+    selectedWallId: number;
 
     setData(s: any) {
         this.unitOfLength = "inch"

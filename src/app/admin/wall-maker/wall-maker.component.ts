@@ -14,6 +14,7 @@ import { createWall, saveWall } from "../template.builder";
 import { environment } from 'src/environments/environment';
 import { ImageService, WallImageService } from 'src/app/collage/image.service';
 import { PriceDialogComponent } from 'src/app/price-dialog/price-dialog.component';
+import { WallSettingComponent } from 'src/app/wall-setting-dialog/wall-setting.component';
 
 @Component({
   selector: "wall-maker",
@@ -40,7 +41,7 @@ export class WallMakerComponent implements OnInit {
     this.isMobile = this.deviceService.isMobile();
     console.log("IsMobile", this.isMobile)
 
-    this.imageSvc = new WallImageService(this.api)
+    this.imageSvc = new ImageService(this.api)
     this.collage.onLoadingStateChanged = (state) => (this.loading = state);
     this.collage.onMenuItemClicked = (e) => this.onMenuItemClicked(e)
 
@@ -54,9 +55,9 @@ export class WallMakerComponent implements OnInit {
     this.loading = true
     await this.imageSvc.updateImages()
 
-    this.setting.unitOfLength = "feet"
-    this.setting.width = 10
-    this.setting.height = 10
+    this.setting.unitOfLength = "inch"
+    this.setting.width = 8
+    this.setting.height = 8
     this.create();
 
     this.loading = false
@@ -148,15 +149,15 @@ export class WallMakerComponent implements OnInit {
   }
 
   async onSaveWallButtonClick() {
-    const dialogRef = this.dialog.open(PriceDialogComponent, {
+    const dialogRef = this.dialog.open(WallSettingComponent, {
       data: {
-        title: "Discount",
-        price: 0
+        discount: 40
       },
+      width: (this.isMobile) ? "90%" : "20%"
     });
-    dialogRef.afterClosed().subscribe(async (discount: number) => {
-      if (discount) {
-        if (await saveWall(this.collage, discount)) {
+    dialogRef.afterClosed().subscribe(async (data) => {
+      if (data) {
+        if (await saveWall(this.collage, data)) {
           this.toastr.success("Success");
         }
         else {
@@ -173,15 +174,5 @@ export class WallMakerComponent implements OnInit {
   handleDrop(e) {
     this.collage.onHandleDrop(e.offsetX, e.offsetY)
     return false;
-  }
-
-  async printCollage(way) {
-    const userId = this.authSvc.getUserId()
-    const url = await this.collage.printCollageImage(userId, way)    
-    if (url) {
-      const element = document.getElementById('print-button')
-      element.setAttribute("href", url)
-      element.click()
-    }
   }
 }

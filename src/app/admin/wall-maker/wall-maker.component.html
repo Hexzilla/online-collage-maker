@@ -20,7 +20,7 @@
         <div class="col-md-2">
           <image-upload [imageSvc]="imageSvc"></image-upload>
           <hr class="mt-2 mb-2">
-          <control-panel [showWallButtons]="true" [showMarginSettings]="true" unitOfLength="feet" (actionEvent)="onControlActionEvent($event)"></control-panel>
+          <control-panel [showWallButtons]="true" [showMarginSettings]="true" unitOfLength="inch" (actionEvent)="onControlActionEvent($event)"></control-panel>
           <hr class="mt-2 mb-2">
           <image-list [images]="imageSvc.thumbImages"></image-list>
         </div>
