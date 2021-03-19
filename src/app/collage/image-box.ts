@@ -125,6 +125,33 @@ class ImageBox {
     this.boardRect.setControlsVisibility({mb: false, ml: false, mr: false, mt: false, mtr: false})
     this.canvas.add(this.boardRect)
     this.boardRectPos = new fabric.Point(this.boardRect.left, this.boardRect.top)
+
+    if (this.widthInch && this.heightInch) {
+      this.cellSizeText = new fabric.Text(`${this.widthInch}" x ${this.heightInch}"`, { 
+        left: this.boardRect.left + this.strokeWidth + 3, //Take the block's position
+        top: this.boardRect.top + this.strokeWidth + 3, 
+        fontSize: 15,
+        fill: 'rgb(10,10,10)',
+        lockScalingX: true,
+        lockScalingY: true,
+        lockUniScaling: true,
+        selectable: false,
+      })
+      this.canvas.add(this.cellSizeText)
+    
+      this.priceText = new fabric.Text(`${this.price} INR`, { 
+        originY: 'bottom',
+        left: this.boardRect.left + this.strokeWidth + 3,
+        top: this.boardRect.top + this.boardRect.height - this.strokeWidth - 3, 
+        fontSize: 15,
+        fill: 'rgb(10,10,10)',
+        lockScalingX: true,
+        lockScalingY: true,
+        lockUniScaling: true,
+        selectable: false,
+      })
+      this.canvas.add(this.priceText)
+    }
     return this
   }
 
@@ -143,6 +170,7 @@ class ImageBox {
     this.price = price
     this.updatePriceText()
     this.canvas.renderAll()
+    return this
   }
 
   addCellBoard(left, top, width, height) {
@@ -190,10 +218,10 @@ class ImageBox {
       })
       this.canvas.add(this.cellSizeText)
     
-      this.priceText = new fabric.Text(`${this.price} INR`, { 
-        originX: 'right',
-        left: this.boardRect.left + this.boardRect.width - this.strokeWidth - 3, //Take the block's position
-        top: this.boardRect.top + this.strokeWidth + 3, 
+      this.priceText = new fabric.Text(`${this.price} INR`, {         
+        originY: 'bottom',
+        left: this.boardRect.left + this.strokeWidth + 3,
+        top: this.boardRect.top + this.boardRect.height - this.strokeWidth - 3, 
         fontSize: 15,
         fill: 'rgb(10,10,10)',
         lockScalingX: true,
@@ -370,9 +398,9 @@ class ImageBox {
     if (this.priceText) {
       const board = this.boardRect
       this.priceText.set({
-        originX: 'right',
-        left: board.left + board.width - this.strokeWidth - 3 ,
-        top: board.top + this.strokeWidth + 3,
+        originY: 'bottom',
+        left: this.boardRect.left + this.strokeWidth + 3,
+        top: this.boardRect.top + this.boardRect.height - this.strokeWidth - 3, 
         text: `${this.price} INR`,
       })
     }

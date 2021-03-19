@@ -25,6 +25,10 @@ export class CanvasLayout {
     return this.getContainerWidth();
   }
 
+  getPixelForInch() {
+    return this.getContainerWidth() / this.setting.getWidth();
+  }
+
   getCanvasHeightInPixel() {
     return (this.setting.getHeight() * this.getContainerWidth()) / this.setting.getWidth();
   }

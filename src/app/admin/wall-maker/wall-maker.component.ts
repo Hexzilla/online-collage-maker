@@ -164,7 +164,6 @@ export class WallMakerComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(async (options) => {
       if (options) {
-        console.log('options', options)
         if (await saveWall(this.collage, options)) {
           this.toastr.success("Success");
         }

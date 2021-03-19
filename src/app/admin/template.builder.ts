@@ -150,7 +150,7 @@ export async function saveWall(collage: Collage, options: any) {
     heightInch: options.height
   })
 
-  const data = {setting: setting, images: collage.getTemplateInfo(), image: dataUrl, options: options};
+  const data = {setting: setting, images: collage.getWallFrameInfo(), image: dataUrl, options: options};
   if (s.savedObject) {
     data['id'] = s.savedObject.id
   }

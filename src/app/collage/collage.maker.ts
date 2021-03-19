@@ -121,8 +121,9 @@ export async function createCollageByWallId(collage: Collage, wallId: number) {
     const layout = new CanvasLayout(setting)
 
     const canvasWidth = layout.getCanvasWidthInPixel()
-    const canvasHeight = setting.canvasHeight * canvasWidth / setting.canvasWidth
+    const canvasHeight = setting.height * canvasWidth / setting.width
     const scale = canvasWidth / setting.canvasWidth
+    console.log(canvasWidth, canvasHeight, scale)
     collage.createCanvasElement(canvasWidth, canvasHeight)
     collage.createFabricCanvas(canvasWidth, canvasHeight)
 
@@ -130,10 +131,16 @@ export async function createCollageByWallId(collage: Collage, wallId: number) {
     collage.removeImageBoxs()
     wall.images.forEach(it => {
       const tag = `img_${it.index}`
+      const imageLeft = it.left * layout.getPixelForInch()
+      const imageTop = it.top * layout.getPixelForInch()
+      const imageWidth = it.width * layout.getPixelForInch()
+      const imageHeight = it.height * layout.getPixelForInch()
       const box = collage.createSimpleImageBox()
         .setTag(tag)
         .setBorder(setting.borderWidth, setting.borderColor)
-        .addMovableBoard(it.left * scale, it.top * scale, it.width * scale, it.height * scale)
+        .setSizeInch(it.width.toFixed(1), it.height.toFixed(1))
+        .setPrice(it.price)
+        .addMovableBoard(imageLeft, imageTop, imageWidth, imageHeight)
 
       collage.addImageBox(tag, box)
       collage.setObjectMoveEvent(box)
