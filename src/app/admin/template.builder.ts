@@ -146,8 +146,8 @@ export async function saveWall(collage: Collage, options: any) {
   const setting = Object.assign({}, s, {
     canvasWidth: canvasWidth,
     canvasHeight: canvasHeight,
-    width: options.width,
-    height: options.height
+    widthInch: options.width,
+    heightInch: options.height
   })
 
   const data = {setting: setting, images: collage.getTemplateInfo(), image: dataUrl, options: options};

@@ -36,6 +36,7 @@ class ImageBox {
   widthInch: number = 0
   heightInch: number = 0
   cellSizeText: fabric.Text
+  priceText: fabric.Text
 
   constructor(canvas) {
     this.canvas = canvas
@@ -138,6 +139,12 @@ class ImageBox {
     this.canvas.renderAll()
   }
 
+  setPrice(price) {
+    this.price = price
+    this.updatePriceText()
+    this.canvas.renderAll()
+  }
+
   addCellBoard(left, top, width, height) {
     this.lockBoardRect = false
     this.boardRect = new fabric.Rect({
@@ -182,6 +189,19 @@ class ImageBox {
         selectable: false,
       })
       this.canvas.add(this.cellSizeText)
+    
+      this.priceText = new fabric.Text(`${this.price} INR`, { 
+        originX: 'right',
+        left: this.boardRect.left + this.boardRect.width - this.strokeWidth - 3, //Take the block's position
+        top: this.boardRect.top + this.strokeWidth + 3, 
+        fontSize: 15,
+        fill: 'rgb(10,10,10)',
+        lockScalingX: true,
+        lockScalingY: true,
+        lockUniScaling: true,
+        selectable: false,
+      })
+      this.canvas.add(this.priceText)
     }
 
     return this
@@ -278,8 +298,10 @@ class ImageBox {
   }
 
   removeBoard() {
+    this.image && this.canvas.remove(this.image)
     this.boardRect && this.canvas.remove(this.boardRect)
     this.cellSizeText && this.canvas.remove(this.cellSizeText)
+    this.priceText && this.canvas.remove(this.priceText)
     this.boardRect = this.cellSizeText = null
   }
 
@@ -292,8 +314,16 @@ class ImageBox {
   update() {
     this.updateImage()
     this.addImageClipPath()
-    this.canvas.bringToFront(this.boardRect)
+    this.arrangeObjects()
     this.canvas.renderAll()
+  }
+
+  private arrangeObjects() {
+    this.image && this.canvas.bringToFront(this.image)
+    this.cellSizeText && this.canvas.bringToFront(this.cellSizeText)
+    this.priceText && this.canvas.bringToFront(this.priceText)
+    this.canvas.bringToFront(this.boardRect)
+
   }
 
   private updateImage() {
@@ -329,9 +359,21 @@ class ImageBox {
       const width = (board.scaleX * this.widthInch).toFixed(1)
       const height = (board.scaleY * this.heightInch).toFixed(1)
       this.cellSizeText.set({
-        left: this.boardRect.left + this.strokeWidth + 3 ,
-        top: this.boardRect.top + this.strokeWidth + 3,
+        left: board.left + this.strokeWidth + 3 ,
+        top: board.top + this.strokeWidth + 3,
         text: `${width}" x ${height}"`,
+      })
+    }
+  }
+
+  private updatePriceText() {
+    if (this.priceText) {
+      const board = this.boardRect
+      this.priceText.set({
+        originX: 'right',
+        left: board.left + board.width - this.strokeWidth - 3 ,
+        top: board.top + this.strokeWidth + 3,
+        text: `${this.price} INR`,
       })
     }
   }
@@ -355,8 +397,7 @@ class ImageBox {
   onMouseDown(e) {
     if (!this.lockBoardRect) {
       if (e.target && e.target.type == this.tag) {
-        this.canvas.bringToFront(this.image)
-        this.canvas.bringToFront(this.boardRect)
+        this.arrangeObjects()
         this.canvas.setActiveObject(this.boardRect)
       }
     }
@@ -386,6 +427,7 @@ class ImageBox {
     this.boardRectPos.y += dy
     this.addImageClipPath()
     this.updateCellSizeText()
+    this.updatePriceText()
   }
 
   onObjectMoving(e) {
@@ -408,6 +450,7 @@ class ImageBox {
       this.boardRectPos = new fabric.Point(e.target.left, e.target.top)
       this.addImageClipPath()
       this.updateCellSizeText()
+      this.updatePriceText()
 
       this.onObjectMove && this.onObjectMove(this, dx, dy)
     }
@@ -438,6 +481,7 @@ class ImageBox {
       this.boardRectPos = new fabric.Point(e.target.left, e.target.top)
       this.updateImage()
       this.updateCellSizeText()
+      this.updatePriceText()
       this.addImageClipPath()
 
       this.canvas.renderAll()
@@ -456,6 +500,7 @@ class ImageBox {
           scaleY: e.target.scaleY * newHeight / height
         });
         this.updateCellSizeText()
+        this.updatePriceText()
       }
     }
   }

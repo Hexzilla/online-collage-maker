@@ -291,7 +291,7 @@ export class Collage {
   setFramePrice(price) {
     const box: ImageBox = this.getSelectedImage()
     if (box) {
-      box.price = price
+      box.setPrice(price)
     }
   }
 
@@ -403,7 +403,10 @@ export class Collage {
     const collages = []
     for (const tag in this.imageBoxes) {
       const box: ImageBox = this.imageBoxes[tag]
-      const info = Object.assign({ index: index++ }, box.getBoard())
+      const info = Object.assign({ 
+        index: index++,
+        price: box.price
+      }, box.getBoard())
       collages.push(info);
     }
     return collages

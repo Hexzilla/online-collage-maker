@@ -9,6 +9,7 @@ import { AuthService } from "../../auth.service";
 import { ApiService } from "../../api/api";
 import { Collage } from '../../collage/collage.service'
 import { Setting } from "../../collage/setting";
+import ImageBox from "../../collage/image-box"
 import { toDataURL } from '../../collage/util';
 import { createWall, saveWall } from "../template.builder";
 import { environment } from 'src/environments/environment';
@@ -104,10 +105,16 @@ export class WallMakerComponent implements OnInit {
   }
 
   openPriceDialog() {
+    let price = 0;
+    const box: ImageBox = this.collage.getSelectedImage()
+    if (box) {
+      price = Math.max(0, box.price)
+    }
+
     const dialogRef = this.dialog.open(PriceDialogComponent, {
       data: {
         title: "Price",
-        price: 0
+        price: price
       },
     });
     dialogRef.afterClosed().subscribe((price) => {
@@ -155,9 +162,10 @@ export class WallMakerComponent implements OnInit {
       },
       width: (this.isMobile) ? "90%" : "20%"
     });
-    dialogRef.afterClosed().subscribe(async (data) => {
-      if (data) {
-        if (await saveWall(this.collage, data)) {
+    dialogRef.afterClosed().subscribe(async (options) => {
+      if (options) {
+        console.log('options', options)
+        if (await saveWall(this.collage, options)) {
           this.toastr.success("Success");
         }
         else {

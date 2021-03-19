@@ -36,9 +36,17 @@ export class CWallPreviewComponent implements OnInit {
     if (data) {
       const url = environment.apiUrl + "/collage/wallframes/image/";
       const images = data.map((it) => {
+        const totalPrice = it.images.reduce((accumulator, img) => {
+          return (accumulator + img.price)
+        }, 0)
+        const finalPrice = totalPrice * (100 - it.options.discount) / 100
         return {
           id: it._id,
+          data: it,
+          options: it.options,
           src: url + it.image,
+          totalPrice: totalPrice,
+          finalPrice: finalPrice,
           loaded: false
         };
       });
