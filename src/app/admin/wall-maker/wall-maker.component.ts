@@ -119,7 +119,6 @@ export class WallMakerComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((price) => {
       if (price) {
-        console.log("Price", price)
         this.collage.setFramePrice(price)
       }
     })
@@ -154,7 +153,6 @@ export class WallMakerComponent implements OnInit {
   }
 
   async onSaveWallButtonClick() {
-    console.log(this.setting)
     const dialogRef = this.dialog.open(WallSettingComponent, {
       data: {
         title: '(9) 12" x 12"',

@@ -31,9 +31,7 @@ export class WallImageService extends ImageService {
   }
 
   async updateImages() {
-    console.log('updateImages')
     const imageUrls = await this.api.getWallImageList()
-    console.log('updateImages-urls', imageUrls)
     if (imageUrls) {
       this.thumbImages = await Promise.all(imageUrls.map(async (it) => {
           const url = environment.apiUrl + '/collage/wall-images/image/' + it
@@ -41,7 +39,6 @@ export class WallImageService extends ImageService {
           const imageBase64 = await toDataURL("GET", url_thumb)
           return { url, imageBase64 }
       }))
-      console.log('updateImages-thumbImages', this.thumbImages)
     }
     return this.thumbImages
   }

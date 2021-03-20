@@ -78,7 +78,6 @@ export class WallPreviewComponent implements OnInit {
   }
 
   async onDeleteWall(image) {
-    console.log('DeleteWall', image)
     this.loading = true
     const result = await this.api.deleteWallFrame(image['id'])
     if (result) {

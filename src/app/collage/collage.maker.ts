@@ -113,8 +113,6 @@ export async function createCollageByWallId(collage: Collage, wallId: number) {
       return
     }
 
-    console.log("Wall", wall)
-
     collage.resetSavedCollage()
     collage.removeCanvasElement()
 
@@ -132,11 +130,9 @@ export async function createCollageByWallId(collage: Collage, wallId: number) {
     collage.createCanvasElement(canvasWidth, canvasHeight)
     collage.createFabricCanvas(canvasWidth, canvasHeight)
 
-    console.log('Scale-', scale)
     // Add images to canvas.
     collage.removeImageBoxs()
     wall.images.forEach(it => {
-      console.log("Wall-Image", it)
       const tag = `img_${it.index}`
       const box = collage.createSimpleImageBox()
         .setTag(tag)
