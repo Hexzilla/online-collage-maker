@@ -28,6 +28,9 @@ export class ImageUploadComponent implements OnInit {
 
   onSelect(event) {
     this.files.push(...event.addedFiles)
+    if (this.files.length > 5) {
+      this.files = this.files.slice(0, 5)
+    }
   }
 
   onRemove(event) {
