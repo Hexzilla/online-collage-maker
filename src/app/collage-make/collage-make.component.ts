@@ -214,7 +214,6 @@ export class CollageMakeComponent implements OnInit {
         width: (this.isMobile) ? "90%" : "50%"
       });
       dialogRef.afterClosed().subscribe(async (itemId) => {
-        console.log("itemId", itemId)
         if (itemId) {
           this.collage.setSetting(this.setting.clone())
           await createCollageByWallId(this.collage, itemId)

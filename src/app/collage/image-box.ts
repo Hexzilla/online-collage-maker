@@ -262,6 +262,14 @@ class ImageBox {
     return this
   }
 
+  getShowWidthInch() {
+    return this.boardRect.scaleX * this.widthInch
+  }
+
+  getShowHeightInch() {
+    return this.boardRect.scaleY * this.heightInch
+  }
+
   reset() {
     this.zoom = 1.0
     this.brightness = 0.01

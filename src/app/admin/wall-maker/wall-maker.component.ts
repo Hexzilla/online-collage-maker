@@ -56,9 +56,9 @@ export class WallMakerComponent implements OnInit {
     this.loading = true
     await this.imageSvc.updateImages()
 
-    this.setting.unitOfLength = "inch"
-    this.setting.width = 8
-    this.setting.height = 8
+    this.setting.unitOfLength = "feet"
+    this.setting.width = 10
+    this.setting.height = 10
     this.create();
 
     this.loading = false
@@ -126,12 +126,10 @@ export class WallMakerComponent implements OnInit {
   }
 
   async setBackgroundImage() {
-    let images = this.imageSvc.thumbImages
-    if (this.setting.mode == 'wall') {
-      this.loading = true
-      images = await this.imageSvc.updateImages()
-      this.loading = false
-    }
+    const wallImageSvc = new WallImageService(this.api)
+    this.loading = true
+    const images = await wallImageSvc.updateImages()
+    this.loading = false
 
     const dialogRef = this.dialog.open(ImageSelectComponent, {
       data: { images: images},
@@ -156,9 +154,13 @@ export class WallMakerComponent implements OnInit {
   }
 
   async onSaveWallButtonClick() {
+    console.log(this.setting)
     const dialogRef = this.dialog.open(WallSettingComponent, {
       data: {
-        discount: 40
+        title: '(9) 12" x 12"',
+        discount: 40,
+        width: this.setting.width,
+        height: this.setting.height,
       },
       width: (this.isMobile) ? "90%" : "20%"
     });

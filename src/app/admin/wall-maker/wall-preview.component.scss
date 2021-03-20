@@ -1,0 +1,20 @@
+.prices {
+    padding-top: 18px;
+    font-size: 20px;
+    line-height: 20px;
+}
+
+.price-discount {
+    color: #a7a7a7;
+    text-decoration: line-through;
+    padding-right: 8px;
+}
+
+.wall-title > h4 {
+    font-size: 14px;
+}
+
+bdi {
+    unicode-bidi: -webkit-isolate;
+}
+

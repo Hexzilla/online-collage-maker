@@ -415,24 +415,16 @@ export class Collage {
   getWallFrameInfo() {
     let index = 1
     const collages = []
-    const layout = new CanvasLayout(this.setting)
-
     for (const tag in this.imageBoxes) {
       const box: ImageBox = this.imageBoxes[tag]
-      const board = box.getBoard()
-      board.left /= layout.getPixelForInch()
-      board.top /= layout.getPixelForInch()
-      board.width /= layout.getPixelForInch()
-      board.height /= layout.getPixelForInch()
-
       const info = Object.assign({ 
         index: index++,
-        price: box.price
-      }, board)
-
+        price: box.price,
+        showWidth: box.getShowWidthInch(),
+        showHeight: box.getShowHeightInch(),
+      }, box.getBoard())
       collages.push(info);
     }
-    
     return collages
   }
 

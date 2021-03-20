@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../auth.service";
 import { ApiService } from "../../api/api";
 import { environment } from "../../../environments/environment";
+import { Setting } from "../../collage/setting";
 import { toDataURL } from "../../collage/util";
 
 @Component({
@@ -20,7 +21,8 @@ export class WallPreviewComponent implements OnInit {
     private toastr: ToastrService,
     private api: ApiService,
     private authSvc: AuthService,
-    private router: Router
+    private router: Router,
+    private setting: Setting
   ) {}
 
   async ngOnInit() {
@@ -34,9 +36,17 @@ export class WallPreviewComponent implements OnInit {
     if (data) {
       const url = environment.apiUrl + "/collage/wallframes/image/";
       const images = data.map((it) => {
+        const totalPrice = it.images.reduce((accumulator, img) => {
+          return (accumulator + img.price)
+        }, 0)
+        const finalPrice = totalPrice * (100 - it.options.discount) / 100
         return {
           id: it._id,
+          data: it,
+          options: it.options,
           src: url + it.image,
+          totalPrice: totalPrice,
+          finalPrice: finalPrice,
           loaded: false
         };
       });
@@ -63,15 +73,12 @@ export class WallPreviewComponent implements OnInit {
     return this.authSvc.loggedIn();
   }
 
-  onCreateButtonClick() {
-    this.router.navigate(["/admin/wall"]);
-  }
-
   editTemplate(image){
 
   }
 
-  async deletePhoto(image) {
+  async onDeleteWall(image) {
+    console.log('DeleteWall', image)
     this.loading = true
     const result = await this.api.deleteWallFrame(image['id'])
     if (result) {

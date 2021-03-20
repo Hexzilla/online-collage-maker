@@ -60,15 +60,15 @@ export async function createWall(collage: Collage) {
     const canvasHeight = canvasWidth * setting.getHeight() / setting.getWidth();
     collage.createCanvasElement(canvasWidth, canvasHeight)
     collage.createFabricCanvas(canvasWidth, canvasHeight)
-    collage.drawGridLines()
+    //collage.drawGridLines()
     //collage.drawCanvasSizeText();
     
     const grid = setting.grid
     const margin = Math.ceil(setting.margin / grid) * grid
-    const width = Math.floor(0.8 * (canvasWidth - margin) / setting.cells / grid) * grid
-    const height = Math.floor(0.8 * (canvasHeight - margin) / setting.cells / grid) * grid
+    const width = Math.floor(0.4 * (canvasWidth - margin) / setting.cells / grid) * grid
+    const height = Math.floor(0.4 * (canvasHeight - margin) / setting.cells / grid) * grid
     const marginLeft = Math.floor((canvasWidth - width * setting.cells) / 2 / grid) * margin
-    const marginTop = Math.floor((canvasHeight - height * setting.cells) / 2 / grid) * margin
+    const marginTop = Math.floor((canvasHeight - height * setting.cells) / 8 / grid) * margin
     for (let i = 0; i < setting.cells; i++) {
       for (let j = 0; j < setting.cells; j++) {
         const left = marginLeft + margin + i * width
@@ -131,6 +131,7 @@ export async function saveTemplate(collage: Collage) {
 export async function saveWall(collage: Collage, options: any) {
   collage.setLoadingState(true)
 
+  console.log("SaveWall:", options)
   const canvasWidth = collage.getCanvasWidth()
   const canvasHeight = collage.getCanvasHeight()
   const twidth = 320
@@ -147,7 +148,7 @@ export async function saveWall(collage: Collage, options: any) {
     canvasWidth: canvasWidth,
     canvasHeight: canvasHeight,
     widthInch: options.width,
-    heightInch: options.height
+    heightInch: options.height,
   })
 
   const data = {setting: setting, images: collage.getWallFrameInfo(), image: dataUrl, options: options};

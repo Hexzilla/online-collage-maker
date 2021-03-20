@@ -113,34 +113,37 @@ export async function createCollageByWallId(collage: Collage, wallId: number) {
       return
     }
 
+    console.log("Wall", wall)
+
     collage.resetSavedCollage()
     collage.removeCanvasElement()
+
+    //convert feet to inch
+    wall.setting.widthInch *= 12;
+    wall.setting.heightInch *= 12;
 
     const setting = collage.getSetting()
     setting.setData(wall.setting)
     const layout = new CanvasLayout(setting)
 
     const canvasWidth = layout.getCanvasWidthInPixel()
-    const canvasHeight = setting.height * canvasWidth / setting.width
+    const canvasHeight = setting.canvasHeight * canvasWidth / setting.canvasWidth
     const scale = canvasWidth / setting.canvasWidth
-    console.log(canvasWidth, canvasHeight, scale)
     collage.createCanvasElement(canvasWidth, canvasHeight)
     collage.createFabricCanvas(canvasWidth, canvasHeight)
 
+    console.log('Scale-', scale)
     // Add images to canvas.
     collage.removeImageBoxs()
     wall.images.forEach(it => {
+      console.log("Wall-Image", it)
       const tag = `img_${it.index}`
-      const imageLeft = it.left * layout.getPixelForInch()
-      const imageTop = it.top * layout.getPixelForInch()
-      const imageWidth = it.width * layout.getPixelForInch()
-      const imageHeight = it.height * layout.getPixelForInch()
       const box = collage.createSimpleImageBox()
         .setTag(tag)
         .setBorder(setting.borderWidth, setting.borderColor)
-        .setSizeInch(it.width.toFixed(1), it.height.toFixed(1))
+        .setSizeInch(it.showWidth, it.showHeight)
         .setPrice(it.price)
-        .addMovableBoard(imageLeft, imageTop, imageWidth, imageHeight)
+        .addMovableBoard(it.left * scale, it.top * scale, it.width * scale, it.height * scale)
 
       collage.addImageBox(tag, box)
       collage.setObjectMoveEvent(box)

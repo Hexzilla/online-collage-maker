@@ -39,6 +39,7 @@ export class WallBackgroundComponent implements OnInit {
       return false;
     }
 
+    console.log("updateImages-000")
     this.loading = true
     await this.imageSvc.updateImages()
     this.loading = false
