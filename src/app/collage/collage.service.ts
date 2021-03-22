@@ -244,6 +244,11 @@ export class Collage {
 
   async onHandleDrop(offsetX, offsetY) {
     if (this.dropImageUrl) {
+      if (this.dropImageUrl.indexOf("wall-images") > 0) {
+        await this.setBackgroundImage(this.dropImageUrl)
+        return
+      }
+
       const box: ImageBox = this.getImage(offsetX, offsetY)
       if (box) {
         this.setLoadingState(true)
@@ -303,7 +308,7 @@ export class Collage {
     }
   }
 
-  createVirtualCanvas(width, height) {
+  createVirtualCanvas(width, height, background=false) {
     const container = document.getElementById("virtual-canvas-container");
     var element = document.createElement("canvas");
     element.id = "virtual-canvas";
@@ -322,6 +327,15 @@ export class Collage {
       height: height,
       backgroundColor: '#ddd',
     })
+
+    if (background && this.canvas.backgroundImage) {
+      const img = this.canvas.backgroundImage as fabric.Image
+      img.set({
+        scaleX: img.scaleX * scale,
+        scaleY: img.scaleY * scale,
+      })
+      virtualCanvas.backgroundImage = this.canvas.backgroundImage
+    }
 
     return new Promise<fabric.Canvas>(resolve => {
       const objects = this.canvas.getObjects().filter(it => it.type !='line')

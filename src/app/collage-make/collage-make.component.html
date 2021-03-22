@@ -24,10 +24,16 @@
     <div class="row">
       <div class="col-md-2">
         <image-upload [imageSvc]="imageSvc"></image-upload>
+        <div *ngIf="setting.mode != 'wall'">
+          <hr class="mt-2 mb-2">
+          <control-panel [showCollageButtons]="true" (actionEvent)="onControlActionEvent($event)"></control-panel>
+        </div>
         <hr class="mt-2 mb-2">
-        <control-panel [showCollageButtons]="true" (actionEvent)="onControlActionEvent($event)"></control-panel>
-        <hr class="mt-2 mb-2">
-        <image-list [images]="imageSvc.thumbImages"></image-list>
+        <image-list title="User Images" [images]="imageSvc.thumbImages"></image-list>
+        <div *ngIf="setting.mode == 'wall'">
+          <hr class="mt-2 mb-2">
+          <image-list title="Background Images" [images]="wallImageSvc.thumbImages"></image-list>
+        </div>
       </div>
       <div class="col-md-10">
         <div class="grey-box">

@@ -137,7 +137,7 @@ export async function saveWall(collage: Collage, options: any) {
   const twidth = 320
   const theight = twidth * (canvasHeight / canvasWidth)
 
-  const virtualCanvas = await collage.createVirtualCanvas(twidth, theight)
+  const virtualCanvas = await collage.createVirtualCanvas(twidth, theight, true)
   const dataUrl = virtualCanvas.toDataURL({
     format: 'jpeg',
     quality: 1.0

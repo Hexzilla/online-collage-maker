@@ -64,11 +64,14 @@ export class CollageMakeComponent implements OnInit {
     }
 
     this.loading = true
-    await this.imageSvc.updateImages();
+    await this.imageSvc.updateImages()
 
-    if (this.setting.mode == 'wall' && this.setting.selectedWallId) {
-      this.collage.setSetting(this.setting.clone())
-      await createCollageByWallId(this.collage, this.setting.selectedWallId)
+    if (this.setting.mode == 'wall') {
+      await this.wallImageSvc.updateImages()
+      if (this.setting.selectedWallId) {
+        this.collage.setSetting(this.setting.clone())
+        await createCollageByWallId(this.collage, this.setting.selectedWallId)
+      }
     }
 
     this.loading = false
