@@ -139,11 +139,14 @@ export async function createCollageByWallId(collage: Collage, wallId: number) {
         .setBorder(setting.borderWidth, setting.borderColor)
         //.setSizeInch(it.showWidth, it.showHeight)
         //.setPrice(it.price)
-        .addMovableBoard(it.left * scale, it.top * scale, it.width * scale, it.height * scale)
+        .addWallFrameBoard(it.left * scale, it.top * scale, it.width * scale, it.height * scale)
 
       collage.addImageBox(tag, box)
       collage.setObjectMoveEvent(box)
     })
+
+    const pixelsForInch = layout.getPixelForInch()
+    collage.drawFrameSize(pixelsForInch);
   }
   catch (err) {
     console.log(err)

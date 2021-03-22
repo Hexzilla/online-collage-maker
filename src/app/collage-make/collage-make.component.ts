@@ -45,6 +45,11 @@ export class CollageMakeComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    if (!this.loggedIn()) {
+      this.router.navigate(["/login"]);
+      return;
+    }
+
     this.isMobile = this.deviceService.isMobile();
     console.log("IsMobile", this.isMobile)
 
@@ -58,20 +63,17 @@ export class CollageMakeComponent implements OnInit {
 
     document.addEventListener("contextmenu", (event) => event.preventDefault());
 
-    if (!this.loggedIn()) {
-      this.router.navigate(["/login"]);
-      return;
-    }
-
     this.loading = true
     await this.imageSvc.updateImages()
 
     if (this.setting.mode == 'wall') {
-      await this.wallImageSvc.updateImages()
-      if (this.setting.selectedWallId) {
-        this.collage.setSetting(this.setting.clone())
-        await createCollageByWallId(this.collage, this.setting.selectedWallId)
+      if (!this.setting.selectedWallId) {
+        this.router.navigate(["/collage-walls"]);
+        return;
       }
+      await this.wallImageSvc.updateImages()
+      this.collage.setSetting(this.setting.clone())
+      await createCollageByWallId(this.collage, this.setting.selectedWallId)
     }
 
     this.loading = false

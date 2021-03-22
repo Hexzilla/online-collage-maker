@@ -152,6 +152,40 @@ class ImageBox {
       })
       this.canvas.add(this.priceText)
     }
+
+    return this
+  }
+
+  addWallFrameBoard(left, top, width, height) {
+    this.lockBoardRect = false
+    this.boardRect = new fabric.Rect({
+      type: this.tag,
+      originX: 'left',
+      originY: 'top',
+      left: left,
+      top: top,
+      width: width,
+      height: height,
+      opacity: 1.0,
+      fill: 'rgba(255,255,255, 0)',
+      absolutePositioned: true,
+      lockScalingFlip: true,
+      selectable: true,
+      transparentCorners: false,
+      cornerColor: 'white',
+      cornerStrokeColor: 'black',
+      borderColor: 'black',
+      stroke: this.strokeColor,
+      strokeWidth: this.strokeWidth,
+      cornerSize: 8,
+      padding: 0,
+      cornerStyle: 'circle',
+      borderDashArray: [5, 5],
+      borderScaleFactor: 1.0
+    })
+    this.boardRect.setControlsVisibility({bl: false, br: false, tl: false, tr: false, mb: false, ml: false, mr: false, mt: false, mtr: false})
+    this.canvas.add(this.boardRect)
+    this.boardRectPos = new fabric.Point(this.boardRect.left, this.boardRect.top)
     return this
   }
 

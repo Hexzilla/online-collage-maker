@@ -7,6 +7,7 @@ import { loadImage, shuffle, toDataURL } from "./util";
 import { environment } from '../../environments/environment';
 import ImageBox from "./image-box"
 import CanvasContextMenu from "./contextmenu"
+import { Rgba } from "ngx-color-picker";
 
 @Injectable({
   providedIn: "root",
@@ -491,5 +492,65 @@ export class Collage {
         it.objectMove(dx, dy)
       }
     }
+
+    if (this.frameSizeGroup1) {
+      this.frameSizeGroup1.left += dx
+      this.frameSizeGroup1.top += dy
+      this.frameSizeGroup1.setCoords()
+    }
+
+    if (this.frameSizeGroup2) {
+      this.frameSizeGroup2.left += dx
+      this.frameSizeGroup2.top += dy
+      this.frameSizeGroup2.setCoords()
+    }
   }
+
+  drawFrameSize(pixelsForInch) {
+    let left = 0, top = 0, right = 0, bottom = 0
+    for (var tag in this.imageBoxes) {
+      const box: ImageBox = this.imageBoxes[tag]
+      const rect = box.getBoard()
+      if (left == 0 || left > rect.left) left = rect.left
+      if (top == 0 || top > rect.top) top = rect.top
+
+      const rr = rect.left + rect.width
+      if (right == 0 || rr > right) right = rr
+
+      const rb = rect.top + rect.height
+      if (bottom == 0 || rb > bottom) bottom = rb
+    }
+    
+    const widthInch = ((right - left) / pixelsForInch).toFixed(1);
+    const heightInch = ((bottom - top) / pixelsForInch).toFixed(1);
+
+    var frameWidthLine = new fabric.Line([left, top - 20, right, top - 20], { type:'line', stroke: '#000', selectable: false })
+    var frameWidthText = new fabric.Text(`${widthInch}"`, {
+      originX: "center",
+      originY: "center",
+      left: left + (right - left) / 2,
+      top: top - 34,
+      fontSize: 15,
+      selectable: false,
+    })
+
+    var frameHeightLine = new fabric.Line([left - 20, top, left - 20, bottom], { type:'line', stroke: '#000', selectable: false })
+    var frameHeightText = new fabric.Text(`${heightInch}"`, {
+      originX: "center",
+      originY: "center",
+      left: left - 40,
+      top: top + (bottom - top) / 2,
+      fontSize: 15,
+      selectable: false,
+    })
+
+    this.frameSizeGroup1 = new fabric.Group([frameWidthLine, frameWidthText], { selectable: false })
+    this.canvas.add(this.frameSizeGroup1)
+
+    this.frameSizeGroup2 = new fabric.Group([frameHeightLine, frameHeightText], { selectable: false })
+    this.canvas.add(this.frameSizeGroup2)
+  }
+
+  private frameSizeGroup1: fabric.Group = null;
+  private frameSizeGroup2: fabric.Group = null;
 }
