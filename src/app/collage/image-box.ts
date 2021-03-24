@@ -170,7 +170,7 @@ class ImageBox {
       width: width,
       height: height,
       opacity: 1.0,
-      fill: 'rgba(0,0,0,0.2)',
+      fill: 'rgba(250,250,250,0.2)',
       absolutePositioned: true,
       lockScalingFlip: true,
       selectable: true,
@@ -192,13 +192,13 @@ class ImageBox {
     this.boardRectPos = new fabric.Point(this.boardRect.left, this.boardRect.top)
 
     var br = this.boardRect
-    this.shadowLine1 = new fabric.Line([br.left, br.top + br.height, br.left + br.width, br.top + br.height], {stroke: '#aaa', selectable: false})
-    this.shadowLine1.shadow = new fabric.Shadow({ color: 'black', blur: 5, offsetX: 1, offsetY: 2 })
-    this.canvas.add(this.shadowLine1)
+    this.shadowLine1 = new fabric.Line([br.left, br.top + br.height, br.left + br.width + 1, br.top + br.height], {stroke: '#aaa', selectable: false})
+    this.shadowLine1.shadow = new fabric.Shadow({ color: 'black', blur: 3, offsetX: 2, offsetY: 3 })
+    this.canvas.add(this.shadowLine1) //bottom
 
-    this.shadowLine2 = new fabric.Line([br.left + br.width, br.top , br.left + br.width, br.top + br.height], {stroke: '#aaa', selectable: false})
-    this.shadowLine2.shadow = new fabric.Shadow({ color: 'black', blur: 5, offsetX: 2, offsetY: 1 })
-    this.canvas.add(this.shadowLine2)
+    this.shadowLine2 = new fabric.Line([br.left + br.width, br.top , br.left + br.width, br.top + br.height + 1], {stroke: '#aaa', selectable: false})
+    this.shadowLine2.shadow = new fabric.Shadow({ color: 'black', blur: 3, affectStroke: true, offsetX: 3, offsetY: 2 })
+    this.canvas.add(this.shadowLine2) //right
 
     this.cellSizeText = new fabric.Text(`${this.widthInch}" x ${this.heightInch}"`, { 
       left: this.boardRect.left + this.strokeWidth + 10, //Take the block's position
@@ -379,7 +379,7 @@ class ImageBox {
     this.canvas.add(this.image)
 
     console.log('Image loaded')
-    this.boardRect.set('fill', 'rgba(0,0,0,0)')
+    this.boardRect.set('fill', 'rgba(250,250,250,0)')
     this.update()
     this.onImageLoadCompleted && this.onImageLoadCompleted()
   }
@@ -406,7 +406,7 @@ class ImageBox {
   removeImage() {
     this.image && this.canvas.remove(this.image)
     this.image = null
-    this.boardRect.set('fill', 'rgba(0,0,0,0.2)')
+    this.boardRect.set('fill', 'rgba(250,250,250,0.1)')
   }
 
   removeBoard() {
