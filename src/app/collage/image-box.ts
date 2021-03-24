@@ -182,7 +182,8 @@ class ImageBox {
       padding: 0,
       cornerStyle: 'circle',
       borderDashArray: [5, 5],
-      borderScaleFactor: 1.0
+      borderScaleFactor: 1.0,
+      //shadow: new fabric.Shadow({ color: 'black', blur: 90, offsetX: 10, offsetY: 10 })
     })
     this.boardRect.setControlsVisibility({bl: false, br: false, tl: false, tr: false, mb: false, ml: false, mr: false, mt: false, mtr: false})
     this.canvas.add(this.boardRect)
