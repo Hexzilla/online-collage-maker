@@ -65,7 +65,7 @@ import { CWallPreviewComponent } from './wall-preview/wall-preview.component';
 
 const appRoutes: Routes = [
   { path: '', component: LandingComponent },
-  { path: 'preview', component: CollagePreviewComponent },
+  { path: 'Canvas-Wall-Display', component: CollagePreviewComponent },
   { path: 'collage/:mode', component: CollageMakeComponent },
   { path: 'collage-walls', component: CWallPreviewComponent },
   { path: 'admin/template', component: TemplateMakerComponent },

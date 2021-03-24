@@ -255,7 +255,7 @@ export class CollageMakeComponent implements OnInit {
   }
 
   showCollages() {
-    this.router.navigate(["/preview"]);
+    this.router.navigate(["/Canvas-Wall-Display"]);
   }
 
   async saveCollage() {

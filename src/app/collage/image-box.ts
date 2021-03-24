@@ -38,7 +38,8 @@ class ImageBox {
   cellSizeText: fabric.Text
   priceText: fabric.Text
   hintText: fabric.Text
-  shadowRect: fabric.Rect = null
+  shadowLine1: fabric.Line = null
+  shadowLine2: fabric.Line = null
 
   constructor(canvas) {
     this.canvas = canvas
@@ -184,16 +185,20 @@ class ImageBox {
       cornerStyle: 'circle',
       borderDashArray: [5, 5],
       borderScaleFactor: 1.0,
-      //shadow: new fabric.Shadow({ color: 'black', blur: 90, offsetX: 10, offsetY: 10 })
     })
+    
     this.boardRect.setControlsVisibility({bl: false, br: false, tl: false, tr: false, mb: false, ml: false, mr: false, mt: false, mtr: false})
-    this.boardRect.clone(cloned => {
-      this.shadowRect = cloned
-      this.shadowRect.shadow = new fabric.Shadow({ color: 'black', blur: 10, offsetX: 5, offsetY: 5 })
-    })
-    this.canvas.add(this.shadowRect)
     this.canvas.add(this.boardRect)
     this.boardRectPos = new fabric.Point(this.boardRect.left, this.boardRect.top)
+
+    var br = this.boardRect
+    this.shadowLine1 = new fabric.Line([br.left, br.top + br.height, br.left + br.width, br.top + br.height], {stroke: 'black', selectable: false})
+    this.shadowLine1.shadow = new fabric.Shadow({ color: 'black', blur: 5, offsetX: 2, offsetY: 6 })
+    this.canvas.add(this.shadowLine1)
+
+    this.shadowLine2 = new fabric.Line([br.left + br.width, br.top , br.left + br.width, br.top + br.height], {stroke: 'black', selectable: false})
+    this.shadowLine2.shadow = new fabric.Shadow({ color: 'black', blur: 5, offsetX: 6, offsetY: 2 })
+    this.canvas.add(this.shadowLine2)
 
     this.cellSizeText = new fabric.Text(`${this.widthInch}" x ${this.heightInch}"`, { 
       left: this.boardRect.left + this.strokeWidth + 10, //Take the block's position
@@ -407,9 +412,10 @@ class ImageBox {
     this.cellSizeText && this.canvas.remove(this.cellSizeText)
     this.priceText && this.canvas.remove(this.priceText)
     this.hintText &&  this.canvas.remove(this.hintText)
-    this.shadowRect && this.canvas.remove(this.shadowRect)
+    this.shadowLine1 && this.canvas.remove(this.shadowLine1)
+    this.shadowLine2 && this.canvas.remove(this.shadowLine2)
     this.boardRect = this.cellSizeText = this.hintText = null
-    this.shadowRect = null
+    this.shadowLine1 = this.shadowLine2 = null
   }
 
   restoreImage() {
@@ -538,10 +544,15 @@ class ImageBox {
       this.image.top += dy
       this.image.setCoords();
     }
-    if (this.shadowRect) {
-      this.shadowRect.left += dx
-      this.shadowRect.top += dy
-      this.shadowRect.setCoords()
+    if (this.shadowLine1) {
+      this.shadowLine1.left += dx
+      this.shadowLine1.top += dy
+      this.shadowLine1.setCoords()
+    }
+    if (this.shadowLine2) {
+      this.shadowLine2.left += dx
+      this.shadowLine2.top += dy
+      this.shadowLine2.setCoords()
     }
     this.boardRectPos.x += dx
     this.boardRectPos.y += dy
@@ -566,10 +577,15 @@ class ImageBox {
         this.image.top  += dy
         this.image.setCoords();
       }
-      if (this.shadowRect) {
-        this.shadowRect.left += dx
-        this.shadowRect.top += dy
-        this.shadowRect.setCoords()
+      if (this.shadowLine1) {
+        this.shadowLine1.left += dx
+        this.shadowLine1.top += dy
+        this.shadowLine1.setCoords()
+      }
+      if (this.shadowLine2) {
+        this.shadowLine2.left += dx
+        this.shadowLine2.top += dy
+        this.shadowLine2.setCoords()
       }
       this.boardRectPos = new fabric.Point(e.target.left, e.target.top)
       this.addImageClipPath()

@@ -63,8 +63,16 @@ export class CollagePreviewComponent implements OnInit {
 
   }
 
-  linkCollageMaker() {
+  createAutoCollage() {
     this.router.navigate(["/collage/auto"]);
+  }
+
+  createTemplateCollage() {
+    this.router.navigate(["/collage/select"]);
+  }
+
+  createWallDisplay() {
+    this.router.navigate(["/collage-walls"]);
   }
 
   printPhoto(image, way) {

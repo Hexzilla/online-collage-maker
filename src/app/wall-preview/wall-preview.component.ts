@@ -74,7 +74,6 @@ export class CWallPreviewComponent implements OnInit {
   }
 
   onCreateButtonClick(image) {
-    console.log(image)
     this.setting.selectedWallId = image.id
     this.router.navigate(["/collage/wall"]);
   }
