@@ -552,7 +552,7 @@ export class Collage {
     const widthInch = ((right - left) / pixelsForInch).toFixed(1);
     const heightInch = ((bottom - top) / pixelsForInch).toFixed(1);
 
-    var frameWidthLine = new fabric.Line([left, top - 20, right, top - 20], { type:'line', stroke: '#000', selectable: false })
+    var frameWidthLine = new fabric.Line([left, top - 20, right, top - 20], { type:'line', stroke: '#888', selectable: false })
     var frameWidthText = new fabric.Text(`${widthInch}"`, {
       originX: "center",
       originY: "center",
@@ -562,7 +562,7 @@ export class Collage {
       selectable: false,
     })
 
-    var frameHeightLine = new fabric.Line([left - 20, top, left - 20, bottom], { type:'line', stroke: '#000', selectable: false })
+    var frameHeightLine = new fabric.Line([left - 20, top, left - 20, bottom], { type:'line', stroke: '#888', selectable: false })
     var frameHeightText = new fabric.Text(`${heightInch}"`, {
       originX: "center",
       originY: "center",

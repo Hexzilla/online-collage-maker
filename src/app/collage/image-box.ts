@@ -170,7 +170,7 @@ class ImageBox {
       width: width,
       height: height,
       opacity: 1.0,
-      fill: 'rgba(255,255,255, 0)',
+      fill: 'rgba(0,0,0,0.2)',
       absolutePositioned: true,
       lockScalingFlip: true,
       selectable: true,
@@ -178,8 +178,8 @@ class ImageBox {
       cornerColor: 'white',
       cornerStrokeColor: 'black',
       borderColor: 'black',
-      //stroke: this.strokeColor,
-      //strokeWidth: this.strokeWidth,
+      stroke: '#aaa', //this.strokeColor,
+      strokeWidth: 1,//this.strokeWidth,
       cornerSize: 8,
       padding: 0,
       cornerStyle: 'circle',
@@ -192,12 +192,12 @@ class ImageBox {
     this.boardRectPos = new fabric.Point(this.boardRect.left, this.boardRect.top)
 
     var br = this.boardRect
-    this.shadowLine1 = new fabric.Line([br.left, br.top + br.height, br.left + br.width, br.top + br.height], {stroke: 'black', selectable: false})
-    this.shadowLine1.shadow = new fabric.Shadow({ color: 'black', blur: 5, offsetX: 2, offsetY: 6 })
+    this.shadowLine1 = new fabric.Line([br.left, br.top + br.height, br.left + br.width, br.top + br.height], {stroke: '#aaa', selectable: false})
+    this.shadowLine1.shadow = new fabric.Shadow({ color: 'black', blur: 5, offsetX: 1, offsetY: 2 })
     this.canvas.add(this.shadowLine1)
 
-    this.shadowLine2 = new fabric.Line([br.left + br.width, br.top , br.left + br.width, br.top + br.height], {stroke: 'black', selectable: false})
-    this.shadowLine2.shadow = new fabric.Shadow({ color: 'black', blur: 5, offsetX: 6, offsetY: 2 })
+    this.shadowLine2 = new fabric.Line([br.left + br.width, br.top , br.left + br.width, br.top + br.height], {stroke: '#aaa', selectable: false})
+    this.shadowLine2.shadow = new fabric.Shadow({ color: 'black', blur: 5, offsetX: 2, offsetY: 1 })
     this.canvas.add(this.shadowLine2)
 
     this.cellSizeText = new fabric.Text(`${this.widthInch}" x ${this.heightInch}"`, { 
@@ -330,8 +330,8 @@ class ImageBox {
   }
 
   setSizeInch(widthInch, heightInch) {
-    this.widthInch = widthInch
-    this.heightInch = heightInch
+    this.widthInch = widthInch.toFixed(1)
+    this.heightInch = heightInch.toFixed(1)
     return this
   }
 
@@ -378,6 +378,7 @@ class ImageBox {
     this.updateImage()
     this.canvas.add(this.image)
 
+    this.boardRect.fill = 'rgba(0,0,0,0)'
     this.update()
     this.onImageLoadCompleted && this.onImageLoadCompleted()
   }
@@ -404,6 +405,7 @@ class ImageBox {
   removeImage() {
     this.image && this.canvas.remove(this.image)
     this.image = null
+    this.boardRect.fill = 'rgba(0,0,0,0.2)'
   }
 
   removeBoard() {
