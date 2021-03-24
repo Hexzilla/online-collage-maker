@@ -137,7 +137,7 @@ export async function createCollageByWallId(collage: Collage, wallId: number) {
       const box = collage.createSimpleImageBox()
         .setTag(tag)
         .setBorder(setting.borderWidth, setting.borderColor)
-        //.setSizeInch(it.showWidth, it.showHeight)
+        .setSizeInch(it.showWidth, it.showHeight)
         //.setPrice(it.price)
         .addWallFrameBoard(it.left * scale, it.top * scale, it.width * scale, it.height * scale)
 

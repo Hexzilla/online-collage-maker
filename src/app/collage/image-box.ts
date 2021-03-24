@@ -38,6 +38,7 @@ class ImageBox {
   cellSizeText: fabric.Text
   priceText: fabric.Text
   hintText: fabric.Text
+  shadowRect: fabric.Rect = null
 
   constructor(canvas) {
     this.canvas = canvas
@@ -186,8 +187,25 @@ class ImageBox {
       //shadow: new fabric.Shadow({ color: 'black', blur: 90, offsetX: 10, offsetY: 10 })
     })
     this.boardRect.setControlsVisibility({bl: false, br: false, tl: false, tr: false, mb: false, ml: false, mr: false, mt: false, mtr: false})
+    this.boardRect.clone(cloned => {
+      this.shadowRect = cloned
+      this.shadowRect.shadow = new fabric.Shadow({ color: 'black', blur: 10, offsetX: 5, offsetY: 5 })
+    })
+    this.canvas.add(this.shadowRect)
     this.canvas.add(this.boardRect)
     this.boardRectPos = new fabric.Point(this.boardRect.left, this.boardRect.top)
+
+    this.cellSizeText = new fabric.Text(`${this.widthInch}" x ${this.heightInch}"`, { 
+      left: this.boardRect.left + this.strokeWidth + 10, //Take the block's position
+      top: this.boardRect.top + this.strokeWidth + 10, 
+      fontSize: 15,
+      fill: 'rgb(10,10,10)',
+      lockScalingX: true,
+      lockScalingY: true,
+      lockUniScaling: true,
+      selectable: false,
+    })
+    this.canvas.add(this.cellSizeText)
 
     this.hintText = new fabric.Text("Drag image here", { 
       originX: "center",
@@ -388,7 +406,10 @@ class ImageBox {
     this.boardRect && this.canvas.remove(this.boardRect)
     this.cellSizeText && this.canvas.remove(this.cellSizeText)
     this.priceText && this.canvas.remove(this.priceText)
-    this.boardRect = this.cellSizeText = null
+    this.hintText &&  this.canvas.remove(this.hintText)
+    this.shadowRect && this.canvas.remove(this.shadowRect)
+    this.boardRect = this.cellSizeText = this.hintText = null
+    this.shadowRect = null
   }
 
   restoreImage() {
@@ -406,10 +427,9 @@ class ImageBox {
 
   private arrangeObjects() {
     this.image && this.canvas.bringToFront(this.image)
-    this.cellSizeText && this.canvas.bringToFront(this.cellSizeText)
-    this.priceText && this.canvas.bringToFront(this.priceText)
+    //this.cellSizeText && this.canvas.bringToFront(this.cellSizeText)
+    //this.priceText && this.canvas.bringToFront(this.priceText)
     this.canvas.bringToFront(this.boardRect)
-
   }
 
   private updateImage() {
@@ -518,6 +538,11 @@ class ImageBox {
       this.image.top += dy
       this.image.setCoords();
     }
+    if (this.shadowRect) {
+      this.shadowRect.left += dx
+      this.shadowRect.top += dy
+      this.shadowRect.setCoords()
+    }
     this.boardRectPos.x += dx
     this.boardRectPos.y += dy
     this.addImageClipPath()
@@ -541,7 +566,11 @@ class ImageBox {
         this.image.top  += dy
         this.image.setCoords();
       }
-
+      if (this.shadowRect) {
+        this.shadowRect.left += dx
+        this.shadowRect.top += dy
+        this.shadowRect.setCoords()
+      }
       this.boardRectPos = new fabric.Point(e.target.left, e.target.top)
       this.addImageClipPath()
       this.updateCellSizeText()
