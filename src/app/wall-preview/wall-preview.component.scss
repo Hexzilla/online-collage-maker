@@ -18,3 +18,21 @@ bdi {
     unicode-bidi: -webkit-isolate;
 }
 
+.discount-label {
+    margin-left: -32px;
+    padding: 6px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: #bd0505;
+    color: white;
+}
+
+.mat-card-image{
+    min-height: 410px;
+}
+
+@media screen and (max-width: 800px) {
+    .mat-card-image{
+        min-height: inherit;
+    }
+}

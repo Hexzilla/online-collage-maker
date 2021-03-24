@@ -37,6 +37,7 @@ class ImageBox {
   heightInch: number = 0
   cellSizeText: fabric.Text
   priceText: fabric.Text
+  hintText: fabric.Text
 
   constructor(canvas) {
     this.canvas = canvas
@@ -139,7 +140,7 @@ class ImageBox {
       })
       this.canvas.add(this.cellSizeText)
     
-      this.priceText = new fabric.Text(`${this.price} INR`, { 
+      this.priceText = new fabric.Text(`Rs ${this.price}`, { 
         originY: 'bottom',
         left: this.boardRect.left + this.strokeWidth + 3,
         top: this.boardRect.top + this.boardRect.height - this.strokeWidth - 3, 
@@ -186,6 +187,20 @@ class ImageBox {
     this.boardRect.setControlsVisibility({bl: false, br: false, tl: false, tr: false, mb: false, ml: false, mr: false, mt: false, mtr: false})
     this.canvas.add(this.boardRect)
     this.boardRectPos = new fabric.Point(this.boardRect.left, this.boardRect.top)
+
+    this.hintText = new fabric.Text("Drag image here", { 
+      originX: "center",
+      originY: "center",
+      left: this.boardRect.left + this.boardRect.width / 2,
+      top: this.boardRect.top + this.boardRect.height / 2,
+      fontSize: 15,
+      fill: 'rgb(10,10,10)',
+      lockScalingX: true,
+      lockScalingY: true,
+      lockUniScaling: true,
+      selectable: false,
+    })
+    this.canvas.add(this.hintText)
     return this
   }
 
@@ -252,7 +267,7 @@ class ImageBox {
       })
       this.canvas.add(this.cellSizeText)
     
-      this.priceText = new fabric.Text(`${this.price} INR`, {         
+      this.priceText = new fabric.Text(`Rs ${this.price}`, {         
         originY: 'bottom',
         left: this.boardRect.left + this.strokeWidth + 3,
         top: this.boardRect.top + this.boardRect.height - this.strokeWidth - 3, 
@@ -441,9 +456,18 @@ class ImageBox {
       const board = this.boardRect
       this.priceText.set({
         originY: 'bottom',
-        left: this.boardRect.left + this.strokeWidth + 3,
-        top: this.boardRect.top + this.boardRect.height - this.strokeWidth - 3, 
-        text: `${this.price} INR`,
+        left: board.left + this.strokeWidth + 3,
+        top: board.top + board.height - this.strokeWidth - 3, 
+        text: `Rs ${this.price}`,
+      })
+    }
+    if (this.hintText) {
+      const board = this.boardRect
+      this.hintText.set({
+        originX: "center",
+        originY: "center",
+        left: board.left + board.width / 2,
+        top: board.top + board.height / 2,
       })
     }
   }

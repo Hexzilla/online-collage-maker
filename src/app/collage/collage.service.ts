@@ -259,6 +259,15 @@ export class Collage {
         box.setImageUrl(imageUrl).loadImage(imageUrl)
         this.dropImageUrl = null
       }
+
+      if (this.frameSizeGroup1) {
+        this.canvas.remove(this.frameSizeGroup1)
+        this.frameSizeGroup1 = null
+      }
+      if (this.frameSizeGroup2) {
+        this.canvas.remove(this.frameSizeGroup2)
+        this.frameSizeGroup2 = null
+      }
     }
   }
 
@@ -523,6 +532,8 @@ export class Collage {
     }
   }
 
+  private frameSizeGroup1: fabric.Group = null;
+  private frameSizeGroup2: fabric.Group = null;
   drawFrameSize(pixelsForInch) {
     let left = 0, top = 0, right = 0, bottom = 0
     for (var tag in this.imageBoxes) {
@@ -567,7 +578,4 @@ export class Collage {
     this.frameSizeGroup2 = new fabric.Group([frameHeightLine, frameHeightText], { selectable: false })
     this.canvas.add(this.frameSizeGroup2)
   }
-
-  private frameSizeGroup1: fabric.Group = null;
-  private frameSizeGroup2: fabric.Group = null;
 }

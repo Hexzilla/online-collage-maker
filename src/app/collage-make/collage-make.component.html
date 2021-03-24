@@ -38,7 +38,7 @@
       <div class="col-md-10">
         <div class="grey-box">
           <div class="row">
-            <div class="col-12">
+            <div *ngIf="setting.mode != 'wall'" class="col-12">
               <div class="btn-print-menu">
                 <button class="btn btn-sm btn-block btn-primary" (click)="showCollages()">Your Collages</button>
               </div>
@@ -64,6 +64,17 @@
                   <button ngbDropdownItem (click)="printCollage(1)">Poster Print - With Sticker</button>
                   <button ngbDropdownItem (click)="printCollage(2)">Poster Print - Without Sticker</button>                  
                 </div>
+              </div>
+            </div>
+            <div *ngIf="setting.mode == 'wall'" class="col-12">
+              <div class="btn-print-menu">
+                <button class="btn btn-sm btn-block btn-primary" (click)="showCollages()">Load Earlier Wall Display</button>
+              </div>
+              <div class="btn-print-menu">
+                <button class="btn btn-sm btn-block btn-primary" (click)="saveCollage()">Save Wall Display</button>
+              </div>
+              <div class="btn-print-menu-lg">
+                <button class="btn btn-sm btn-block btn-primary" (click)="printCollage(0)">Add to Cart for Gallery Wrap Canvas</button>
               </div>
             </div>
             <a id="print-button" hidden href="#" target="_blank"></a>

@@ -324,7 +324,7 @@ export class CollageMakeComponent implements OnInit {
           udf5: '',
           amount: item.price,
           products: {
-            type: "Rolled Canvas",
+            type: "Gallary Wrap",
             size: {
               fixedSize: item.width,
               recommendedSize: item.height,
@@ -333,7 +333,7 @@ export class CollageMakeComponent implements OnInit {
               customerSelected: "rollCanvas"
             },
             corrections: [],
-            wrapType: 'not applied'
+            wrapType: 'gallaryWrap'
           }
         };
 

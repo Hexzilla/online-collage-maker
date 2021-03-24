@@ -4,23 +4,24 @@
       <div *ngFor="let image of images" class="col-lg-3 col-md-3 col-sm-12 mb-3 mt-3" id="preview-images">
         <mat-card class="example-card">
           <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>Save ({{image.options.discount}}%)</mat-card-title>
+            <mat-card-title>
+              <div class="discount-label">Save ({{image.options.discount}}%)</div>
+            </mat-card-title>
           </mat-card-header>
           <img mat-card-image src="{{image.src}}" alt="Wall">
           <mat-card-content>
             <div class="wall-title">
               <h4>{{image.options.title}}</h4>
             </div>
-            <div class="wall-title">
+            <!-- <div class="wall-title">
               <h4>Wall area: {{image.data.setting.widthInch}}ft x {{image.data.setting.heightInch}}ft</h4>
-            </div>
+            </div> -->
             <div class="prices">
               <span class="price-discount">
-                <bdi><span>{{image.totalPrice}}</span>&nbsp;INR</bdi>
+                <bdi><span>Rs&nbsp;{{image.totalPrice}}</span></bdi>
               </span>
               <span class="price-final">
-                <strong><bdi><span>{{image.finalPrice}}</span>&nbsp;INR</bdi></strong>
+                <strong><bdi><span>Rs&nbsp;{{image.finalPrice}}</span></bdi></strong>
               </span>
             </div>
           </mat-card-content>

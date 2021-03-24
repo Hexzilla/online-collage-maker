@@ -432,7 +432,14 @@ a {
   float: right;
   width: 200px;
   margin-right: 20px;
-  line-height: 36px;
+  line-height: 42px;
+}
+
+.btn-print-menu-lg {
+  float: right;
+  width: 260px;
+  margin-right: 20px;
+  line-height: 42px;
 }
 
 .top-right-menu {
@@ -457,6 +464,11 @@ a {
     }
     .btn-print-menu {
       float: inherit;
+      width: inherit;
+      margin-bottom: 6px;
+    }
+    .btn-print-menu-lg {
+      float: right;
       width: inherit;
       margin-bottom: 6px;
     }
