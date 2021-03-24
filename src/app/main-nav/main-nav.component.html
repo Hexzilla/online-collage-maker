@@ -32,26 +32,6 @@
     </mat-nav-list>
   </mat-sidenav>
   <div>
-    <!-- <mat-toolbar color="primary" class="f-header mat-elevation-z6" style="height: 40px">
-      <div class="d-flex container">
-        <span>
-          <a [routerLink]="['/cart']">
-            <button type="button" color="primary" mat-flat-button>
-              <mat-icon>shopping_cart</mat-icon>
-            </button>
-          </a>
-        </span>
-        <span class="spacr"></span>
-        <span>
-          <a mat-flat-button color="primary" href="mailto:Aditya@printposters.in">
-            <mat-icon inline=true>email</mat-icon> <span *ngIf="!(isHandset | async)">Aditya@printposters.in</span>
-          </a>
-          <a mat-flat-button color="primary" href="tel:8999456975">
-            <mat-icon inline=true>call</mat-icon> <span *ngIf="!(isHandset | async)">8999456975</span>
-          </a>
-        </span>
-      </div>
-    </mat-toolbar> -->
     <mat-toolbar color="light" class="mat-elevation-z6" style="height: 80px">
       <div class="d-flex v-align-center container max-width-100">
         <button class="menu-mobile-btn" *ngIf="(isHandset | async)" type="button" mat-icon-button (click)="sidenav.toggle()">
@@ -59,11 +39,9 @@
         </button>
         <span>
           <a routerLink="">
-            <!-- <img src="assets/imgs/logo.png" alt="" height="60px"> -->
             <img src="assets/imgs/ppmainlogo.png" alt="Print Poster Logo" height="60px">
           </a>
         </span>
-        <!-- <span class="spacr"></span> -->
         <span style="height: 55px;" class="spacr">
           <mat-form-field *ngIf="!(isHandset | async)" appearance="outline"
             style="font: caption; width: 80%; margin: 0 10%">
@@ -109,56 +87,15 @@
           <button mat-menu-item>Item 1</button>
           <button mat-menu-item>Item 2</button>
         </mat-menu>
-        <!-- <button mat-button [matMenuTriggerFor]="menu1">Promotional Prints <mat-icon inline=true>arrow_drop_down
-          </mat-icon></button>
-        <mat-menu #menu1="matMenu">
-          <button mat-menu-item>Item 1</button>
-          <button mat-menu-item>Item 2</button>
-        </mat-menu>
-        <button mat-button [matMenuTriggerFor]="menu2">Vinyl Prints <mat-icon inline=true>arrow_drop_down</mat-icon>
-        </button>
-        <mat-menu #menu2="matMenu">
-          <button mat-menu-item>Item 1</button>
-          <button mat-menu-item>Item 2</button>
-        </mat-menu>
-        <button mat-button [matMenuTriggerFor]="menu3">Photo Print (HD) <mat-icon inline=true>arrow_drop_down</mat-icon>
-        </button>
-        <mat-menu #menu3="matMenu">
-          <button mat-menu-item>Item 1</button>
-          <button mat-menu-item>Item 2</button>
-        </mat-menu>
-        <button mat-button [matMenuTriggerFor]="menu4">Size And Prices <mat-icon inline=true>arrow_drop_down</mat-icon>
-        </button>
-        <mat-menu #menu4="matMenu">
-          <button mat-menu-item>Item 1</button>
-          <button mat-menu-item>Item 2</button>
-        </mat-menu>
-        <button mat-button [matMenuTriggerFor]="menu5">Wallpapers <mat-icon inline=true>arrow_drop_down</mat-icon>
-        </button>
-        <mat-menu #menu5="matMenu">
-          <button mat-menu-item>Item 1</button>
-          <button mat-menu-item>Item 2</button>
-        </mat-menu>
-        <button mat-button [matMenuTriggerFor]="menu6">Gallery Images <mat-icon inline=true>arrow_drop_down</mat-icon>
-        </button>
-        <mat-menu #menu6="matMenu">
-          <button mat-menu-item>Item 1</button>
-          <button mat-menu-item>Item 2</button>
-        </mat-menu> -->
 
       </div>
     </mat-toolbar>
-
-    <nav class="navbar navbar-expand navbar-light bg-transparent d-none d-md-block container nav-wrap">
+    <!-- Old Menu -->
+    <!-- <nav class="navbar navbar-expand navbar-light bg-transparent d-none d-md-block container nav-wrap">
       <div class="nav navbar-nav w-100 justify-content-space-between bg-transparent">
         <a class="btn btn-flat btn-sm" href="https://m.printposters.in">Home</a>
-        <li class="nav-item dropdown">
-          <a class="btn btn-flat btn-sm btn-primary text-light nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Canvas Prints <span class="sr-only">(current)</span></a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="https://m.printposters.in/canvas-prints">Canvas Prints</a>
-            <a class="dropdown-item" href="https://m.printposters.in/online-collage-maker">Online Collage Maker</a>
-          </div>
-        </li>
+        <a class="btn btn-flat btn-sm btn-primary text-light" href="https://m.printposters.in/canvas-prints">Canvas
+          Prints <span class="sr-only">(current)</span></a>
         <a class="btn btn-flat btn-sm" href="https://m.printposters.in/photo-prints">Photo
           Prints</a>
         <a class="btn btn-flat btn-sm" href="https://m.printposters.in/poster-prints">Poster
@@ -173,9 +110,32 @@
         <a class="btn btn-flat btn-sm" href="https://m.printposters.in/gallery"
           rel="nofollow">Gallery Images</a>
       </div>
+    </nav> -->
+    <!-- New Menu -->
+
+    <nav class="my-0 navbar navbar-expand navbar-light bg-transparent d-none d-md-block container position-relative">
+      <div class="nav navbar-nav w-100 justify-content-space-between bg-transparent">
+        <a *ngFor="let menu of menus" (mouseover)="loadSubMenus(menu.Type_ID)" class="btn btn-flat btn-sm" href="{{menu.Page_Title}}" [ngClass]="{'btn-active': currentUrl == menu.Page_Title}" [attr.rel]="menu.Type_Name == 'Offset Printing' ? 'nofollow' : ''">{{menu.Type_Name}}</a>
+      </div>
+      <div *ngIf="submenus[currentMenu]?.length" (mouseleave)="currentMenu = null" class="p-3 pb-0 w-100 bg-light position-absolute shadow animated fadeIn" style="z-index: 999">
+        <div class="row">
+          <div *ngFor="let menu of submenus[currentMenu]" class="col-12 col-sm-4 col-md-2">
+            <a [href]="menu.Page_Title" class="card border-0 pb-2">
+              <img *ngIf="env" [src]="env.url + '/file/downloadThumbnail/' + menu.Image" alt="{{menu.Type_Name}}" class="w-100" style="height: 120px; object-fit: contain;">
+              <div>
+                <p [style.fontSize]="'14px'" class="text-center card-text">
+                  <b>
+                    {{menu.Type_Name}}
+                  </b>
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
     </nav>
 
-    
+
     <main>
       <ng-content></ng-content>
     </main>

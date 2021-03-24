@@ -48,10 +48,7 @@ footer ul {
   padding: 5px;
 }
 
-.nav-link {
-  padding: .25rem .5rem!important;
-}
-      
+
 .parent-div{
   border-top: 1px solid white;
   padding: 0px 20px;
@@ -65,7 +62,13 @@ footer ul {
 }
 .nav-wrap{
   width: 100%;
+ /* // margin: 10px 0; */
 }
+
+.nav-wrap .btn{
+  font-size: 16px;
+}
+
 .max-width-100{
   max-width: 100% !important;
 }
@@ -85,11 +88,4 @@ footer ul {
 
 .mat-list-base .mat-list-item.mat-list-item-with-avatar {
   height: 40px;
-}
-
-@media all and (min-width: 992px) {
-	.navbar .nav-item .dropdown-menu{ display: none; }
-	.navbar .nav-item:hover .nav-link{ color: #fff;  }
-	.navbar .nav-item:hover .dropdown-menu{ display: block; }
-	.navbar .nav-item .dropdown-menu{ margin-top:0; }
 }
