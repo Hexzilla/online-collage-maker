@@ -79,6 +79,17 @@ export class ApiService {
         return false;
     }
 
+    async uploadImage(formData) {
+        try {
+            const url = environment.apiUrl + '/file/upload';
+            const result = await this.http.post(url, formData).toPromise();
+            return result;
+        } catch (e) {
+            console.log(e);
+        }
+        return null;
+    }
+
     createCollageImageData(userId, dataUrl, width, height) {
         return {
             userId: userId,

@@ -470,6 +470,23 @@ export class Collage {
     console.log("resizeCanvas")
   }
 
+  getImageList() {
+    const images = []
+    for (var tag in this.imageBoxes) {
+      const box: ImageBox = this.imageBoxes[tag]
+      if (box.image && box.url) {
+        images.push({
+          image: box.url,
+          price: box['price'],
+          width: box['showWidth'],
+          height: box['showHeight'],
+        })
+      }
+    }
+    console.log("GetImageList", images)
+    return images
+  }
+
   async onImageSelected(url) {
     const box: ImageBox = this.getSelectedImage()
     if (box) {

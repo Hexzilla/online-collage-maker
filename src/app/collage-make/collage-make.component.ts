@@ -13,12 +13,14 @@ import { ApiService } from "../api/api";
 import { Collage } from '../collage/collage.service'
 import ImageBox from "../collage/image-box"
 import { Setting } from '../collage/setting';
+import { b64toBlob } from "../collage/util";
 import { ImageService, WallImageService } from '../collage/image.service';
 import { 
   createAutoCollage, 
   createCollageByTemplateId, 
   createCollageByWallId 
 } from '../collage/collage.maker'
+import { NeworderService } from '../services/neworder.service';
 
 
 @Component({
@@ -37,6 +39,7 @@ export class CollageMakeComponent implements OnInit {
     private deviceService: DeviceDetectorService,
     private toastr: ToastrService,
     private authSvc: AuthService,
+    private nos: NeworderService,
     private router: Router,
     private route: ActivatedRoute,
     private api: ApiService,
@@ -272,11 +275,76 @@ export class CollageMakeComponent implements OnInit {
 
   async printCollage(way) {
     const userId = this.authSvc.getUserId()
+    if (this.setting.mode == 'wall') {
+      this.printWallFrames()
+      return
+    }    
+
     const url = await this.collage.printCollageImage(userId, way)    
     if (url) {
       const element = document.getElementById('print-button')
       element.setAttribute("href", url)
       element.click()
+    }
+  }
+
+  async printWallFrames() {
+    const user = JSON.parse(localStorage.getItem('user'))
+    if (!user) {
+      return
+    }
+    
+    this.loading = true
+    this.nos.newOrders.length = 0
+
+    const imageList = this.collage.getImageList()
+    for (var index in imageList) {
+      const item = imageList[index]
+
+      const blob = b64toBlob(item.image, "image/jpeg")
+      let formData = new FormData();
+      formData.append("image", blob, "image_editor_upload.jpg")
+      const response = await this.api.uploadImage(formData)
+
+      if (response) {
+        console.log("Uploaded", response)
+        this.nos.newOrder = {
+          orderId: Date.now(),
+          customerId: user.id,
+          delivery_address: [],
+          email: user.email,
+          fname: user.name,
+          message: '',
+          mobile: '',
+          orderStatus: 'Pending',
+          originalurl: response['uploadname'],
+          url: {},
+          payment_mode: 'PayUMoney',
+          pinfo: '',
+          udf5: '',
+          amount: item.price,
+          products: {
+            type: "Rolled Canvas",
+            size: {
+              fixedSize: item.width,
+              recommendedSize: item.height,
+              gallaryWrap: 579,
+              rolledCanvas: 463,
+              customerSelected: "rollCanvas"
+            },
+            corrections: [],
+            wrapType: 'not applied'
+          }
+        };
+
+        this.nos.newOrders.push(this.nos.newOrder);
+      }
+    }
+    this.loading = false
+
+    if (this.nos.newOrders.length > 0) {
+      localStorage.setItem('newOrders', JSON.stringify(this.nos.newOrders));
+      this.router.navigate(["/cart"]);
     }
   }
 }

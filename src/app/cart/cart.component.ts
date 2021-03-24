@@ -296,6 +296,7 @@ export class CartComponent implements OnInit {
         this.helper.showSnackbar(err.message);
       }
     );
+
     this.newOrders = this.nos.newOrders;
     this.filterOrders();
     // // console.log(this.nos.newOrders);

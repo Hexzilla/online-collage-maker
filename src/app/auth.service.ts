@@ -236,10 +236,10 @@ export class AuthService {
   }
 
   getProfile() {
-    const headers = new HttpHeaders();
     this.loadToken();
-    headers.append('Authorization', this.authToken);
-    // headers.append('Content-Type', 'application/json');
+    const headers = new HttpHeaders()
+      .set('Authorization', this.authToken);
+      //.set('Content-Type', 'application/json');
     return this.http.get(environment.url + '/users/profile', { headers });
   }
 
@@ -256,9 +256,7 @@ export class AuthService {
   }
 
   storeUserData(token, user, cart, address) {
-    console.log('StoreUserData-Token', token)
-    console.log('StoreUserData-User', user)
-    console.log('StoreUserData-Address', address)
+
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('id_token', token);
       localStorage.setItem('user', JSON.stringify(user));

@@ -141,6 +141,9 @@ export async function createCollageByWallId(collage: Collage, wallId: number) {
         //.setPrice(it.price)
         .addWallFrameBoard(it.left * scale, it.top * scale, it.width * scale, it.height * scale)
 
+      box['price'] = it.price
+      box['showWidth'] = it.showWidth
+      box['showHeight'] = it.showHeight
       collage.addImageBox(tag, box)
       collage.setObjectMoveEvent(box)
     })
