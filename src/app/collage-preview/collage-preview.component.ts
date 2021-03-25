@@ -32,6 +32,7 @@ export class CollagePreviewComponent implements OnInit {
     this.loading = true;
     const userId = this.authSvc.getUserId();
     const response = await this.api.getCollageImages(userId);
+    console.log("response", response)
     if (response && response["success"]) {
       const data = response["data"];
       const url = environment.apiUrl + "/file/downloadGallary/";

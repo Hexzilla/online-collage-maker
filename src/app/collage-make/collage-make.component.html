@@ -29,7 +29,7 @@
           <control-panel [showCollageButtons]="true" (actionEvent)="onControlActionEvent($event)"></control-panel>
         </div>
         <hr class="mt-2 mb-2">
-        <image-list title="User Images" [images]="imageSvc.thumbImages"></image-list>
+        <image-list *ngIf="imageSvc!=null" title="User Images" [images]="imageSvc.thumbImages"></image-list>
         <div *ngIf="setting.mode == 'wall'">
           <hr class="mt-2 mb-2">
           <image-list *ngIf="wallImageSvc!=null" title="Background Images" [images]="wallImageSvc.thumbImages"></image-list>

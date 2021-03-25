@@ -393,10 +393,10 @@ export class Collage {
 
     const setting = this.getSetting()
     const dpi = document.getElementById("dpi").clientWidth
-    const width = dpi * setting.getWidth()
+    const width = Math.min(1024, dpi * setting.getWidth())
     const height = width * (this.canvas.height / this.canvas.width)
 
-    const virtualCanvas = await this.createVirtualCanvas(width, height)
+    const virtualCanvas = await this.createVirtualCanvas(width, height, true)
     const dataUrl = virtualCanvas.toDataURL({
       format: 'jpeg',
       quality: 1.0

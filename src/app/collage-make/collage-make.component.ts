@@ -299,7 +299,7 @@ export class CollageMakeComponent implements OnInit {
     }
     
     this.loading = true
-    this.nos.newOrders.length = 0
+    //this.nos.newOrders.length = 0
 
     const imageList = this.collage.getImageList()
     for (var index in imageList) {
