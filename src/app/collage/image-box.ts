@@ -199,8 +199,8 @@ class ImageBox {
     this.boardRectPos = new fabric.Point(this.boardRect.left, this.boardRect.top)
 
     this.cellSizeText = new fabric.Text(`${this.widthInch}" x ${this.heightInch}"`, { 
-      left: this.boardRect.left + this.strokeWidth + 10, //Take the block's position
-      top: this.boardRect.top + this.strokeWidth + 10, 
+      left: this.boardRect.left + this.strokeWidth + 3, //Take the block's position
+      top: this.boardRect.top + this.strokeWidth + 3, 
       fontSize: 15,
       fill: 'rgb(10,10,10)',
       lockScalingX: true,
@@ -308,7 +308,6 @@ class ImageBox {
 
   getBoardSizeInInch() {
     const board = this.boardRect
-    console.log(this.widthInch, this.heightInch)
     return {
       width: (board.scaleX * this.widthInch).toFixed(1),
       height: (board.scaleY * this.heightInch).toFixed(1)
@@ -328,8 +327,8 @@ class ImageBox {
   }
 
   setSizeInch(widthInch, heightInch) {
-    this.widthInch = widthInch.toFixed(1)
-    this.heightInch = heightInch.toFixed(1)
+    this.widthInch = parseFloat(widthInch.toFixed(1).toString())
+    this.heightInch = parseFloat(heightInch.toFixed(1).toString())
     return this
   }
 

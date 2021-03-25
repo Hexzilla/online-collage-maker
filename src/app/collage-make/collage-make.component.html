@@ -32,7 +32,7 @@
         <image-list title="User Images" [images]="imageSvc.thumbImages"></image-list>
         <div *ngIf="setting.mode == 'wall'">
           <hr class="mt-2 mb-2">
-          <image-list title="Background Images" [images]="wallImageSvc.thumbImages"></image-list>
+          <image-list *ngIf="wallImageSvc!=null" title="Background Images" [images]="wallImageSvc.thumbImages"></image-list>
         </div>
       </div>
       <div class="col-md-10">
