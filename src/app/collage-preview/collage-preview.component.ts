@@ -6,6 +6,7 @@ import { AuthService } from "../auth.service";
 import { ApiService } from "../api/api";
 import { environment } from "./../../environments/environment";
 import { toDataURL } from "../collage/util";
+import { LoadImageService } from 'ngx-image-cropper/lib/services/load-image.service';
 
 @Component({
   selector: "collage-preview",
@@ -14,7 +15,9 @@ import { toDataURL } from "../collage/util";
 })
 export class CollagePreviewComponent implements OnInit {
   public loading: boolean = false;
+  needLoadImages: any
   images: Array<string> = [];
+  previewLoading = false
 
   constructor(
     private toastr: ToastrService,
@@ -45,19 +48,36 @@ export class CollagePreviewComponent implements OnInit {
         };
       });
 
-      images.map(item => {
-        toDataURL("GET", item.src)
-          .then(src => {
-            item.src = src
-            this.images.push(item)
-          })
-      })
+      if (images.length) {
+        setTimeout(async () => {
+          this.previewLoading = true
+          await this.loadImages(images)
+          this.previewLoading = false
+        }, 500);
+      }
     }
     this.loading = false;
   }
 
   loggedIn() {
     return this.authSvc.loggedIn();
+  }
+
+  async loadImages(images) {
+    let loadedImages = []
+    await Promise.all(
+      images.map(async(item) => {
+        item.src = await toDataURL("GET", item.src)
+        loadedImages.push(item)
+        if (loadedImages.length >= 4) {
+          this.images = this.images.concat(loadedImages)
+          loadedImages = [];
+        }
+      })
+    )
+    if (loadedImages.length) {
+      this.images = this.images.concat(loadedImages)
+    }
   }
 
   openDialog(imageUrl) {
