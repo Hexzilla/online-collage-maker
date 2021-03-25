@@ -58,6 +58,14 @@ export class CollageMakeComponent implements OnInit {
 
     const routeParams = this.route.snapshot.paramMap;
     this.setting.mode = routeParams.get('mode');
+
+    if (this.setting.mode == 'wall') {
+      if (!this.setting.selectedWallId) {
+        this.router.navigate(["/collage-walls"]);
+        return;
+      }
+    }
+
     this.imageSvc = new ImageService(this.api)
     this.wallImageSvc = new WallImageService(this.api)
 
@@ -70,10 +78,6 @@ export class CollageMakeComponent implements OnInit {
     await this.imageSvc.updateImages()
 
     if (this.setting.mode == 'wall') {
-      if (!this.setting.selectedWallId) {
-        this.router.navigate(["/collage-walls"]);
-        return;
-      }
       await this.wallImageSvc.updateImages()
       this.collage.setSetting(this.setting.clone())
       await createCollageByWallId(this.collage, this.setting.selectedWallId)

@@ -31,6 +31,10 @@ bdi {
     min-height: 410px;
 }
 
+.wall-title {
+    min-height: 34px;
+}
+
 @media screen and (max-width: 800px) {
     .mat-card-image{
         min-height: inherit;
