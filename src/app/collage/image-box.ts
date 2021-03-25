@@ -377,7 +377,7 @@ class ImageBox {
     this.canvas.add(this.image)
 
     console.log('Image loaded')
-    this.shadowRect.set('fill', 'rgba(0,0,0,0)')
+    //this.shadowRect.set('fill', 'rgba(0,0,0,0)')
     this.update()
     this.onImageLoadCompleted && this.onImageLoadCompleted()
   }
@@ -404,7 +404,7 @@ class ImageBox {
   removeImage() {
     this.image && this.canvas.remove(this.image)
     this.image = null
-    this.shadowRect.set('fill', '#ddd')
+    //this.shadowRect.set('fill', '#ddd')
   }
 
   removeBoard() {
