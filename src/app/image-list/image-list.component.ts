@@ -11,6 +11,7 @@ export class ImageListComponent implements OnInit {
   loading: boolean = false
   @Input() title: string
   @Input() images: Array<object>
+  @Input() deleteable: boolean = true
   
   constructor(
     private api: ApiService,

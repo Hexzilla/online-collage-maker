@@ -79,6 +79,15 @@ export class ApiService {
         return false;
     }
 
+    uploadCollageImages(formData) {
+        const url = environment.apiUrl + "/collage/images/upload";
+        formData.append("user_id", this.getUserId());
+        return this.http.post(url, formData, {
+          reportProgress: true,
+          observe: 'events'
+        });
+      }
+
     async uploadImage(formData) {
         try {
             const url = environment.apiUrl + '/file/upload';

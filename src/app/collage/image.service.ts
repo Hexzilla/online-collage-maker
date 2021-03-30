@@ -13,6 +13,10 @@ export class ImageService {
     return await this.api.uploadFiles(formData)
   }
 
+  uploadCollageImages(formData) {
+    return this.api.uploadCollageImages(formData)
+  }
+
   async updateImages() {
     const urls = await this.api.getImages()
     this.thumbImages = await Promise.all(
