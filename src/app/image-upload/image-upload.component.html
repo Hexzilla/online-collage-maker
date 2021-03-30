@@ -5,7 +5,7 @@
     </mat-panel-title>
   </mat-expansion-panel-header>
   <div class="image-upload">
-      <ngx-dropzone (change)="onSelect($event)" [disabled]="dropZoneStatus" accept="image/jpeg,image/jpg,image/png,image/gif" class="mx-1" expandable>
+      <ngx-dropzone (change)="onSelect($event)" [disabled]="uploadProgress !== -1" accept="image/jpeg,image/jpg,image/png,image/gif" class="mx-1" expandable>
         <ngx-dropzone-label>
             <i class="fa fa-cloud-upload" style="font-size: 50px"></i><br>
             Drag&Drop files here<br>
