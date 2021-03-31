@@ -33,6 +33,7 @@ class ImageBox {
   onObjectMove: Function
   price: number = 0
 
+  isMobile: Boolean = false
   widthInch: number = 0
   heightInch: number = 0
   cellSizeText: fabric.Text
@@ -198,31 +199,33 @@ class ImageBox {
     this.canvas.add(this.boardRect)
     this.boardRectPos = new fabric.Point(this.boardRect.left, this.boardRect.top)
 
-    this.cellSizeText = new fabric.Text(`${this.widthInch}" x ${this.heightInch}"`, { 
-      left: this.boardRect.left + this.strokeWidth + 3, //Take the block's position
-      top: this.boardRect.top + this.strokeWidth + 3, 
-      fontSize: 15,
-      fill: 'rgb(10,10,10)',
-      lockScalingX: true,
-      lockScalingY: true,
-      lockUniScaling: true,
-      selectable: false,
-    })
-    this.canvas.add(this.cellSizeText)
+    if (!this.isMobile) {
+      this.cellSizeText = new fabric.Text(`${this.widthInch}" x ${this.heightInch}"`, { 
+        left: this.boardRect.left + this.strokeWidth + 3, //Take the block's position
+        top: this.boardRect.top + this.strokeWidth + 3, 
+        fontSize: 15,
+        fill: 'rgb(10,10,10)',
+        lockScalingX: true,
+        lockScalingY: true,
+        lockUniScaling: true,
+        selectable: false,
+      })
+      this.canvas.add(this.cellSizeText)
 
-    this.hintText = new fabric.Text("Drag image here", { 
-      originX: "center",
-      originY: "center",
-      left: this.boardRect.left + this.boardRect.width / 2,
-      top: this.boardRect.top + this.boardRect.height / 2,
-      fontSize: 15,
-      fill: 'rgb(10,10,10)',
-      lockScalingX: true,
-      lockScalingY: true,
-      lockUniScaling: true,
-      selectable: false,
-    })
-    this.canvas.add(this.hintText)
+      this.hintText = new fabric.Text("Drag image here", { 
+        originX: "center",
+        originY: "center",
+        left: this.boardRect.left + this.boardRect.width / 2,
+        top: this.boardRect.top + this.boardRect.height / 2,
+        fontSize: 15,
+        fill: 'rgb(10,10,10)',
+        lockScalingX: true,
+        lockScalingY: true,
+        lockUniScaling: true,
+        selectable: false,
+      })
+      this.canvas.add(this.hintText)
+    }
     return this
   }
 
@@ -329,6 +332,11 @@ class ImageBox {
   setSizeInch(widthInch, heightInch) {
     this.widthInch = parseFloat(widthInch.toFixed(1).toString())
     this.heightInch = parseFloat(heightInch.toFixed(1).toString())
+    return this
+  }
+
+  setIsMobile(isMobile: Boolean) {
+    this.isMobile = isMobile
     return this
   }
 

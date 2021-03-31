@@ -80,7 +80,7 @@ export class CollageMakeComponent implements OnInit {
     if (this.setting.mode == 'wall') {
       await this.wallImageSvc.updateImages()
       this.collage.setSetting(this.setting.clone())
-      await createCollageByWallId(this.collage, this.setting.selectedWallId)
+      await createCollageByWallId(this.collage, this.setting.selectedWallId, this.isMobile)
     }
 
     this.loading = false
@@ -228,7 +228,7 @@ export class CollageMakeComponent implements OnInit {
       dialogRef.afterClosed().subscribe(async (itemId) => {
         if (itemId) {
           this.collage.setSetting(this.setting.clone())
-          await createCollageByWallId(this.collage, itemId)
+          await createCollageByWallId(this.collage, itemId, this.isMobile)
         }
       })
     }

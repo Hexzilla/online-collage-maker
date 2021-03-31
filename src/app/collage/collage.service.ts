@@ -534,7 +534,7 @@ export class Collage {
 
   private frameSizeGroup1: fabric.Group = null;
   private frameSizeGroup2: fabric.Group = null;
-  drawFrameSize(pixelsForInch) {
+  drawFrameSize(pixelsForInch, isMobile: Boolean) {
     let left = 0, top = 0, right = 0, bottom = 0
     for (var tag in this.imageBoxes) {
       const box: ImageBox = this.imageBoxes[tag]
@@ -549,26 +549,30 @@ export class Collage {
       if (bottom == 0 || rb > bottom) bottom = rb
     }
     
+    const delta = !isMobile ? 20 : 10
+    const htd = !isMobile? 34 : 20
+    const wtd = !isMobile? 40 : 20
+    const fontSize = !isMobile ? 15 : 12
     const widthInch = ((right - left) / pixelsForInch).toFixed(1);
     const heightInch = ((bottom - top) / pixelsForInch).toFixed(1);
 
-    var frameWidthLine = new fabric.Line([left, top - 20, right, top - 20], { type:'line', stroke: '#888', selectable: false })
+    var frameWidthLine = new fabric.Line([left, top - delta, right, top - delta], { type:'line', stroke: '#888', selectable: false })
     var frameWidthText = new fabric.Text(`${widthInch}"`, {
       originX: "center",
       originY: "center",
       left: left + (right - left) / 2,
-      top: top - 34,
-      fontSize: 15,
+      top: top - htd,
+      fontSize: fontSize,
       selectable: false,
     })
 
-    var frameHeightLine = new fabric.Line([left - 20, top, left - 20, bottom], { type:'line', stroke: '#888', selectable: false })
+    var frameHeightLine = new fabric.Line([left - delta, top, left - delta, bottom], { type:'line', stroke: '#888', selectable: false })
     var frameHeightText = new fabric.Text(`${heightInch}"`, {
       originX: "center",
       originY: "center",
-      left: left - 40,
+      left: left - wtd,
       top: top + (bottom - top) / 2,
-      fontSize: 15,
+      fontSize: fontSize,
       selectable: false,
     })
 

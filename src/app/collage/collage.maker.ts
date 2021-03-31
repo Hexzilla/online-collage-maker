@@ -103,7 +103,7 @@ export async function createCollageByTemplateId(collage: Collage, templateId: nu
   }
 }
 
-export async function createCollageByWallId(collage: Collage, wallId: number) {
+export async function createCollageByWallId(collage: Collage, wallId: number, isMobile: Boolean) {
   try {
     collage.setLoadingState(true);
 
@@ -139,6 +139,7 @@ export async function createCollageByWallId(collage: Collage, wallId: number) {
         .setBorder(setting.borderWidth, setting.borderColor)
         .setSizeInch(it.showWidth, it.showHeight)
         //.setPrice(it.price)
+        .setIsMobile(isMobile)
         .addWallFrameBoard(it.left * scale, it.top * scale, it.width * scale, it.height * scale)
 
       box['price'] = it.price
@@ -149,7 +150,7 @@ export async function createCollageByWallId(collage: Collage, wallId: number) {
     })
 
     const pixelsForInch = layout.getPixelForInch()
-    collage.drawFrameSize(pixelsForInch);
+    collage.drawFrameSize(pixelsForInch, isMobile);
   }
   catch (err) {
     console.log(err)
