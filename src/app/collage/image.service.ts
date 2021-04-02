@@ -10,7 +10,7 @@ export class ImageService {
   }
 
   async uploadImage(formData) {
-    return await this.api.uploadFiles(formData)
+    return await this.api.uploadImage(formData)
   }
 
   uploadCollageImages(formData) {
