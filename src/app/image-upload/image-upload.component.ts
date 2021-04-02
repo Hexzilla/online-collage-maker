@@ -47,7 +47,7 @@ export class ImageUploadComponent implements OnInit {
     this.dropZoneStatus = true;
     let formData = new FormData();
     for (var i = 0; i < this.files.length; i++) {
-      formData.append("images", this.files[i], this.files[i].name)
+      formData.append("image", this.files[i], this.files[i].name)
     }
 
     const result = await this.imageSvc.uploadImage(formData)
