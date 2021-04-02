@@ -90,7 +90,9 @@ export class ApiService {
 
     async uploadImage(formData) {
         try {
+            console.log("Upload-3");
             const url = environment.apiUrl + '/file/upload';
+            console.log("Upload-4", url);
             const result = await this.http.post(url, formData).toPromise();
             return result;
         } catch (e) {

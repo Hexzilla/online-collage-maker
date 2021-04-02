@@ -50,6 +50,7 @@ export class ImageUploadComponent implements OnInit {
       formData.append("image", this.files[i], this.files[i].name)
     }
 
+    console.log("Upload-1");
     const result = await this.imageSvc.uploadImage(formData)
     if (result) {
       this.toastr.success("success")
