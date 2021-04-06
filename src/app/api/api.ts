@@ -80,7 +80,7 @@ export class ApiService {
     }
 
     uploadCollageImages(formData) {
-        const url = environment.apiUrl + "/collage/images/upload";
+        const url = environment.apiUrl + "/collage/images/upload?ngsw-bypass=true";
         formData.append("user_id", this.getUserId());
         return this.http.post(url, formData, {
           reportProgress: true,

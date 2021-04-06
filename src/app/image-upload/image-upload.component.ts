@@ -58,6 +58,8 @@ export class ImageUploadComponent implements OnInit {
       else if (event.type === HttpEventType.Response) {
         this.files = []
         this.reset()
+        this.toastr.success("success")
+        await this.imageSvc.updateImages()
       }
     }, err => {
       console.log(err.message);
