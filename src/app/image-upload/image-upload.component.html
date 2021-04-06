@@ -5,7 +5,7 @@
     </mat-panel-title>
   </mat-expansion-panel-header>
   <div class="image-upload">
-      <ngx-dropzone (change)="onSelect($event)" [disabled]="dropZoneStatus" accept="image/jpeg,image/jpg,image/png,image/gif" class="mx-1" expandable>
+      <ngx-dropzone (change)="onSelect($event)" [disabled]="uploadProgress !== -1" accept="image/jpeg,image/jpg,image/png,image/gif" class="mx-1" expandable>
         <ngx-dropzone-label>
             <i class="fa fa-cloud-upload" style="font-size: 50px"></i><br>
             Drag&Drop files here<br>
@@ -18,12 +18,9 @@
           <!-- <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label> -->
         </ngx-dropzone-image-preview>
       </ngx-dropzone>
-        
-      <mat-progress-bar mode="indeterminate" *ngIf="progressShow" class="mx-1"></mat-progress-bar>
-    
-      <div class="row">
+      <div class="row pl-1 m-1 text-center">
         <div class="col-md-12 text-center">
-          <button type="button" class="btn btn-primary btn-sm shadow mt-2 upload-button" [disabled]="dropZoneStatus" (click)="uploadFiles()">Upload</button>
+          <button mat-raised-button id="upload-button" [disabled]="uploadProgress !== -1" class="btn btn-sm btn-block btn-primary" (click)="uploadFiles()">{{uploadButtonName}}</button>
         </div>
       </div>
   </div>
