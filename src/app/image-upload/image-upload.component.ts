@@ -48,7 +48,7 @@ export class ImageUploadComponent implements OnInit {
       formData.append("images", this.files[i], this.files[i].name)
     }
 
-    this.imageSvc.uploadCollageImages(formData).subscribe((event: any) => {
+    this.imageSvc.uploadCollageImages(formData).subscribe(async (event: any) => {
       console.log("event.type: ", event.type);
       if (event.type === HttpEventType.UploadProgress) {
         const uploadProgress = Math.round((event.loaded / event.total * 100));
