@@ -30,62 +30,8 @@ footer ul {
 .justify-content-space-between {
   justify-content: space-between;
 }
-
-@media screen and (min-width: 992px) {
-.menu-mobile-btn{
-  display: none;
-}
-}
-.menu-mobile-btn{
-  margin-right: 30px;
-}
-.sub-cat{
-  margin-left: 10%;
-}
-
-.border-bottom{
-  border-top: 1px solid white;
-  padding: 5px;
-}
-
-
-.parent-div{
-  border-top: 1px solid white;
-  padding: 0px 20px;
-  vertical-align: middle;
-}
-
-.text-muted-footer {
-  color: white !important;
-  line-height: 20px;
-  margin-top: 10px;
-}
-.nav-wrap{
-  width: 100%;
- /* // margin: 10px 0; */
-}
-
-.nav-wrap .btn{
-  font-size: 16px;
-}
-
-.max-width-100{
-  max-width: 100% !important;
-}
-
-.j-text {
-  margin-top: 33px;
-}
-
-.active-test{
-  background: #1b7cbe !important;
-  color: #ffffff!important;
-}
-
-.mat-drawer{
-  min-width: 237px;
-}
-
-.mat-list-base .mat-list-item.mat-list-item-with-avatar {
-  height: 40px;
+.btn-active {
+  background-color: #1b7cbe !important;
+  box-shadow: 2px 2px 10px #3338 !important;
+  color: #fff !important;
 }
