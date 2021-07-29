@@ -1,5 +1,5 @@
 # Printposters
-
+With online collage maker, creating a masterpiece of memories is as simple as a few clicks.
 
 ## Development server
 
